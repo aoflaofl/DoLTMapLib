@@ -2,9 +2,9 @@ package com.spamalot.dolt.map;
 
 import com.spamalot.dolt.map.MapTile.MapTileType;
 
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Hold the map.
@@ -28,7 +28,7 @@ public class DoltMap {
   /**
    * A Random Number Generator.
    */
-  //private final Random rng = new Random();
+  private final Random RNG = new Random();
 
   /**
    * Actual width of the Map.
@@ -43,7 +43,7 @@ public class DoltMap {
   /**
    * The territories in this Map.
    */
-  //private final List<Territory> territories = new ArrayList<>();
+  private final List<Territory> territories = new ArrayList<>();
 
   /**
    * Construct a Map Object.
@@ -64,6 +64,18 @@ public class DoltMap {
 
     final Territory territory = new Territory();
     territory.buildArea(mapTiles[0][0], DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
+    territories.add(territory);
+    for (int i = 0; i < 10; i++) {
+      MapTile pdio = null;
+      while (pdio == null) {
+        final int index = RNG.nextInt(territories.size());
+        Territory neq = territories.get(index);
+
+        pdio = neq.getRandomAdjacentWaterTile();
+      }
+      Territory ddfg = new Territory();
+      ddfg.buildArea(pdio, DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
+    }
   }
 
   private void initMapTiles() {
