@@ -90,7 +90,7 @@ class MapTile {
    * 
    * @return List of adjacent MapTiles that are water
    */
-  private List<MapTile> getAdjacentWaterTiles() {
+  public List<MapTile> getAdjacentWaterTiles() {
     final List<MapTile> waterList = new ArrayList<>();
     for (final MapTile linkedTile : linkedTiles.values()) {
       if (linkedTile != null && linkedTile.getType() == MapTileType.WATER) {

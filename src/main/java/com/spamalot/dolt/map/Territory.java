@@ -88,4 +88,14 @@ class Territory {
     }
     return targetSize;
   }
+
+	private MapTile getRandomAdjacentWaterTile() {
+		SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
+
+		for (MapTile a : territoryTiles) {
+			waterTiles.addAll(a.getAdjacentWaterTiles());
+		}
+		final int index = RNG.nextInt(waterTiles.size());
+		return waterTiles.get(index);
+	}
 }
