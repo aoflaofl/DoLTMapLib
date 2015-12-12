@@ -23,12 +23,15 @@ public class DoltMap {
    */
   private static final int DEFAULT_MAX_TERRITORY_SIZE = 20;
 
+  /**
+   * The MapTiles that make up this Map.
+   */
   private MapTile[][] mapTiles;
 
   /**
    * A Random Number Generator.
    */
-  private final Random RNG = new Random();
+  private static final Random RNG = new Random();
 
   /**
    * Actual width of the Map.
@@ -65,7 +68,7 @@ public class DoltMap {
     final Territory territory = new Territory();
     territory.buildArea(mapTiles[0][0], DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
     territories.add(territory);
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < numTerritories; i++) {
       MapTile pdio = null;
       while (pdio == null) {
         final int index = RNG.nextInt(territories.size());
@@ -75,6 +78,7 @@ public class DoltMap {
       }
       Territory ddfg = new Territory();
       ddfg.buildArea(pdio, DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
+      territories.add(ddfg);
     }
   }
 
