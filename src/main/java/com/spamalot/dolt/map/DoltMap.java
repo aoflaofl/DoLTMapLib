@@ -144,16 +144,32 @@ public class DoltMap {
   public final String toString() {
 
     final StringBuilder sb = new StringBuilder();
-
+    sb.append('+');
+    for (int x = 0; x < mapWidth; x++) {
+      sb.append("-+");
+    }
+    sb.append('\n');
     for (int y = 0; y < mapHeight; y++) {
+      sb.append('|');
       for (int x = 0; x < mapWidth; x++) {
-
         sb.append(mapTiles[x][y]);
+        if (mapTiles[x][y].isInSameTerritory(mapTiles[x][y].getRight())) {
+          sb.append(' ');
+        } else {
+          sb.append('|');
+        }
       }
-
+      sb.append('\n');
+      sb.append('+');
+      for (int x = 0; x < mapWidth; x++) {
+        if (mapTiles[x][y].isInSameTerritory(mapTiles[x][y].getDown())) {
+          sb.append(" +");
+        } else {
+          sb.append("-+");
+        }
+      }
       sb.append('\n');
     }
-
     return sb.toString();
   }
 

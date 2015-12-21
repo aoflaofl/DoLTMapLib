@@ -45,6 +45,8 @@ class MapTile {
    */
   private MapTileType tileType;
 
+  private Territory territory;
+
   /**
    * @param type
    *          What type of Tile this is.
@@ -144,5 +146,23 @@ class MapTile {
       str = ".";
     }
     return str;
+  }
+
+  public MapTile getDown() {
+    return linkedTiles.get(Direction.DOWN);
+  }
+
+  public boolean isInSameTerritory(MapTile down) {
+
+    return territory != null && territory.containsTile(down);
+  }
+
+  public void setTerritory(Territory ter) {
+    territory = ter;
+
+  }
+
+  public MapTile getRight() {
+    return linkedTiles.get(Direction.RIGHT);
   }
 }
