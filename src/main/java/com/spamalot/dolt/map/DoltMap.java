@@ -1,10 +1,13 @@
 package com.spamalot.dolt.map;
 
+import com.google.common.collect.Range;
+
 import com.spamalot.dolt.map.MapTile.MapTileType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Hold the map.
@@ -65,19 +68,24 @@ public class DoltMap {
     mapTiles = new MapTile[width][height];
     initMapTiles();
 
+    addTerritories(numTerritories, DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
+  }
+
+  private void addTerritories(final int numTerritories, final int minTerritorySize, final int maxTerritorySize) {
     final Territory territory = new Territory();
-    territory.buildArea(mapTiles[0][0], DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
+
+    territory.buildArea(mapTiles[0][0], minTerritorySize, maxTerritorySize);
     territories.add(territory);
     for (int i = 0; i < numTerritories; i++) {
       MapTile pdio = null;
       while (pdio == null) {
         final int index = RNG.nextInt(territories.size());
-        Territory neq = territories.get(index);
+        final Territory neq = territories.get(index);
 
         pdio = neq.getRandomAdjacentWaterTile();
       }
-      Territory ddfg = new Territory();
-      ddfg.buildArea(pdio, DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
+      final Territory ddfg = new Territory();
+      ddfg.buildArea(pdio, minTerritorySize, maxTerritorySize);
       territories.add(ddfg);
     }
   }
@@ -95,7 +103,7 @@ public class DoltMap {
     MapTile right;
     for (int i = 0; i < mapWidth; i++) {
       for (int j = 0; j < mapHeight; j++) {
-        left = getMapTile(i - 1, j);
+        left = getMapTile(i - 1, j, Direction.LEFT);
         right = getMapTile(i + 1, j);
         up = getMapTile(i, j - 1);
         down = getMapTile(i, j + 1);
@@ -103,6 +111,12 @@ public class DoltMap {
         mapTiles[i][j].add(left, right, up, down);
       }
     }
+  }
+
+  private MapTile getMapTile(final int i, final int j, Direction dir) {
+    checkNotNull(dir);
+
+    return getMapTile(i + dir.gethDiff(), j + dir.getvDiff());
   }
 
   private MapTile getMapTile(final int i, final int j) {
@@ -123,7 +137,7 @@ public class DoltMap {
    * @return true if this Coordinate is on the Map
    */
   private boolean isOnMap(final int x, final int y) {
-    return x >= 0 && x < mapWidth && y >= 0 && y < mapHeight;
+    return Range.closedOpen(0, mapWidth).contains(x) && Range.closedOpen(0, mapHeight).contains(y);
   }
 
   @Override
