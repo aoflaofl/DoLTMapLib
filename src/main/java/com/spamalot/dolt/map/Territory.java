@@ -22,7 +22,8 @@ class Territory {
   private static final Random RNG = new Random();
 
   /**
-   * The MapTiles that make up this Territory.
+   * The MapTiles that make up this Territory. Make it a SetUniqueList because
+   * at some point we will need to pick a random MapTile.
    */
   private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
@@ -53,7 +54,9 @@ class Territory {
 
     final int targetSize = getRandomTargetSize(minSize, maxSize);
 
-    int size = generateRandomArea(startTile, targetSize);
+    generateRandomArea(startTile, targetSize);
+
+    int size = territoryTiles.size();
 
     Territory result = null;
     if (Range.closed(minSize, maxSize).contains(size)) {
@@ -67,7 +70,7 @@ class Territory {
     return result;
   }
 
-  private int generateRandomArea(final MapTile startTile, final int targetSize) {
+  private void generateRandomArea(final MapTile startTile, final int targetSize) {
 
     startTile.setType(MapTileType.LAND);
     startTile.setTerritory(this);
@@ -88,7 +91,6 @@ class Territory {
       territoryTiles.add(tile);
 
     }
-    return size;
   }
 
   private void removeArea() {
