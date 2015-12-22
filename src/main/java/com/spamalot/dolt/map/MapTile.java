@@ -152,12 +152,12 @@ class MapTile {
     return linkedTiles.get(Direction.DOWN);
   }
 
-  public boolean isInSameTerritory(MapTile down) {
+  public boolean isInSameTerritory(final MapTile down) {
 
     return territory != null && territory.containsTile(down);
   }
 
-  public void setTerritory(Territory ter) {
+  public void setTerritory(final Territory ter) {
     territory = ter;
 
   }

@@ -1,5 +1,7 @@
 package com.spamalot.dolt.map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.collect.Range;
 
 import com.spamalot.dolt.map.MapTile.MapTileType;
@@ -7,7 +9,6 @@ import com.spamalot.dolt.map.MapTile.MapTileType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Hold the map.
@@ -113,7 +114,7 @@ public class DoltMap {
     }
   }
 
-  private MapTile getMapTile(final int i, final int j, Direction dir) {
+  private MapTile getMapTile(final int i, final int j, final Direction dir) {
     checkNotNull(dir);
 
     return getMapTile(i + dir.gethDiff(), j + dir.getvDiff());

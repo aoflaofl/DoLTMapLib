@@ -1,6 +1,7 @@
 package com.spamalot.dolt.map;
 
 import com.google.common.collect.Range;
+
 import com.spamalot.dolt.map.MapTile.MapTileType;
 
 import org.apache.commons.collections4.list.SetUniqueList;
@@ -58,6 +59,7 @@ class Territory {
     if (Range.closed(minSize, maxSize).contains(size)) {
       result = this;
     } else {
+      // TODO: Also inform map not to use these water tiles.
       removeArea();
       result = null;
     }
@@ -66,12 +68,14 @@ class Territory {
   }
 
   private int generateRandomArea(final MapTile startTile, final int targetSize) {
-    int size = 1;
+
     startTile.setType(MapTileType.LAND);
+    startTile.setTerritory(this);
     territoryTiles.add(startTile);
 
     MapTile tile = startTile;
-    while (size < targetSize) {
+    int size = 1;
+    for (; size < targetSize; size++) {
       tile = tile.getRandomAdjacentWaterTile();
       if (tile == null) {
         tile = getRandomAdjacentWaterTile();
@@ -82,7 +86,7 @@ class Territory {
       tile.setType(MapTileType.LAND);
       tile.setTerritory(this);
       territoryTiles.add(tile);
-      size++;
+
     }
     return size;
   }
@@ -141,7 +145,7 @@ class Territory {
     return result;
   }
 
-  public boolean containsTile(MapTile down) {
+  public boolean containsTile(final MapTile down) {
     return territoryTiles.contains(down);
   }
 }
