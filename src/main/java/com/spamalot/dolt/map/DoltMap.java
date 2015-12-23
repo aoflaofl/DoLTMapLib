@@ -83,7 +83,7 @@ public class DoltMap {
         final int index = RNG.nextInt(territories.size());
         final Territory neq = territories.get(index);
 
-        pdio = neq.getRandomAdjacentWaterTile();
+        pdio = TerritoryBuilder.getRandomAdjacentWaterTile(neq.getTerritoryTiles());
       }
       final Territory ddfg = new Territory();
       ddfg.buildArea(pdio, minTerritorySize, maxTerritorySize);

@@ -27,6 +27,10 @@ class Territory {
    */
   private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
+  SetUniqueList<MapTile> getTerritoryTiles() {
+    return territoryTiles;
+  }
+
   /**
    * Construct a Territory.
    * 
@@ -45,7 +49,7 @@ class Territory {
    *          Minimum size of the Territory
    * @param maxSize
    *          Maximum size of the Territory.
-   * @return
+   * @return a Territory.
    */
   public Territory buildArea(final MapTile startTile, final int minSize, final int maxSize) {
     if (startTile.getType() != MapTileType.WATER) {
@@ -81,7 +85,7 @@ class Territory {
     for (; size < targetSize; size++) {
       tile = tile.getRandomAdjacentWaterTile();
       if (tile == null) {
-        tile = getRandomAdjacentWaterTile();
+        tile = TerritoryBuilder.getRandomAdjacentWaterTile(territoryTiles);
         if (tile == null) {
           break;
         }
@@ -121,30 +125,6 @@ class Territory {
     }
 
     return targetSize;
-  }
-
-  /**
-   * Find a random water tile adjacent to this Territory.
-   * 
-   * @return a random water tile or null if there is no water tile adjacent to
-   *         this Territory
-   */
-  public MapTile getRandomAdjacentWaterTile() {
-    SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
-
-    for (MapTile a : territoryTiles) {
-      waterTiles.addAll(a.getAdjacentWaterTiles());
-    }
-
-    MapTile result;
-    if (waterTiles.isEmpty()) {
-      result = null;
-    } else {
-      final int index = RNG.nextInt(waterTiles.size());
-      result = waterTiles.get(index);
-    }
-
-    return result;
   }
 
   public boolean containsTile(final MapTile down) {

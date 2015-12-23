@@ -34,6 +34,14 @@ enum Direction {
    */
   private int vDiff;
 
+  /**
+   * Construct Direction ENUM.
+   * 
+   * @param hDiff
+   *          horizontal difference
+   * @param vDiff
+   *          vertical difference
+   */
   Direction(final int hDiff, final int vDiff) {
     sethDiff(hDiff);
     setvDiff(vDiff);
@@ -53,10 +61,22 @@ enum Direction {
     return vDiff;
   }
 
+  /**
+   * Set horizontal difference.
+   * 
+   * @param hDiff
+   *          horizontal difference
+   */
   private void sethDiff(final int hDiff) {
     this.hDiff = hDiff;
   }
 
+  /**
+   * Set vertical difference.
+   * 
+   * @param vDiff
+   *          vertical difference
+   */
   private void setvDiff(final int vDiff) {
     this.vDiff = vDiff;
   }
