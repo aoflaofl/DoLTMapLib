@@ -1,5 +1,5 @@
 /**
- * Classes supporting Map makign in DoLT.
+ * Classes supporting Map making in DoLT.
  * 
  * @author gej
  *

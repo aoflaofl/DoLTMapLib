@@ -21,6 +21,8 @@ final class TerritoryBuilder {
   /**
    * Find a random water tile adjacent to this Territory.
    * 
+   * @param territoryTiles
+   *          The set of tiles that make up a territory.
    * @return a random water tile or null if there is no water tile adjacent to
    *         this Territory
    */
