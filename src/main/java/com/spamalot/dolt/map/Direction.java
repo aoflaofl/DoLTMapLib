@@ -48,6 +48,8 @@ enum Direction {
   }
 
   /**
+   * Get Horizontal Differential.
+   * 
    * @return the horizontal Differential.
    */
   public int gethDiff() {
@@ -55,6 +57,8 @@ enum Direction {
   }
 
   /**
+   * Get Vertical Differential.
+   * 
    * @return the Vertical Differential.
    */
   public int getvDiff() {
