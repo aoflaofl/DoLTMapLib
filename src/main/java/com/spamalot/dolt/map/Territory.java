@@ -27,6 +27,16 @@ final class Territory {
    */
   private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
+  private boolean offLimits;
+
+  public boolean isOffLimits() {
+    return offLimits;
+  }
+
+  public void setOffLimits(boolean offLimits) {
+    this.offLimits = offLimits;
+  }
+
   SetUniqueList<MapTile> getTerritoryTiles() {
     return territoryTiles;
   }
@@ -66,8 +76,7 @@ final class Territory {
     if (Range.closed(minSize, maxSize).contains(size)) {
       result = this;
     } else {
-      // TODO: Also inform map not to use these water tiles.
-      removeArea();
+      clearTerritoryTiles();
       result = null;
     }
 
@@ -76,32 +85,45 @@ final class Territory {
 
   private void generateRandomArea(final MapTile startTile, final int targetSize) {
 
-    startTile.setType(MapTileType.LAND);
-    startTile.setTerritory(this);
-    territoryTiles.add(startTile);
+    addTileToTerritory(startTile);
 
     MapTile tile = startTile;
     int size = 1;
     for (; size < targetSize; size++) {
-      tile = tile.getRandomAdjacentWaterTile();
+      tile = getNextTile(tile);
       if (tile == null) {
-        tile = TerritoryBuilder.getRandomAdjacentWaterTile(territoryTiles);
-      }
-      if (tile == null) {
+        setOffLimits(true);
         break;
       }
-      tile.setType(MapTileType.LAND);
-      tile.setTerritory(this);
-      territoryTiles.add(tile);
+      addTileToTerritory(tile);
 
     }
   }
 
-  private void removeArea() {
-    for (MapTile a : territoryTiles) {
-      a.setType(MapTileType.WATER);
-      a.setTerritory(null);
-      a.setOffLimits();
+  private void addTileToTerritory(MapTile tile) {
+    tile.setType(MapTileType.LAND);
+    tile.setTerritory(this);
+    territoryTiles.add(tile);
+  }
+
+  private MapTile getNextTile(final MapTile tile) {
+    MapTile result = tile.getRandomAdjacentWaterTile();
+    if (result == null) {
+      result = TerritoryBuilder.getRandomAdjacentWaterTile(territoryTiles);
+    }
+    return result;
+  }
+
+  /**
+   * Mark the MapTiles assigned to this Territory as water, but since there
+   * failed to be enough of them in a cluster to make a Territory also mark them
+   * as off limits so they won't be used in the future.
+   */
+  private void clearTerritoryTiles() {
+    for (MapTile tile : territoryTiles) {
+      tile.setType(MapTileType.WATER);
+      tile.setTerritory(null);
+      tile.setOffLimits();
     }
   }
 

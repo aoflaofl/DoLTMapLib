@@ -80,7 +80,7 @@ public class DoltWorld {
 
   @Override
   public final String toString() {
-    return "DoltWorld [gameMap=" + gameMap + "]";
+    return "DoltWorld [gameMap=\n" + gameMap + "]";
   }
 
 }
