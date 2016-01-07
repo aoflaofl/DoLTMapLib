@@ -145,7 +145,11 @@ class MapTile {
     if (tileType == MapTileType.LAND) {
       str = "#";
     } else {
-      str = ".";
+      if (isOffLimits()) {
+        str = ",";
+      } else {
+        str = ".";
+      }
     }
     return str;
   }
