@@ -47,6 +47,8 @@ class MapTile {
 
   private Territory territory;
 
+  private boolean offLimits;
+
   /**
    * @param type
    *          What type of Tile this is.
@@ -95,7 +97,7 @@ class MapTile {
   public List<MapTile> getAdjacentWaterTiles() {
     final List<MapTile> waterList = new ArrayList<>();
     for (final MapTile linkedTile : linkedTiles.values()) {
-      if (linkedTile != null && linkedTile.getType() == MapTileType.WATER) {
+      if (linkedTile != null && linkedTile.getType() == MapTileType.WATER && !linkedTile.isOffLimits()) {
         waterList.add(linkedTile);
       }
     }
@@ -165,4 +167,13 @@ class MapTile {
   public MapTile getRight() {
     return linkedTiles.get(Direction.RIGHT);
   }
+
+  public void setOffLimits() {
+    offLimits = true;
+  }
+
+  public boolean isOffLimits() {
+    return offLimits;
+  }
+
 }

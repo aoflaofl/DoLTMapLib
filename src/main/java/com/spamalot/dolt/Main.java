@@ -1,6 +1,6 @@
 package com.spamalot.dolt;
 
-import com.spamalot.dolt.map.DoltMap;
+import com.spamalot.dolt.map.DoltWorld;
 
 /**
  * Mainly just for a framework.
@@ -38,10 +38,9 @@ public final class Main {
    */
   public static void main(final String... args) {
     System.out.println("Something will happen here!");
+    final DoltWorld world = new DoltWorld(DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, DEFAULT_NUM_TERRITORIES);
 
-    final DoltMap gameMap = new DoltMap(DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, DEFAULT_NUM_TERRITORIES);
-
-    System.out.println(gameMap);
+    System.out.println(world);
   }
 
 }

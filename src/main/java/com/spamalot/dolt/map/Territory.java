@@ -15,7 +15,7 @@ import java.util.Random;
  * @author gej
  *
  */
-class Territory {
+final class Territory {
   /**
    * Random Number Generator.
    */
@@ -86,9 +86,9 @@ class Territory {
       tile = tile.getRandomAdjacentWaterTile();
       if (tile == null) {
         tile = TerritoryBuilder.getRandomAdjacentWaterTile(territoryTiles);
-        if (tile == null) {
-          break;
-        }
+      }
+      if (tile == null) {
+        break;
       }
       tile.setType(MapTileType.LAND);
       tile.setTerritory(this);
@@ -100,6 +100,8 @@ class Territory {
   private void removeArea() {
     for (MapTile a : territoryTiles) {
       a.setType(MapTileType.WATER);
+      a.setTerritory(null);
+      a.setOffLimits();
     }
   }
 
@@ -127,7 +129,25 @@ class Territory {
     return targetSize;
   }
 
-  public boolean containsTile(final MapTile down) {
-    return territoryTiles.contains(down);
+  public boolean containsTile(final MapTile tile) {
+    return territoryTiles.contains(tile);
+  }
+
+  public static class Builder {
+    private MapTile startTile;
+    private int minSize;
+    private int maxSize;
+
+    Builder(final MapTile startTile, final int minSize, final int maxSize) {
+      this.startTile = startTile;
+      this.minSize = minSize;
+      this.maxSize = maxSize;
+    }
+
+    public Territory build() {
+      Territory result = new Territory();
+
+      return result.buildArea(startTile, minSize, maxSize);
+    }
   }
 }
