@@ -11,15 +11,17 @@ import java.util.Random;
  *
  */
 public class DoltWorld {
+  private static final int TERRITORY_BUILD_ATTEMPTS = 100;
+
   /**
    * Default minimum size of a Territory.
    */
-  private static final int DEFAULT_MIN_TERRITORY_SIZE = 10;
+  private static final int DEFAULT_MIN_TERRITORY_SIZE = 50;
 
   /**
    * Default maximum size of a territory.
    */
-  private static final int DEFAULT_MAX_TERRITORY_SIZE = 20;
+  private static final int DEFAULT_MAX_TERRITORY_SIZE = 60;
 
   /**
    * The territories in this Map.
@@ -48,20 +50,29 @@ public class DoltWorld {
   }
 
   private void addTerritories(final int numTerritories, final int minTerritorySize, final int maxTerritorySize) {
-    final Territory territory = new Territory();
+    final Territory territory = new Territory.Builder(gameMap.getMapTiles()[0][0], minTerritorySize, maxTerritorySize)
+        .build();
 
-    territory.buildArea(gameMap.getMapTiles()[0][0], minTerritorySize, maxTerritorySize);
+    // territory.buildArea(gameMap.getMapTiles()[0][0], minTerritorySize,
+    // maxTerritorySize);
     territories.add(territory);
-    for (int i = 0; i < numTerritories; i++) {
+    for (int i = 1; i < numTerritories; i++) {
       generateTerritory(minTerritorySize, maxTerritorySize);
     }
   }
 
   private void generateTerritory(final int minTerritorySize, final int maxTerritorySize) {
-    MapTile startTile = getRandomWaterTile();
-    final Territory newTerritory = new Territory();
-    newTerritory.buildArea(startTile, minTerritorySize, maxTerritorySize);
-    territories.add(newTerritory);
+
+    Territory newTerritory = null;
+    int attempts = TERRITORY_BUILD_ATTEMPTS;
+    while (newTerritory == null && attempts-- > 0) {
+      MapTile startTile = getRandomWaterTile();
+      newTerritory = new Territory.Builder(startTile, minTerritorySize, maxTerritorySize).build();
+    }
+
+    if (newTerritory != null) {
+      territories.add(newTerritory);
+    }
   }
 
   private MapTile getRandomWaterTile() { // TODO: What if want an island?
@@ -80,7 +91,7 @@ public class DoltWorld {
 
   @Override
   public final String toString() {
-    return "DoltWorld [gameMap=\n" + gameMap + "]";
+    return "DoltWorld [gameMap=\n" + gameMap + "\nnumber of Territories: " + territories.size() + "]";
   }
 
 }

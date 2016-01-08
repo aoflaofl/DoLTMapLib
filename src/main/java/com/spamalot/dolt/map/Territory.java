@@ -33,7 +33,7 @@ final class Territory {
     return offLimits;
   }
 
-  public void setOffLimits(boolean offLimits) {
+  public void setOffLimits(final boolean offLimits) {
     this.offLimits = offLimits;
   }
 
@@ -46,7 +46,7 @@ final class Territory {
    * 
    * 
    */
-  Territory() {
+  private Territory() {
     // Empty... for now.
   }
 
@@ -61,7 +61,7 @@ final class Territory {
    *          Maximum size of the Territory.
    * @return a Territory.
    */
-  public Territory buildArea(final MapTile startTile, final int minSize, final int maxSize) {
+  private Territory buildArea(final MapTile startTile, final int minSize, final int maxSize) {
     if (startTile.getType() != MapTileType.WATER) {
       throw new IllegalArgumentException("Start tile must be water.");
     }
@@ -100,7 +100,7 @@ final class Territory {
     }
   }
 
-  private void addTileToTerritory(MapTile tile) {
+  private void addTileToTerritory(final MapTile tile) {
     tile.setType(MapTileType.LAND);
     tile.setTerritory(this);
     territoryTiles.add(tile);
@@ -123,7 +123,7 @@ final class Territory {
     for (MapTile tile : territoryTiles) {
       tile.setType(MapTileType.WATER);
       tile.setTerritory(null);
-      tile.setOffLimits();
+      tile.setOffLimits(true);
     }
   }
 

@@ -172,8 +172,8 @@ class MapTile {
     return linkedTiles.get(Direction.RIGHT);
   }
 
-  public void setOffLimits() {
-    offLimits = true;
+  public void setOffLimits(final boolean offLimits) {
+    this.offLimits = offLimits;
   }
 
   public boolean isOffLimits() {

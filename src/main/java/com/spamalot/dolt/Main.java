@@ -12,7 +12,7 @@ public final class Main {
   /**
    * Number of Territories in a defualt Map.
    */
-  private static final int DEFAULT_NUM_TERRITORIES = 40;
+  private static final int DEFAULT_NUM_TERRITORIES = 10;
 
   /**
    * Height of a default Map.
