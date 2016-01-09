@@ -47,6 +47,10 @@ public class DoltWorld {
     gameMap = new DoltMap(mapWidth, mapHeight);
 
     addTerritories(numTerritories, DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
+
+    for (Territory dkhgd : territories) {
+      dkhgd.findNeighbors();
+    }
   }
 
   private void addTerritories(final int numTerritories, final int minTerritorySize, final int maxTerritorySize) {

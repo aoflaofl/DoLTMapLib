@@ -19,6 +19,11 @@ class DoltMap {
    */
   private MapTile[][] mapTiles;
 
+  /**
+   * Return the Map Tiles Array.
+   * 
+   * @return The Map Tiles Array
+   */
   public final MapTile[][] getMapTiles() {
     return mapTiles;
   }

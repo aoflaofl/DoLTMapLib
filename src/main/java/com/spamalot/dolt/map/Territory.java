@@ -7,7 +7,11 @@ import com.spamalot.dolt.map.MapTile.MapTileType;
 import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * A Territory goes into a map.
@@ -26,6 +30,8 @@ final class Territory {
    * at some point we will need to pick a random MapTile.
    */
   private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
+
+  private final Set<Territory> neighbors = new HashSet<>();
 
   private boolean offLimits;
 
@@ -153,6 +159,29 @@ final class Territory {
 
   public boolean containsTile(final MapTile tile) {
     return territoryTiles.contains(tile);
+  }
+
+  public void findNeighbors() {
+
+    List<Direction> x = Arrays.asList(Direction.DOWN, Direction.UP, Direction.RIGHT, Direction.LEFT);
+
+    for (MapTile p : territoryTiles) {
+
+      for (Direction y : x) {
+
+        MapTile nd = p.get(y);
+        checkNeighbor(p, nd);
+
+      }
+    }
+  }
+
+  private void checkNeighbor(MapTile p, MapTile nd) {
+    if (nd != null) {
+      if (!this.equals(nd.getTerritory())) {
+        neighbors.add(p.getTerritory());
+      }
+    }
   }
 
   public static class Builder {

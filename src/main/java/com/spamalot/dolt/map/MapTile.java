@@ -47,6 +47,10 @@ class MapTile {
 
   private Territory territory;
 
+  public Territory getTerritory() {
+    return territory;
+  }
+
   private boolean offLimits;
 
   /**
@@ -178,6 +182,10 @@ class MapTile {
 
   public boolean isOffLimits() {
     return offLimits;
+  }
+
+  public MapTile get(Direction y) {
+    return linkedTiles.get(y);
   }
 
 }
