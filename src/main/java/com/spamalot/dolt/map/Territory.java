@@ -170,18 +170,23 @@ final class Territory {
       for (Direction y : x) {
 
         MapTile nd = p.get(y);
-        checkNeighbor(p, nd);
+        if (checkNeighbor(p, nd)) {
+
+          neighbors.add(p.getTerritory());
+
+        }
 
       }
     }
   }
 
-  private void checkNeighbor(MapTile p, MapTile nd) {
+  private boolean checkNeighbor(MapTile p, MapTile nd) {
     if (nd != null) {
       if (!this.equals(nd.getTerritory())) {
-        neighbors.add(p.getTerritory());
+        return true;
       }
     }
+    return false;
   }
 
   public static class Builder {
