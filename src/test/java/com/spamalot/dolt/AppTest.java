@@ -30,7 +30,7 @@ public class AppTest extends TestCase {
   /**
    * Rigourous Test :-).
    */
-  public final void testApp() {
+  public static final void testApp() {
     assertTrue(true);
   }
 }

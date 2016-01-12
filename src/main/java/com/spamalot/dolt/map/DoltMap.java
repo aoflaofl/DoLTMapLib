@@ -55,6 +55,9 @@ class DoltMap {
 
   }
 
+  /**
+   * Create links between neighboring map tiles.
+   */
   private void initMapTiles() {
     for (int i = 0; i < mapWidth; i++) {
       for (int j = 0; j < mapHeight; j++) {
@@ -68,17 +71,28 @@ class DoltMap {
     MapTile right;
     for (int i = 0; i < mapWidth; i++) {
       for (int j = 0; j < mapHeight; j++) {
-        left = getMapTile(i, j, Direction.LEFT);
-        right = getMapTile(i, j, Direction.RIGHT);
-        up = getMapTile(i, j, Direction.UP);
-        down = getMapTile(i, j, Direction.DOWN);
+        left = getMapTileInDirection(i, j, Direction.LEFT);
+        right = getMapTileInDirection(i, j, Direction.RIGHT);
+        up = getMapTileInDirection(i, j, Direction.UP);
+        down = getMapTileInDirection(i, j, Direction.DOWN);
 
         mapTiles[i][j].add(left, right, up, down);
       }
     }
   }
 
-  private MapTile getMapTile(final int i, final int j, final Direction dir) {
+  /**
+   * Get a map tile in a direction.
+   * 
+   * @param i
+   *          Horizontal coordinate
+   * @param j
+   *          Vertical coordinate
+   * @param dir
+   *          Direction to get map tile
+   * @return The map tile in that direction
+   */
+  private MapTile getMapTileInDirection(final int i, final int j, final Direction dir) {
     checkNotNull(dir);
 
     return getMapTile(i + dir.gethDiff(), j + dir.getvDiff());

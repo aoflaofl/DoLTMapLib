@@ -142,7 +142,7 @@ final class Territory {
    *          maximum size
    * @return a random size between minSize and maxSize inclusive
    */
-  private int getRandomTargetSize(final int minSize, final int maxSize) {
+  private static int getRandomTargetSize(final int minSize, final int maxSize) {
     if (minSize > maxSize) {
       throw new IllegalArgumentException("Minimum Territory size must be less than or equal to maximum size.");
     }
@@ -170,7 +170,7 @@ final class Territory {
       for (Direction y : x) {
 
         MapTile nd = p.get(y);
-        if (checkNeighbor(p, nd)) {
+        if (isNeighbor(nd)) {
 
           neighbors.add(p.getTerritory());
 
@@ -180,7 +180,7 @@ final class Territory {
     }
   }
 
-  private boolean checkNeighbor(MapTile p, MapTile nd) {
+  private boolean isNeighbor(final MapTile nd) {
     if (nd != null) {
       if (!this.equals(nd.getTerritory())) {
         return true;

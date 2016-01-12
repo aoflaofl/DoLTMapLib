@@ -184,7 +184,7 @@ class MapTile {
     return offLimits;
   }
 
-  public MapTile get(Direction y) {
+  public MapTile get(final Direction y) {
     return linkedTiles.get(y);
   }
 
