@@ -38,6 +38,10 @@ class DoltMap {
    */
   private final int mapHeight;
 
+  private Range<Integer> widthRange;
+
+  private Range<Integer> heightRange;
+
   /**
    * Construct a Map Object.
    * 
@@ -50,31 +54,40 @@ class DoltMap {
     mapWidth = width;
     mapHeight = height;
 
-    mapTiles = new MapTile[width][height];
-    initMapTiles();
+    widthRange = Range.closedOpen(Integer.valueOf(0), Integer.valueOf(mapWidth));
+    heightRange = Range.closedOpen(Integer.valueOf(0), Integer.valueOf(mapHeight));
 
+    // mapTiles = new MapTile[width][height];
+    mapTiles = initMapTiles(width, height);
+    linkTiles();
   }
 
   /**
    * Create links between neighboring map tiles.
+   * 
+   * @param width
+   *          Width of the map
+   * @param height
+   *          Height of the map
+   * @return A 2D array of MapTiles
    */
-  private void initMapTiles() {
-    for (int i = 0; i < mapWidth; i++) {
-      for (int j = 0; j < mapHeight; j++) {
-        mapTiles[i][j] = new MapTile(MapTileType.WATER);
+  private static MapTile[][] initMapTiles(final int width, final int height) {
+    MapTile[][] spackle = new MapTile[width][height];
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height; j++) {
+        spackle[i][j] = new MapTile(MapTileType.WATER);
       }
     }
+    return spackle;
+  }
 
-    MapTile up;
-    MapTile down;
-    MapTile left;
-    MapTile right;
+  private void linkTiles() {
     for (int i = 0; i < mapWidth; i++) {
       for (int j = 0; j < mapHeight; j++) {
-        left = getMapTileInDirection(i, j, Direction.LEFT);
-        right = getMapTileInDirection(i, j, Direction.RIGHT);
-        up = getMapTileInDirection(i, j, Direction.UP);
-        down = getMapTileInDirection(i, j, Direction.DOWN);
+        MapTile left = getMapTileInDirection(i, j, Direction.LEFT);
+        MapTile right = getMapTileInDirection(i, j, Direction.RIGHT);
+        MapTile up = getMapTileInDirection(i, j, Direction.UP);
+        MapTile down = getMapTileInDirection(i, j, Direction.DOWN);
 
         mapTiles[i][j].add(left, right, up, down);
       }
@@ -98,6 +111,15 @@ class DoltMap {
     return getMapTile(i + dir.gethDiff(), j + dir.getvDiff());
   }
 
+  /**
+   * Get the map tile.
+   * 
+   * @param i
+   *          Horizontal coordinate
+   * @param j
+   *          Vertical coordinate
+   * @return The map tile at those coordinates
+   */
   private MapTile getMapTile(final int i, final int j) {
     MapTile result = null;
     if (isOnMap(i, j)) {
@@ -116,7 +138,7 @@ class DoltMap {
    * @return true if this Coordinate is on the Map
    */
   private boolean isOnMap(final int x, final int y) {
-    return Range.closedOpen(0, mapWidth).contains(x) && Range.closedOpen(0, mapHeight).contains(y);
+    return widthRange.contains(x) && heightRange.contains(y);
   }
 
   @Override
