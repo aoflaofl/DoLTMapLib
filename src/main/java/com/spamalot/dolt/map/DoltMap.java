@@ -38,8 +38,14 @@ class DoltMap {
    */
   private final int mapHeight;
 
+  /**
+   * A range check object for the width of the map.
+   */
   private Range<Integer> widthRange;
 
+  /**
+   * A range check object for the height of the map.
+   */
   private Range<Integer> heightRange;
 
   /**
@@ -58,7 +64,7 @@ class DoltMap {
     heightRange = Range.closedOpen(Integer.valueOf(0), Integer.valueOf(mapHeight));
 
     // mapTiles = new MapTile[width][height];
-    mapTiles = initMapTiles(width, height);
+    initMapTiles(width, height);
     linkTiles();
   }
 
@@ -69,16 +75,14 @@ class DoltMap {
    *          Width of the map
    * @param height
    *          Height of the map
-   * @return A 2D array of MapTiles
    */
-  private static MapTile[][] initMapTiles(final int width, final int height) {
-    MapTile[][] spackle = new MapTile[width][height];
+  private void initMapTiles(final int width, final int height) {
+    mapTiles = new MapTile[width][height];
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        spackle[i][j] = new MapTile(MapTileType.WATER);
+        mapTiles[i][j] = new MapTile(MapTileType.WATER);
       }
     }
-    return spackle;
   }
 
   private void linkTiles() {
