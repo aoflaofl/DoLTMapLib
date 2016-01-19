@@ -27,12 +27,12 @@ enum Direction {
   /**
    * Differential for moving in the horizontal direction.
    */
-  private int hDiff;
+  private int horizontalDifferential;
 
   /**
    * Differential for moving in the vertical direction.
    */
-  private int vDiff;
+  private int verticalDifferential;
 
   /**
    * Construct Direction ENUM.
@@ -53,7 +53,7 @@ enum Direction {
    * @return the horizontal Differential.
    */
   public int gethDiff() {
-    return hDiff;
+    return horizontalDifferential;
   }
 
   /**
@@ -62,7 +62,7 @@ enum Direction {
    * @return the Vertical Differential.
    */
   public int getvDiff() {
-    return vDiff;
+    return verticalDifferential;
   }
 
   /**
@@ -72,7 +72,7 @@ enum Direction {
    *          horizontal difference
    */
   private void sethDiff(final int hDiff) {
-    this.hDiff = hDiff;
+    this.horizontalDifferential = hDiff;
   }
 
   /**
@@ -82,6 +82,6 @@ enum Direction {
    *          vertical difference
    */
   private void setvDiff(final int vDiff) {
-    this.vDiff = vDiff;
+    this.verticalDifferential = vDiff;
   }
 }

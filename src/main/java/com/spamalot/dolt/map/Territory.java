@@ -39,8 +39,8 @@ final class Territory {
     return offLimits;
   }
 
-  public void setOffLimits(final boolean offLimits) {
-    this.offLimits = offLimits;
+  public void setOffLimits(final boolean flag) {
+    this.offLimits = flag;
   }
 
   SetUniqueList<MapTile> getTerritoryTiles() {
@@ -52,7 +52,7 @@ final class Territory {
    * 
    * 
    */
-  private Territory() {
+  Territory() {
     // Empty... for now.
   }
 
@@ -65,9 +65,11 @@ final class Territory {
    *          Minimum size of the Territory
    * @param maxSize
    *          Maximum size of the Territory.
+   * @param sizeRange
+   *          A Range object to check a Territory's size
    * @return a Territory.
    */
-  private Territory buildArea(final MapTile startTile, final int minSize, final int maxSize) {
+  private Territory buildArea(final MapTile startTile, final int minSize, final int maxSize, final Range<Integer> sizeRange) {
     if (startTile.getType() != MapTileType.WATER) {
       throw new IllegalArgumentException("Start tile must be water.");
     }
@@ -79,7 +81,7 @@ final class Territory {
     int size = territoryTiles.size();
 
     Territory result = null;
-    if (Range.closed(minSize, maxSize).contains(size)) {
+    if (sizeRange.contains(Integer.valueOf(size))) {
       result = this;
     } else {
       clearTerritoryTiles();
@@ -191,19 +193,21 @@ final class Territory {
 
   public static class Builder {
     private MapTile startTile;
-    private int minSize;
-    private int maxSize;
+    private int minimumSize;
+    private int maximumSize;
+    private Range<Integer> sizeRange;
 
-    Builder(final MapTile startTile, final int minSize, final int maxSize) {
-      this.startTile = startTile;
-      this.minSize = minSize;
-      this.maxSize = maxSize;
+    Builder(final MapTile initTile, final int minSize, final int maxSize) {
+      this.startTile = initTile;
+      this.minimumSize = minSize;
+      this.maximumSize = maxSize;
+      sizeRange = Range.closed(Integer.valueOf(minSize), Integer.valueOf(maxSize));
     }
 
     public Territory build() {
       Territory result = new Territory();
 
-      return result.buildArea(startTile, minSize, maxSize);
+      return result.buildArea(startTile, minimumSize, maximumSize, sizeRange);
     }
   }
 }

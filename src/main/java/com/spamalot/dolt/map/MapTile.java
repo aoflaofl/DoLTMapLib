@@ -40,18 +40,17 @@ class MapTile {
    */
   private final Map<Direction, MapTile> linkedTiles = new HashMap<>();
 
+  private boolean offLimits;
+
+  /**
+   * The Territory this Map Tile is in.
+   */
+  private Territory territory;
+
   /**
    * The MapTileType of this MapTile.
    */
   private MapTileType tileType;
-
-  private Territory territory;
-
-  public Territory getTerritory() {
-    return territory;
-  }
-
-  private boolean offLimits;
 
   /**
    * @param type
@@ -93,6 +92,10 @@ class MapTile {
 
   }
 
+  public MapTile get(final Direction y) {
+    return linkedTiles.get(y);
+  }
+
   /**
    * List of Adjacent MapTiles that are water.
    * 
@@ -106,6 +109,10 @@ class MapTile {
       }
     }
     return waterList;
+  }
+
+  public MapTile getDown() {
+    return linkedTiles.get(Direction.DOWN);
   }
 
   /**
@@ -124,6 +131,14 @@ class MapTile {
     return ret;
   }
 
+  public MapTile getRight() {
+    return linkedTiles.get(Direction.RIGHT);
+  }
+
+  public Territory getTerritory() {
+    return territory;
+  }
+
   /**
    * Get this MapTile's Type.
    * 
@@ -131,6 +146,24 @@ class MapTile {
    */
   public MapTileType getType() {
     return tileType;
+  }
+
+  public boolean isInSameTerritory(final MapTile down) {
+
+    return territory != null && territory.containsTile(down);
+  }
+
+  public boolean isOffLimits() {
+    return offLimits;
+  }
+
+  public void setOffLimits(final boolean flag) {
+    this.offLimits = flag;
+  }
+
+  public void setTerritory(final Territory ter) {
+    territory = ter;
+
   }
 
   /**
@@ -156,36 +189,6 @@ class MapTile {
       }
     }
     return str;
-  }
-
-  public MapTile getDown() {
-    return linkedTiles.get(Direction.DOWN);
-  }
-
-  public boolean isInSameTerritory(final MapTile down) {
-
-    return territory != null && territory.containsTile(down);
-  }
-
-  public void setTerritory(final Territory ter) {
-    territory = ter;
-
-  }
-
-  public MapTile getRight() {
-    return linkedTiles.get(Direction.RIGHT);
-  }
-
-  public void setOffLimits(final boolean offLimits) {
-    this.offLimits = offLimits;
-  }
-
-  public boolean isOffLimits() {
-    return offLimits;
-  }
-
-  public MapTile get(final Direction y) {
-    return linkedTiles.get(y);
   }
 
 }

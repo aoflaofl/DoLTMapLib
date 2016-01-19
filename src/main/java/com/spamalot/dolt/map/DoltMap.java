@@ -85,6 +85,9 @@ class DoltMap {
     }
   }
 
+  /**
+   * Link the tiles together.
+   */
   private void linkTiles() {
     for (int i = 0; i < mapWidth; i++) {
       for (int j = 0; j < mapHeight; j++) {
@@ -142,7 +145,7 @@ class DoltMap {
    * @return true if this Coordinate is on the Map
    */
   private boolean isOnMap(final int x, final int y) {
-    return widthRange.contains(x) && heightRange.contains(y);
+    return widthRange.contains(Integer.valueOf(x)) && heightRange.contains(Integer.valueOf(y));
   }
 
   @Override
