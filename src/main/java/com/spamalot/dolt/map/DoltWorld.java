@@ -11,6 +11,10 @@ import java.util.Random;
  *
  */
 public class DoltWorld {
+  /**
+   * When creating a Territory it can fail if there are not enough water tiles
+   * for the given size. This is the number of times to attempt to build.
+   */
   private static final int TERRITORY_BUILD_ATTEMPTS = 100;
 
   /**
