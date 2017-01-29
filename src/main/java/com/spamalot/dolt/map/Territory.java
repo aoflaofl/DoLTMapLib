@@ -1,7 +1,6 @@
 package com.spamalot.dolt.map;
 
 import com.google.common.collect.Range;
-
 import com.spamalot.dolt.map.MapTile.MapTileType;
 
 import org.apache.commons.collections4.list.SetUniqueList;
@@ -9,7 +8,9 @@ import org.apache.commons.collections4.list.SetUniqueList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 
@@ -88,7 +89,7 @@ final class Territory {
     // Empty... for now.
   }
 
-  private void addTileToTerritory(final MapTile tile) {
+  private void markAsLandAndAddTileToTerritory(final MapTile tile) {
     tile.setType(MapTileType.LAND);
     tile.setTerritory(this);
     territoryTiles.add(tile);
@@ -112,7 +113,17 @@ final class Territory {
       throw new IllegalArgumentException("Start tile must be water.");
     }
 
-    final int targetSize = getRandomTargetSize(minSize, maxSize);
+    int targetSize = getRandomTargetSize(minSize, maxSize);
+
+    int h20avail = countWaterTilesAvailableWithMax(startTile, maxSize);
+    System.out.println("There are " + h20avail + " water tiles available.");
+
+    if (h20avail < minSize) {
+      return null;
+    }
+    if (h20avail < targetSize) {
+      targetSize = h20avail;
+    }
 
     generateRandomArea(startTile, targetSize);
 
@@ -164,9 +175,35 @@ final class Territory {
     }
   }
 
+  private int countWaterTilesAvailableWithMax(final MapTile startTile, final int max) {
+    // if (!startTile.getType().equals(MapTile.MapTileType.WATER)) {
+    // }
+
+    Queue<MapTile> tileQueue = new LinkedList<>();
+    tileQueue.add(startTile);
+
+    Set<MapTile> seenTiles = new HashSet<>();
+    int count = 0;
+    while (!tileQueue.isEmpty()) {
+      MapTile waterTile = tileQueue.remove();
+      for (MapTile adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
+        if (!seenTiles.contains(adjacentWaterTile)) {
+          count++;
+          if (count == max) {
+            return count;
+          }
+          tileQueue.add(adjacentWaterTile);
+          seenTiles.add(adjacentWaterTile);
+        }
+      }
+    }
+
+    return count;
+  }
+
   private void generateRandomArea(final MapTile startTile, final int targetSize) {
 
-    addTileToTerritory(startTile);
+    markAsLandAndAddTileToTerritory(startTile);
 
     MapTile tile = startTile;
     int size = 1;
@@ -176,7 +213,7 @@ final class Territory {
         setOffLimits(true);
         break;
       }
-      addTileToTerritory(tile);
+      markAsLandAndAddTileToTerritory(tile);
 
     }
   }
