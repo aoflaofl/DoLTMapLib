@@ -58,8 +58,7 @@ public class DoltWorld {
   }
 
   private void addTerritories(final int numTerritories, final int minTerritorySize, final int maxTerritorySize) {
-    final Territory territory = new Territory.Builder(gameMap.getMapTiles()[0][0], minTerritorySize, maxTerritorySize)
-        .build();
+    final Territory territory = new Territory.Builder(gameMap.getMapTiles()[0][0], minTerritorySize, maxTerritorySize).build();
 
     // territory.buildArea(gameMap.getMapTiles()[0][0], minTerritorySize,
     // maxTerritorySize);

@@ -107,8 +107,7 @@ final class Territory {
    *          A Range object to check a Territory's size
    * @return a Territory.
    */
-  private Territory buildArea(final MapTile startTile, final int minSize, final int maxSize,
-      final Range<Integer> sizeRange) {
+  private Territory buildArea(final MapTile startTile, final int minSize, final int maxSize, final Range<Integer> sizeRange) {
     if (startTile.getType() != MapTileType.WATER) {
       throw new IllegalArgumentException("Start tile must be water.");
     }

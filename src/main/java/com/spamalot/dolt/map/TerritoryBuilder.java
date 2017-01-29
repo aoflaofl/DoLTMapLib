@@ -5,6 +5,10 @@ import org.apache.commons.collections4.list.SetUniqueList;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * @author gej
+ *
+ */
 final class TerritoryBuilder {
 
   /**
@@ -29,8 +33,8 @@ final class TerritoryBuilder {
   static MapTile getRandomAdjacentWaterTile(final SetUniqueList<MapTile> territoryTiles) {
     SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
-    for (MapTile a : territoryTiles) {
-      waterTiles.addAll(a.getAdjacentWaterTiles());
+    for (MapTile landTile : territoryTiles) {
+      waterTiles.addAll(landTile.getAdjacentWaterTiles());
     }
 
     MapTile result;

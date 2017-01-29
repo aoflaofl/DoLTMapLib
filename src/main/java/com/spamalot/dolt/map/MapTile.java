@@ -36,7 +36,7 @@ class MapTile {
   private static final Random RNG = new Random();
 
   /**
-   * The MapTiles that link to this one.
+   * The MapTiles that link to this one. Only orthogonal MapTiles apply.
    */
   private final Map<Direction, MapTile> linkedTiles = new HashMap<>();
 
