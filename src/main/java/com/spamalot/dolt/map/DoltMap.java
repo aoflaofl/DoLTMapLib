@@ -63,13 +63,14 @@ class DoltMap {
     widthRange = Range.closedOpen(Integer.valueOf(0), Integer.valueOf(mapWidth));
     heightRange = Range.closedOpen(Integer.valueOf(0), Integer.valueOf(mapHeight));
 
-    // mapTiles = new MapTile[width][height];
+    // Initialize all the tiles to be water tiles.
     initMapTiles(width, height);
+    // Link the tiles orthogonally to their neighbors
     linkTiles();
   }
 
   /**
-   * Create links between neighboring map tiles.
+   * Create the map, with all the tiles being water tiles.
    * 
    * @param width
    *          Width of the map

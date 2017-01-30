@@ -73,7 +73,7 @@ public class DoltWorld {
     Territory newTerritory = null;
     int attempts = TERRITORY_BUILD_ATTEMPTS;
     while (newTerritory == null && attempts-- > 0) {
-      MapTile startTile = getRandomWaterTile();
+      MapTile startTile = getRandomWaterTileNextToLand();
       newTerritory = new Territory.Builder(startTile, minTerritorySize, maxTerritorySize).build();
     }
 
@@ -82,16 +82,28 @@ public class DoltWorld {
     }
   }
 
-  private MapTile getRandomWaterTile() { // TODO: What if want an island?
+  private MapTile getRandomWaterTileNextToLand() { // TODO: What if want an
+                                                   // island?
     MapTile result = null;
     while (result == null) {
       final Territory randomTerritory = getRandomTerritory();
-
-      result = TerritoryBuilder.getRandomAdjacentWaterTile(randomTerritory.getTerritoryTiles());
+      if (randomTerritory == null) {
+        break;
+      }
+      result = randomTerritory.getRandomAdjacentWaterTile();
     }
     return result;
   }
 
+  /**
+   * Get a random Territory.
+   * 
+   * TODO: When adding islands to the game, will need to modify this.
+   * 
+   * TODO: Only check non land locked Territories.
+   * 
+   * @return a Territory.
+   */
   private Territory getRandomTerritory() {
     return territories.get(RNG.nextInt(territories.size()));
   }

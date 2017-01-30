@@ -80,6 +80,8 @@ final class Territory {
    */
   private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
+  private boolean landlocked;
+
   /**
    * Construct a Territory.
    * 
@@ -221,7 +223,7 @@ final class Territory {
   private MapTile getNextTile(final MapTile tile) {
     MapTile result = tile.getRandomAdjacentWaterTile();
     if (result == null) {
-      result = TerritoryBuilder.getRandomAdjacentWaterTile(territoryTiles);
+      result = getRandomAdjacentWaterTile();
     }
     return result;
   }
@@ -245,5 +247,38 @@ final class Territory {
 
   public void setOffLimits(final boolean flag) {
     this.offLimits = flag;
+  }
+
+  /**
+   * Find a random water tile adjacent to this Territory.
+   * 
+   * @param territory
+   *          The territory to check for adjacent water.
+   * @return a random water tile or null if there is no water tile adjacent to
+   *         this Territory
+   */
+  MapTile getRandomAdjacentWaterTile() {
+    
+    SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
+
+    for (MapTile landTile : territoryTiles) {
+      waterTiles.addAll(landTile.getAdjacentWaterTiles());
+    }
+
+    MapTile result;
+    if (waterTiles.isEmpty()) {
+      result = null;
+      this.setLandLocked();
+    } else {
+      final int index = RNG.nextInt(waterTiles.size());
+      result = waterTiles.get(index);
+    }
+
+    return result;
+  }
+
+  private void setLandLocked() {
+    this.landlocked = true;
+    
   }
 }
