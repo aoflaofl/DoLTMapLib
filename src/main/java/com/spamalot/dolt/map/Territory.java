@@ -117,7 +117,7 @@ final class Territory {
 
     int targetSize = getRandomTargetSize(minSize, maxSize);
 
-    int h20avail = countWaterTilesAvailableWithMax(startTile, maxSize);
+    int h20avail = countWaterTilesAvailableWithMax(startTile, maxSize).size();
     System.out.println("There are " + h20avail + " water tiles available.");
 
     if (h20avail < minSize) {
@@ -177,7 +177,7 @@ final class Territory {
     }
   }
 
-  private int countWaterTilesAvailableWithMax(final MapTile startTile, final int max) {
+  static Set<MapTile> countWaterTilesAvailableWithMax(final MapTile startTile, final int max) {
     // if (!startTile.getType().equals(MapTile.MapTileType.WATER)) {
     // }
 
@@ -191,16 +191,18 @@ final class Territory {
       for (MapTile adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
         if (!seenTiles.contains(adjacentWaterTile)) {
           count++;
-          if (count == max) {
-            return count;
-          }
+
           tileQueue.add(adjacentWaterTile);
           seenTiles.add(adjacentWaterTile);
+
+          if (count == max) {
+            return seenTiles;
+          }
         }
       }
     }
 
-    return count;
+    return seenTiles;
   }
 
   private void generateRandomArea(final MapTile startTile, final int targetSize) {
@@ -258,7 +260,7 @@ final class Territory {
    *         this Territory
    */
   MapTile getRandomAdjacentWaterTile() {
-    
+
     SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
     for (MapTile landTile : territoryTiles) {
@@ -277,8 +279,12 @@ final class Territory {
     return result;
   }
 
-  private void setLandLocked() {
+  void setLandLocked() {
     this.landlocked = true;
-    
+
+  }
+
+  public boolean isLandLocked() {
+    return landlocked;
   }
 }
