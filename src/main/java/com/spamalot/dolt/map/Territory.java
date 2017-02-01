@@ -1,6 +1,7 @@
 package com.spamalot.dolt.map;
 
 import com.google.common.collect.Range;
+
 import com.spamalot.dolt.map.MapTile.MapTileType;
 
 import org.apache.commons.collections4.list.SetUniqueList;
@@ -160,11 +161,11 @@ final class Territory {
 
   public void findNeighbors() {
 
-    List<Direction> x = Arrays.asList(Direction.DOWN, Direction.UP, Direction.RIGHT, Direction.LEFT);
+    List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.RIGHT, Direction.LEFT);
 
     for (MapTile p : territoryTiles) {
 
-      for (Direction y : x) {
+      for (Direction y : directions) {
 
         MapTile nd = p.get(y);
         if (isNeighbor(nd)) {
@@ -185,6 +186,7 @@ final class Territory {
     tileQueue.add(startTile);
 
     Set<MapTile> seenTiles = new HashSet<>();
+    seenTiles.add(startTile);
     int count = 0;
     while (!tileQueue.isEmpty()) {
       MapTile waterTile = tileQueue.remove();
@@ -230,9 +232,9 @@ final class Territory {
     return result;
   }
 
-  SetUniqueList<MapTile> getTerritoryTiles() {
-    return territoryTiles;
-  }
+  // SetUniqueList<MapTile> getTerritoryTiles() {
+  // return territoryTiles;
+  // }
 
   private boolean isNeighbor(final MapTile nd) {
     if (nd != null) {

@@ -79,27 +79,39 @@ public class DoltWorld {
     }
   }
 
+  /**
+   * Add territories to the map.
+   * 
+   * @param numTerritories
+   *          Number of territories to add
+   * @param minTerritorySize
+   *          minimum size of territories
+   * @param maxTerritorySize
+   *          maximum size of territories
+   */
   private void addTerritories(final int numTerritories, final int minTerritorySize, final int maxTerritorySize) {
     // Make the first territory. TODO: be more random in initial placement.
     final Territory territory = new Territory.Builder(gameMap.getMapTiles()[0][0], minTerritorySize, maxTerritorySize).build();
-    // territory.setLandLocked();
     territories.add(territory);
+
     int count = 1;
     Territory rndTerritory = getRandomTerritoryNotLandLocked();
-    while (rndTerritory != null && count <= 3) {
+    while (rndTerritory != null && count <= numTerritories) {
 
-      MapTile t = rndTerritory.getRandomAdjacentWaterTile();
-      if (t == null) {
+      MapTile tile = rndTerritory.getRandomAdjacentWaterTile();
+      if (tile == null) {
         rndTerritory.setLandLocked();
+        rndTerritory = getRandomTerritoryNotLandLocked();
         continue;
       }
       int rndSize = getRandomTargetSize(minTerritorySize, maxTerritorySize);
-      Set<MapTile> cnt = Territory.countWaterTilesAvailableWithMax(t, rndSize);
+      Set<MapTile> cnt = Territory.countWaterTilesAvailableWithMax(tile, rndSize);
 
       if (cnt.size() < minTerritorySize) {
         for (MapTile gjkdf : cnt) {
           gjkdf.setOffLimits(true);
         }
+        rndTerritory = getRandomTerritoryNotLandLocked();
         continue;
       }
 
@@ -107,7 +119,7 @@ public class DoltWorld {
       if (cnt.size() <= maxTerritorySize) {
         max = cnt.size();
       }
-      generateTerritory(minTerritorySize, max);
+      generateTerritory(tile, minTerritorySize, max);
       count++;
       rndTerritory = getRandomTerritoryNotLandLocked();
     }
@@ -132,12 +144,12 @@ public class DoltWorld {
     return targetSize;
   }
 
-  private void generateTerritory(final int minTerritorySize, final int maxTerritorySize) {
+  private void generateTerritory(final MapTile tile, final int minTerritorySize, final int maxTerritorySize) {
 
     Territory newTerritory = null;
     int attempts = TERRITORY_BUILD_ATTEMPTS;
     while (newTerritory == null && attempts-- > 0) {
-      MapTile startTile = getRandomWaterTileNextToLand();
+      MapTile startTile = tile; // getRandomWaterTileNextToLand();
       newTerritory = new Territory.Builder(startTile, minTerritorySize, maxTerritorySize).build();
     }
 
@@ -146,29 +158,30 @@ public class DoltWorld {
     }
   }
 
-  private MapTile getRandomWaterTileNextToLand() { // TODO: What if want an
-                                                   // island?
-    MapTile result = null;
-    while (result == null) {
-      final Territory randomTerritory = getRandomTerritoryNotLandLocked();
-      if (randomTerritory == null) {
-        break;
-      }
-      result = randomTerritory.getRandomAdjacentWaterTile();
-    }
-    return result;
-  }
+  // private MapTile getRandomWaterTileNextToLand() { // TODO: What if want an
+  // // island?
+  // MapTile result = null;
+  // while (result == null) {
+  // final Territory randomTerritory = getRandomTerritoryNotLandLocked();
+  // if (randomTerritory == null) {
+  // break;
+  // }
+  // result = randomTerritory.getRandomAdjacentWaterTile();
+  // }
+  // return result;
+  // }
 
   /**
-   * Get a random Territory.
-   * 
-   * TODO: When adding islands to the game, will need to modify this.
-   * 
-   * TODO: Only check non land locked Territories.
+   * Get a random Territory that is not land locked.
    * 
    * @return a Territory.
    */
   private Territory getRandomTerritoryNotLandLocked() {
+    /*
+     * TODO: When adding islands to the game, will need to modify this.
+     * 
+     * TODO: Only check non land locked Territories.
+     */
     int count = 0;
     Territory result = null;
     for (Territory t : territories) {
@@ -177,13 +190,11 @@ public class DoltWorld {
       }
 
       count++;
-      int r = RNG.nextInt(count);
-      if (r == 0) {
+      if (RNG.nextInt(count) == 0) {
         result = t;
       }
     }
 
-    // return territories.get(RNG.nextInt(territories.size()));
     return result;
   }
 
