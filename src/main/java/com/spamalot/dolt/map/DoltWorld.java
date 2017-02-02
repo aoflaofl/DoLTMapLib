@@ -53,7 +53,12 @@ public class DoltWorld {
    * The territories in this Map.
    */
   private final List<Territory> territories = new ArrayList<>();
+
+  /**
+   * The Game Map for this World.
+   */
   private final DoltMap gameMap;
+
   /**
    * A Random Number Generator.
    */
@@ -74,8 +79,8 @@ public class DoltWorld {
 
     addTerritories(numTerritories, DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
 
-    for (Territory dkhgd : territories) {
-      dkhgd.findNeighbors();
+    for (Territory territory : territories) {
+      territory.findNeighbors();
     }
   }
 
@@ -123,12 +128,17 @@ public class DoltWorld {
       count++;
       rndTerritory = getRandomTerritoryNotLandLocked();
     }
-
-    // for (int i = 1; i < numTerritories; i++) {
-    // generateTerritory(minTerritorySize, maxTerritorySize);
-    // }
   }
 
+  /**
+   * Determine a random size to make a Territory.
+   * 
+   * @param minSize
+   *          minimum size to make a Territory
+   * @param maxSize
+   *          maximum size to make a Territory
+   * @return A size to make the Territory.
+   */
   private static int getRandomTargetSize(final int minSize, final int maxSize) {
     if (minSize > maxSize) {
       throw new IllegalArgumentException("Minimum Territory size must be less than or equal to maximum size.");
@@ -144,12 +154,24 @@ public class DoltWorld {
     return targetSize;
   }
 
+  /**
+   * Generate a new Territory using the water tile given as a starting point. It
+   * is assumed that there is enough space to construct the territory.
+   * 
+   * @param tile
+   *          Water tile to start making territory
+   * @param minTerritorySize
+   *          Minimum size to make this territory
+   * @param maxTerritorySize
+   *          Maximum size to make this territory
+   */
   private void generateTerritory(final MapTile tile, final int minTerritorySize, final int maxTerritorySize) {
-
+    // TODO: Move space checking into here.
+    // TODO: Maybe determine size outside of this method.
     Territory newTerritory = null;
     int attempts = TERRITORY_BUILD_ATTEMPTS;
     while (newTerritory == null && attempts-- > 0) {
-      MapTile startTile = tile; // getRandomWaterTileNextToLand();
+      MapTile startTile = tile;
       newTerritory = new Territory.Builder(startTile, minTerritorySize, maxTerritorySize).build();
     }
 
@@ -158,30 +180,13 @@ public class DoltWorld {
     }
   }
 
-  // private MapTile getRandomWaterTileNextToLand() { // TODO: What if want an
-  // // island?
-  // MapTile result = null;
-  // while (result == null) {
-  // final Territory randomTerritory = getRandomTerritoryNotLandLocked();
-  // if (randomTerritory == null) {
-  // break;
-  // }
-  // result = randomTerritory.getRandomAdjacentWaterTile();
-  // }
-  // return result;
-  // }
-
   /**
    * Get a random Territory that is not land locked.
    * 
    * @return a Territory.
    */
   private Territory getRandomTerritoryNotLandLocked() {
-    /*
-     * TODO: When adding islands to the game, will need to modify this.
-     * 
-     * TODO: Only check non land locked Territories.
-     */
+    // TODO: When adding islands to the game, will need to modify this.
     int count = 0;
     Territory result = null;
     for (Territory t : territories) {
