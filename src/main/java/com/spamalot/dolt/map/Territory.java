@@ -32,13 +32,13 @@ final class Territory {
       this.startTile = initTile;
       this.minimumSize = minSize;
       this.maximumSize = maxSize;
-      sizeRange = Range.closed(Integer.valueOf(minSize), Integer.valueOf(maxSize));
+      this.sizeRange = Range.closed(Integer.valueOf(minSize), Integer.valueOf(maxSize));
     }
 
     public Territory build() {
       Territory result = new Territory();
 
-      return result.buildArea(startTile, minimumSize, maximumSize, sizeRange);
+      return result.buildArea(this.startTile, this.minimumSize, this.maximumSize, this.sizeRange);
     }
   }
 
@@ -95,7 +95,7 @@ final class Territory {
   private void markAsLandAndAddTileToTerritory(final MapTile tile) {
     tile.setType(MapTileType.LAND);
     tile.setTerritory(this);
-    territoryTiles.add(tile);
+    this.territoryTiles.add(tile);
   }
 
   /**
@@ -130,7 +130,7 @@ final class Territory {
 
     generateRandomArea(startTile, targetSize);
 
-    int size = territoryTiles.size();
+    int size = this.territoryTiles.size();
 
     Territory result = null;
     if (sizeRange.contains(Integer.valueOf(size))) {
@@ -148,7 +148,7 @@ final class Territory {
    * as off limits so they won't be used in the future.
    */
   private void clearTerritoryTiles() {
-    for (MapTile tile : territoryTiles) {
+    for (MapTile tile : this.territoryTiles) {
       tile.setType(MapTileType.WATER);
       tile.setTerritory(null);
       tile.setOffLimits(true);
@@ -156,21 +156,21 @@ final class Territory {
   }
 
   public boolean containsTile(final MapTile tile) {
-    return territoryTiles.contains(tile);
+    return this.territoryTiles.contains(tile);
   }
 
   public void findNeighbors() {
 
     List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.RIGHT, Direction.LEFT);
 
-    for (MapTile p : territoryTiles) {
+    for (MapTile p : this.territoryTiles) {
 
       for (Direction y : directions) {
 
         MapTile nd = p.get(y);
         if (isNeighbor(nd)) {
 
-          neighbors.add(p.getTerritory());
+          this.neighbors.add(p.getTerritory());
 
         }
 
@@ -246,7 +246,7 @@ final class Territory {
   }
 
   public boolean isOffLimits() {
-    return offLimits;
+    return this.offLimits;
   }
 
   public void setOffLimits(final boolean flag) {
@@ -265,7 +265,7 @@ final class Territory {
 
     SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
-    for (MapTile landTile : territoryTiles) {
+    for (MapTile landTile : this.territoryTiles) {
       waterTiles.addAll(landTile.getAdjacentWaterTiles());
     }
 
@@ -287,6 +287,6 @@ final class Territory {
   }
 
   public boolean isLandLocked() {
-    return landlocked;
+    return this.landlocked;
   }
 }

@@ -25,7 +25,7 @@ class DoltMap {
    * @return The Map Tiles Array
    */
   public final MapTile[][] getMapTiles() {
-    return mapTiles;
+    return this.mapTiles;
   }
 
   /**
@@ -57,11 +57,11 @@ class DoltMap {
    *          Height of the Map
    */
   DoltMap(final int width, final int height) {
-    mapWidth = width;
-    mapHeight = height;
+    this.mapWidth = width;
+    this.mapHeight = height;
 
-    widthRange = Range.closedOpen(Integer.valueOf(0), Integer.valueOf(mapWidth));
-    heightRange = Range.closedOpen(Integer.valueOf(0), Integer.valueOf(mapHeight));
+    this.widthRange = Range.closedOpen(Integer.valueOf(0), Integer.valueOf(this.mapWidth));
+    this.heightRange = Range.closedOpen(Integer.valueOf(0), Integer.valueOf(this.mapHeight));
 
     // Initialize all the tiles to be water tiles.
     initMapTiles(width, height);
@@ -78,10 +78,10 @@ class DoltMap {
    *          Height of the map
    */
   private void initMapTiles(final int width, final int height) {
-    mapTiles = new MapTile[width][height];
+    this.mapTiles = new MapTile[width][height];
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        mapTiles[i][j] = new MapTile(MapTileType.WATER);
+        this.mapTiles[i][j] = new MapTile(MapTileType.WATER);
       }
     }
   }
@@ -90,14 +90,14 @@ class DoltMap {
    * Link the tiles together.
    */
   private void linkTiles() {
-    for (int i = 0; i < mapWidth; i++) {
-      for (int j = 0; j < mapHeight; j++) {
+    for (int i = 0; i < this.mapWidth; i++) {
+      for (int j = 0; j < this.mapHeight; j++) {
         MapTile left = getMapTileInDirection(i, j, Direction.LEFT);
         MapTile right = getMapTileInDirection(i, j, Direction.RIGHT);
         MapTile up = getMapTileInDirection(i, j, Direction.UP);
         MapTile down = getMapTileInDirection(i, j, Direction.DOWN);
 
-        mapTiles[i][j].add(left, right, up, down);
+        this.mapTiles[i][j].add(left, right, up, down);
       }
     }
   }
@@ -131,7 +131,7 @@ class DoltMap {
   private MapTile getMapTile(final int i, final int j) {
     MapTile result = null;
     if (isOnMap(i, j)) {
-      result = mapTiles[i][j];
+      result = this.mapTiles[i][j];
     }
     return result;
   }
@@ -146,7 +146,7 @@ class DoltMap {
    * @return true if this Coordinate is on the Map
    */
   private boolean isOnMap(final int x, final int y) {
-    return widthRange.contains(Integer.valueOf(x)) && heightRange.contains(Integer.valueOf(y));
+    return this.widthRange.contains(Integer.valueOf(x)) && this.heightRange.contains(Integer.valueOf(y));
   }
 
   @Override
@@ -154,15 +154,15 @@ class DoltMap {
 
     final StringBuilder sb = new StringBuilder();
     sb.append('+');
-    for (int x = 0; x < mapWidth; x++) {
+    for (int x = 0; x < this.mapWidth; x++) {
       sb.append("-+");
     }
     sb.append('\n');
-    for (int y = 0; y < mapHeight; y++) {
+    for (int y = 0; y < this.mapHeight; y++) {
       sb.append('|');
-      for (int x = 0; x < mapWidth; x++) {
-        sb.append(mapTiles[x][y]);
-        if (mapTiles[x][y].isInSameTerritory(mapTiles[x][y].getRight())) {
+      for (int x = 0; x < this.mapWidth; x++) {
+        sb.append(this.mapTiles[x][y]);
+        if (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].getRight())) {
           sb.append(' ');
         } else {
           sb.append('|');
@@ -170,8 +170,8 @@ class DoltMap {
       }
       sb.append('\n');
       sb.append('+');
-      for (int x = 0; x < mapWidth; x++) {
-        if (mapTiles[x][y].isInSameTerritory(mapTiles[x][y].getDown())) {
+      for (int x = 0; x < this.mapWidth; x++) {
+        if (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].getDown())) {
           sb.append(" +");
         } else {
           sb.append("-+");

@@ -69,7 +69,7 @@ class MapTile {
    *          The tile
    */
   private void add(final Direction dir, final MapTile tile) {
-    linkedTiles.put(dir, tile);
+    this.linkedTiles.put(dir, tile);
   }
 
   /**
@@ -93,7 +93,7 @@ class MapTile {
   }
 
   public MapTile get(final Direction y) {
-    return linkedTiles.get(y);
+    return this.linkedTiles.get(y);
   }
 
   /**
@@ -103,7 +103,7 @@ class MapTile {
    */
   public List<MapTile> getAdjacentWaterTiles() {
     final List<MapTile> waterList = new ArrayList<>();
-    for (final MapTile linkedTile : linkedTiles.values()) {
+    for (final MapTile linkedTile : this.linkedTiles.values()) {
       if (linkedTile != null && linkedTile.getType() == MapTileType.WATER && !linkedTile.isOffLimits()) {
         waterList.add(linkedTile);
       }
@@ -112,7 +112,7 @@ class MapTile {
   }
 
   public MapTile getDown() {
-    return linkedTiles.get(Direction.DOWN);
+    return this.linkedTiles.get(Direction.DOWN);
   }
 
   /**
@@ -132,11 +132,11 @@ class MapTile {
   }
 
   public MapTile getRight() {
-    return linkedTiles.get(Direction.RIGHT);
+    return this.linkedTiles.get(Direction.RIGHT);
   }
 
   public Territory getTerritory() {
-    return territory;
+    return this.territory;
   }
 
   /**
@@ -145,16 +145,16 @@ class MapTile {
    * @return The MapTileType
    */
   public MapTileType getType() {
-    return tileType;
+    return this.tileType;
   }
 
   public boolean isInSameTerritory(final MapTile down) {
 
-    return territory != null && territory.containsTile(down);
+    return this.territory != null && this.territory.containsTile(down);
   }
 
   public boolean isOffLimits() {
-    return offLimits;
+    return this.offLimits;
   }
 
   public void setOffLimits(final boolean flag) {
@@ -162,7 +162,7 @@ class MapTile {
   }
 
   public void setTerritory(final Territory ter) {
-    territory = ter;
+    this.territory = ter;
 
   }
 
@@ -173,13 +173,13 @@ class MapTile {
    *          The type to set this Tile to
    */
   public void setType(final MapTileType type) {
-    tileType = type;
+    this.tileType = type;
   }
 
   @Override
   public String toString() {
     String str;
-    if (tileType == MapTileType.LAND) {
+    if (this.tileType == MapTileType.LAND) {
       str = "#";
     } else {
       if (isOffLimits()) {

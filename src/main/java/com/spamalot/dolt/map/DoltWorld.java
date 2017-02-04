@@ -75,11 +75,11 @@ public class DoltWorld {
    *          the number of territories to put in the map
    */
   public DoltWorld(final int mapWidth, final int mapHeight, final int numTerritories) {
-    gameMap = new DoltMap(mapWidth, mapHeight);
+    this.gameMap = new DoltMap(mapWidth, mapHeight);
 
     addTerritories(numTerritories, DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
 
-    for (Territory territory : territories) {
+    for (Territory territory : this.territories) {
       territory.findNeighbors();
     }
   }
@@ -96,8 +96,8 @@ public class DoltWorld {
    */
   private void addTerritories(final int numTerritories, final int minTerritorySize, final int maxTerritorySize) {
     // Make the first territory. TODO: be more random in initial placement.
-    final Territory territory = new Territory.Builder(gameMap.getMapTiles()[0][0], minTerritorySize, maxTerritorySize).build();
-    territories.add(territory);
+    final Territory territory = new Territory.Builder(this.gameMap.getMapTiles()[0][0], minTerritorySize, maxTerritorySize).build();
+    this.territories.add(territory);
 
     int count = 1;
     Territory rndTerritory = getRandomTerritoryNotLandLocked();
@@ -176,7 +176,7 @@ public class DoltWorld {
     }
 
     if (newTerritory != null) {
-      territories.add(newTerritory);
+      this.territories.add(newTerritory);
     }
   }
 
@@ -189,7 +189,7 @@ public class DoltWorld {
     // TODO: When adding islands to the game, will need to modify this.
     int count = 0;
     Territory result = null;
-    for (Territory t : territories) {
+    for (Territory t : this.territories) {
       if (t.isLandLocked()) {
         continue;
       }
@@ -205,7 +205,7 @@ public class DoltWorld {
 
   @Override
   public final String toString() {
-    return "DoltWorld [gameMap=\n" + gameMap + "\nnumber of Territories: " + territories.size() + "]";
+    return "DoltWorld [gameMap=\n" + this.gameMap + "\nnumber of Territories: " + this.territories.size() + "]";
   }
 
 }
