@@ -1,10 +1,13 @@
 package com.spamalot.dolt.map;
 
+import static com.spamalot.dolt.map.Direction.DOWN;
+import static com.spamalot.dolt.map.Direction.LEFT;
+import static com.spamalot.dolt.map.Direction.RIGHT;
+import static com.spamalot.dolt.map.Direction.UP;
+import static com.spamalot.dolt.map.MapTile.MapTileType.LAND;
+import static com.spamalot.dolt.map.MapTile.MapTileType.WATER;
+
 import com.google.common.collect.Range;
-
-import com.spamalot.dolt.map.MapTile.MapTileType;
-
-import org.apache.commons.collections4.list.SetUniqueList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,172 +18,46 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.commons.collections4.list.SetUniqueList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * A Territory goes into a map.
- * 
+ *
  * @author gej
  *
  */
 final class Territory {
-  public static class Builder {
-    private int maximumSize;
-    private int minimumSize;
-    private Range<Integer> sizeRange;
-    private MapTile startTile;
-
-    Builder(final MapTile initTile, final int minSize, final int maxSize) {
-      this.startTile = initTile;
-      this.minimumSize = minSize;
-      this.maximumSize = maxSize;
-      this.sizeRange = Range.closed(Integer.valueOf(minSize), Integer.valueOf(maxSize));
-    }
-
-    public Territory build() {
-      Territory result = new Territory();
-
-      return result.buildArea(this.startTile, this.minimumSize, this.maximumSize, this.sizeRange);
-    }
-  }
+  private static final Logger LOGGER = LoggerFactory.getLogger(Territory.class);
 
   /**
    * Random Number Generator.
    */
   private static final Random RNG = new Random();
 
-  /**
-   * Get a random target size between minSize and maxSize inclusive.
-   * 
-   * @param minSize
-   *          minimum size
-   * @param maxSize
-   *          maximum size
-   * @return a random size between minSize and maxSize inclusive
-   */
-  private static int getRandomTargetSize(final int minSize, final int maxSize) {
-    if (minSize > maxSize) {
-      throw new IllegalArgumentException("Minimum Territory size must be less than or equal to maximum size.");
-    }
-
-    int targetSize;
-    if (minSize == maxSize) {
-      targetSize = minSize;
-    } else {
-      targetSize = minSize + RNG.nextInt(maxSize - minSize + 1);
-    }
-
-    return targetSize;
-  }
+  private boolean landlocked;
 
   private final Set<Territory> neighbors = new HashSet<>();
 
   private boolean offLimits;
 
   /**
-   * The MapTiles that make up this Territory. Make it a SetUniqueList because
-   * at some point we will need to pick a random MapTile.
+   * The MapTiles that make up this Territory. Make it a SetUniqueList because at
+   * some point we will need to pick a random MapTile.
    */
   private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
-  private boolean landlocked;
-
   /**
    * Construct a Territory.
-   * 
-   * 
+   *
+   *
    */
   Territory() {
     // Empty... for now.
   }
 
-  private void markAsLandAndAddTileToTerritory(final MapTile tile) {
-    tile.setType(MapTileType.LAND);
-    tile.setTerritory(this);
-    this.territoryTiles.add(tile);
-  }
-
-  /**
-   * Allocate MapTiles to a Territory.
-   * 
-   * @param startTile
-   *          Water MapTile to begin building Territory in
-   * @param minSize
-   *          Minimum size of the Territory
-   * @param maxSize
-   *          Maximum size of the Territory.
-   * @param sizeRange
-   *          A Range object to check a Territory's size
-   * @return a Territory.
-   */
-  private Territory buildArea(final MapTile startTile, final int minSize, final int maxSize, final Range<Integer> sizeRange) {
-    if (startTile.getType() != MapTileType.WATER) {
-      throw new IllegalArgumentException("Start tile must be water.");
-    }
-
-    int targetSize = getRandomTargetSize(minSize, maxSize);
-
-    int h20avail = countWaterTilesAvailableWithMax(startTile, maxSize).size();
-    System.out.println("There are " + h20avail + " water tiles available.");
-
-    if (h20avail < minSize) {
-      return null;
-    }
-    if (h20avail < targetSize) {
-      targetSize = h20avail;
-    }
-
-    generateRandomArea(startTile, targetSize);
-
-    int size = this.territoryTiles.size();
-
-    Territory result = null;
-    if (sizeRange.contains(Integer.valueOf(size))) {
-      result = this;
-    } else {
-      clearTerritoryTiles();
-    }
-
-    return result;
-  }
-
-  /**
-   * Mark the MapTiles assigned to this Territory as water, but since there
-   * failed to be enough of them in a cluster to make a Territory also mark them
-   * as off limits so they won't be used in the future.
-   */
-  private void clearTerritoryTiles() {
-    for (MapTile tile : this.territoryTiles) {
-      tile.setType(MapTileType.WATER);
-      tile.setTerritory(null);
-      tile.setOffLimits(true);
-    }
-  }
-
-  public boolean containsTile(final MapTile tile) {
-    return this.territoryTiles.contains(tile);
-  }
-
-  public void findNeighbors() {
-
-    List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.RIGHT, Direction.LEFT);
-
-    for (MapTile p : this.territoryTiles) {
-
-      for (Direction y : directions) {
-
-        MapTile nd = p.get(y);
-        if (isNeighbor(nd)) {
-
-          this.neighbors.add(p.getTerritory());
-
-        }
-
-      }
-    }
-  }
-
   static Set<MapTile> countWaterTilesAvailableWithMax(final MapTile startTile, final int max) {
-    // if (!startTile.getType().equals(MapTile.MapTileType.WATER)) {
-    // }
 
     Queue<MapTile> tileQueue = new LinkedList<>();
     tileQueue.add(startTile);
@@ -207,72 +84,25 @@ final class Territory {
     return seenTiles;
   }
 
-  private void generateRandomArea(final MapTile startTile, final int targetSize) {
-
-    markAsLandAndAddTileToTerritory(startTile);
-
-    MapTile tile = startTile;
-    int size = 1;
-    for (; size < targetSize; size++) {
-      tile = getNextTile(tile);
-      if (tile == null) {
-        setOffLimits(true);
-        break;
-      }
-      markAsLandAndAddTileToTerritory(tile);
-
-    }
-  }
-
-  private MapTile getNextTile(final MapTile tile) {
-    MapTile result = tile.getRandomAdjacentWaterTile();
-    if (result == null) {
-      result = getRandomAdjacentWaterTile();
-    }
-    return result;
-  }
-
-  // SetUniqueList<MapTile> getTerritoryTiles() {
-  // return territoryTiles;
-  // }
-
-  private boolean isNeighbor(final MapTile nd) {
-    if (nd != null) {
-      if (!this.equals(nd.getTerritory())) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public boolean isOffLimits() {
-    return this.offLimits;
-  }
-
-  public void setOffLimits(final boolean flag) {
-    this.offLimits = flag;
-  }
-
   /**
    * Find a random water tile adjacent to this Territory.
-   * 
+   *
    * @param territory
-   *          The territory to check for adjacent water.
+   *                    The territory to check for adjacent water.
    * @return a random water tile or null if there is no water tile adjacent to
    *         this Territory
    */
-  MapTile getRandomAdjacentWaterTile() {
+  static MapTile getRandomAdjacentWaterTile(final Territory territory) {
 
     SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
-    for (MapTile landTile : this.territoryTiles) {
+    for (MapTile landTile : territory.territoryTiles) {
       waterTiles.addAll(landTile.getAdjacentWaterTiles());
     }
 
-    MapTile result;
+    MapTile result = null;
     if (waterTiles.isEmpty()) {
-      result = null;
-      this.setLandLocked();
+      territory.setLandLocked();
     } else {
       final int index = RNG.nextInt(waterTiles.size());
       result = waterTiles.get(index);
@@ -281,12 +111,174 @@ final class Territory {
     return result;
   }
 
+  public boolean containsTile(final MapTile tile) {
+    return this.territoryTiles.contains(tile);
+  }
+
+  public void findNeighbors() {
+
+    List<Direction> directions = Arrays.asList(DOWN, UP, RIGHT, LEFT);
+
+    for (MapTile p : this.territoryTiles) {
+
+      for (final Direction y : directions) {
+
+        MapTile nd = p.get(y);
+        if (isNeighbor(nd)) {
+
+          this.neighbors.add(p.getTerritory());
+
+        }
+
+      }
+    }
+  }
+
+  public boolean isLandLocked() {
+    return this.landlocked;
+  }
+
+  private boolean isNeighbor(final MapTile nd) {
+    return nd != null && !this.equals(nd.getTerritory());
+  }
+
+  public boolean isOffLimits() {
+    return this.offLimits;
+  }
+
   void setLandLocked() {
     this.landlocked = true;
 
   }
 
-  public boolean isLandLocked() {
-    return this.landlocked;
+  public void setOffLimits(final boolean flag) {
+    this.offLimits = flag;
+  }
+
+  public static class Builder {
+    private final int maximumSize;
+
+    private final int minimumSize;
+
+    private final Range<Integer> sizeRange;
+
+    private final MapTile startTile;
+
+    Builder(final MapTile initTile, final int minSize, final int maxSize) {
+      this.startTile = initTile;
+      this.minimumSize = minSize;
+      this.maximumSize = maxSize;
+      this.sizeRange = Range.closed(minSize, maxSize);
+    }
+
+    /**
+     * Mark the MapTiles assigned to this Territory as water, but since there failed
+     * to be enough of them in a cluster to make a Territory also mark them as off
+     * limits so they won't be used in the future.
+     */
+    private static void clearTerritoryTiles(final Territory t) {
+      for (MapTile tile : t.territoryTiles) {
+        tile.setType(WATER);
+        tile.setTerritory(null);
+        tile.setOffLimits(true);
+      }
+    }
+
+    private static void generateRandomArea(final MapTile startTile, final int targetSize, final Territory t) {
+
+      markAsLandAndAddTileToTerritory(startTile, t);
+
+      MapTile tile = startTile;
+      int size = 1;
+      for (; size < targetSize; size++) {
+        tile = getNextTile(tile, t);
+        if (tile == null) {
+          t.setOffLimits(true);
+          break;
+        }
+        markAsLandAndAddTileToTerritory(tile, t);
+
+      }
+    }
+
+    private static MapTile getNextTile(final MapTile tile, final Territory t) {
+      MapTile result = tile.getRandomAdjacentWaterTile();
+      if (result == null) {
+        result = getRandomAdjacentWaterTile(t);
+      }
+      return result;
+    }
+
+    /**
+     * Get a random target size between minSize and maxSize inclusive.
+     *
+     * @param minSize
+     *                  minimum size
+     * @param maxSize
+     *                  maximum size
+     * @return a random size between minSize and maxSize inclusive
+     */
+    private static int getRandomTargetSize(final int minSize, final int maxSize) {
+      if (minSize > maxSize) {
+        throw new IllegalArgumentException("Minimum Territory size must be less than or equal to maximum size.");
+      }
+
+      int targetSize;
+      if (minSize == maxSize) {
+        targetSize = minSize;
+      } else {
+        targetSize = minSize + RNG.nextInt(maxSize - minSize + 1);
+      }
+
+      return targetSize;
+    }
+
+    private static void markAsLandAndAddTileToTerritory(final MapTile tile, final Territory t) {
+      tile.setType(LAND);
+      tile.setTerritory(t);
+      t.territoryTiles.add(tile);
+    }
+
+    public Territory build() {
+      return buildArea(this.minimumSize, this.maximumSize);
+    }
+
+    /**
+     * Allocate MapTiles to a Territory.
+     *
+     * @param minSize
+     *                  Minimum size of the Territory
+     * @param maxSize
+     *                  Maximum size of the Territory.
+     * @return a Territory.
+     */
+    private Territory buildArea(final int minSize, final int maxSize) {
+      if (this.startTile.getType() != WATER) {
+        throw new IllegalArgumentException("Start tile must be water.");
+      }
+
+      int h20avail = countWaterTilesAvailableWithMax(this.startTile, maxSize).size();
+      LOGGER.info("There are {} water tiles available.", h20avail);
+
+      if (h20avail < minSize) {
+        return null;
+      }
+
+      int targetSize = getRandomTargetSize(minSize, maxSize);
+
+      if (h20avail < targetSize) {
+        targetSize = h20avail;
+      }
+      Territory result = new Territory();
+      generateRandomArea(this.startTile, targetSize, result);
+
+      int size = result.territoryTiles.size();
+
+      if (!this.sizeRange.contains(size)) {
+        clearTerritoryTiles(result);
+      }
+
+      return result;
+    }
   }
 }

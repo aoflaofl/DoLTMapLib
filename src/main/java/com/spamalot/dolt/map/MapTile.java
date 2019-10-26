@@ -1,7 +1,14 @@
 package com.spamalot.dolt.map;
 
+import static com.spamalot.dolt.map.Direction.DOWN;
+import static com.spamalot.dolt.map.Direction.LEFT;
+import static com.spamalot.dolt.map.Direction.RIGHT;
+import static com.spamalot.dolt.map.Direction.UP;
+import static com.spamalot.dolt.map.MapTile.MapTileType.LAND;
+import static com.spamalot.dolt.map.MapTile.MapTileType.WATER;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -30,15 +37,14 @@ class MapTile {
   }
 
   /**
-   * Hold a static Random Number Generator so it won't be regenerated many
-   * times.
+   * Hold a static Random Number Generator so it won't be regenerated many times.
    */
   private static final Random RNG = new Random();
 
   /**
    * The MapTiles that link to this one. Only orthogonal MapTiles apply.
    */
-  private final Map<Direction, MapTile> linkedTiles = new HashMap<>();
+  private final Map<Direction, MapTile> linkedTiles = new EnumMap<>(Direction.class);
 
   private boolean offLimits;
 
@@ -53,8 +59,10 @@ class MapTile {
   private MapTileType tileType;
 
   /**
+   * Construct a MapTile Object.
+   * 
    * @param type
-   *          What type of Tile this is.
+   *               What type of Tile this is.
    */
   MapTile(final MapTileType type) {
     this.tileType = type;
@@ -64,11 +72,11 @@ class MapTile {
    * Add a MapTile to this one's linked list.
    * 
    * @param dir
-   *          The direction
+   *               The direction
    * @param tile
-   *          The tile
+   *               The tile
    */
-  private void add(final Direction dir, final MapTile tile) {
+  void linkTileInDirection(final Direction dir, final MapTile tile) {
     this.linkedTiles.put(dir, tile);
   }
 
@@ -76,19 +84,19 @@ class MapTile {
    * Add the surrounding MapTiles to the linked list of this one.
    * 
    * @param left
-   *          The MapTile to the left
+   *                The MapTile to the left
    * @param right
-   *          The MapTile to the right
+   *                The MapTile to the right
    * @param up
-   *          The MapTile above
+   *                The MapTile above
    * @param down
-   *          The MapTile below
+   *                The MapTile below
    */
-  public void add(final MapTile left, final MapTile right, final MapTile up, final MapTile down) {
-    add(Direction.LEFT, left);
-    add(Direction.RIGHT, right);
-    add(Direction.UP, up);
-    add(Direction.DOWN, down);
+  private void add(final MapTile left, final MapTile right, final MapTile up, final MapTile down) {
+    linkTileInDirection(LEFT, left);
+    linkTileInDirection(RIGHT, right);
+    linkTileInDirection(UP, up);
+    linkTileInDirection(DOWN, down);
 
   }
 
@@ -104,7 +112,7 @@ class MapTile {
   public List<MapTile> getAdjacentWaterTiles() {
     final List<MapTile> waterList = new ArrayList<>();
     for (final MapTile linkedTile : this.linkedTiles.values()) {
-      if (linkedTile != null && linkedTile.getType() == MapTileType.WATER && !linkedTile.isOffLimits()) {
+      if (linkedTile != null && linkedTile.getType() == WATER && !linkedTile.isOffLimits()) {
         waterList.add(linkedTile);
       }
     }
@@ -112,7 +120,7 @@ class MapTile {
   }
 
   public MapTile getDown() {
-    return this.linkedTiles.get(Direction.DOWN);
+    return this.linkedTiles.get(DOWN);
   }
 
   /**
@@ -132,7 +140,7 @@ class MapTile {
   }
 
   public MapTile getRight() {
-    return this.linkedTiles.get(Direction.RIGHT);
+    return this.linkedTiles.get(RIGHT);
   }
 
   public Territory getTerritory() {
@@ -170,7 +178,7 @@ class MapTile {
    * Set this MapTile's type.
    * 
    * @param type
-   *          The type to set this Tile to
+   *               The type to set this Tile to
    */
   public void setType(final MapTileType type) {
     this.tileType = type;
@@ -179,7 +187,7 @@ class MapTile {
   @Override
   public String toString() {
     String str;
-    if (this.tileType == MapTileType.LAND) {
+    if (this.tileType == LAND) {
       str = "#";
     } else {
       if (isOffLimits()) {
