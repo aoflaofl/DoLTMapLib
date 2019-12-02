@@ -48,15 +48,6 @@ final class Territory {
    */
   private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
-  /**
-   * Construct a Territory.
-   *
-   *
-   */
-  Territory() {
-    // Empty... for now.
-  }
-
   static Set<MapTile> countWaterTilesAvailableWithMax(final MapTile startTile, final int max) {
 
     Queue<MapTile> tileQueue = new LinkedList<>();

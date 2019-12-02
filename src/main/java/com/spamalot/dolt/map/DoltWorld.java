@@ -101,7 +101,7 @@ public class DoltWorld {
 
     int count = 1;
     Territory rndTerritory = getRandomTerritoryNotLandLocked();
-    while (rndTerritory != null && count <= numTerritories) {
+    while (rndTerritory != null && count < numTerritories) {
 
       MapTile tile = Territory.getRandomAdjacentWaterTile(rndTerritory);
       if (tile == null) {
@@ -176,6 +176,9 @@ public class DoltWorld {
     }
 
     if (newTerritory != null) {
+      System.out.print("Used ");
+      System.out.print(TERRITORY_BUILD_ATTEMPTS - attempts);
+      System.out.println(" attempts");
       this.territories.add(newTerritory);
     }
   }

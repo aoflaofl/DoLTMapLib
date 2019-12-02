@@ -7,11 +7,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Mainly just for a framework.
- * 
+ *
  * @author gej
  *
  */
 public final class Main {
+  /** Loggit. */
   private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
   /** Number of Territories in a default Map. */

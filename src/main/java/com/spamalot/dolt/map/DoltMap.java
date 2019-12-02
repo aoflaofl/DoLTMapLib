@@ -148,7 +148,7 @@ class DoltMap {
       for (int x = 0; x < this.mapWidth; x++) {
         sb.append(this.mapTiles[x][y]);
         if (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].getRight())) {
-          sb.append(' ');
+          sb.append('#');
         } else {
           sb.append('|');
         }
@@ -156,7 +156,7 @@ class DoltMap {
       sb.append("\n+");
       for (int x = 0; x < this.mapWidth; x++) {
         if (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].getDown())) {
-          sb.append(" +");
+          sb.append("#+");
         } else {
           sb.append("-+");
         }
