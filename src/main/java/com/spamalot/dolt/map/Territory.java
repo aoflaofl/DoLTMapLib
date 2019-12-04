@@ -29,11 +29,10 @@ import org.slf4j.LoggerFactory;
  *
  */
 final class Territory {
+  /** Logger. */
   private static final Logger LOGGER = LoggerFactory.getLogger(Territory.class);
 
-  /**
-   * Random Number Generator.
-   */
+  /** Random Number Generator. */
   private static final Random RNG = new Random();
 
   private boolean landlocked;
@@ -44,7 +43,8 @@ final class Territory {
 
   /**
    * The MapTiles that make up this Territory. Make it a SetUniqueList because at
-   * some point we will need to pick a random MapTile.
+   * some point we will need to pick a random MapTile. This is a List that can't
+   * contain duplicates.
    */
   private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
@@ -78,8 +78,7 @@ final class Territory {
   /**
    * Find a random water tile adjacent to this Territory.
    *
-   * @param territory
-   *                    The territory to check for adjacent water.
+   * @param territory The territory to check for adjacent water.
    * @return a random water tile or null if there is no water tile adjacent to
    *         this Territory
    */
@@ -203,10 +202,8 @@ final class Territory {
     /**
      * Get a random target size between minSize and maxSize inclusive.
      *
-     * @param minSize
-     *                  minimum size
-     * @param maxSize
-     *                  maximum size
+     * @param minSize minimum size
+     * @param maxSize maximum size
      * @return a random size between minSize and maxSize inclusive
      */
     private static int getRandomTargetSize(final int minSize, final int maxSize) {
@@ -237,10 +234,8 @@ final class Territory {
     /**
      * Allocate MapTiles to a Territory.
      *
-     * @param minSize
-     *                  Minimum size of the Territory
-     * @param maxSize
-     *                  Maximum size of the Territory.
+     * @param minSize Minimum size of the Territory
+     * @param maxSize Maximum size of the Territory.
      * @return a Territory.
      */
     private Territory buildArea(final int minSize, final int maxSize) {

@@ -61,8 +61,7 @@ class MapTile {
   /**
    * Construct a MapTile Object.
    * 
-   * @param type
-   *               What type of Tile this is.
+   * @param type What type of Tile this is.
    */
   MapTile(final MapTileType type) {
     this.tileType = type;
@@ -71,10 +70,8 @@ class MapTile {
   /**
    * Add a MapTile to this one's linked list.
    * 
-   * @param dir
-   *               The direction
-   * @param tile
-   *               The tile
+   * @param dir  The direction
+   * @param tile The tile
    */
   void linkTileInDirection(final Direction dir, final MapTile tile) {
     this.linkedTiles.put(dir, tile);
@@ -83,14 +80,10 @@ class MapTile {
   /**
    * Add the surrounding MapTiles to the linked list of this one.
    * 
-   * @param left
-   *                The MapTile to the left
-   * @param right
-   *                The MapTile to the right
-   * @param up
-   *                The MapTile above
-   * @param down
-   *                The MapTile below
+   * @param left  The MapTile to the left
+   * @param right The MapTile to the right
+   * @param up    The MapTile above
+   * @param down  The MapTile below
    */
   private void add(final MapTile left, final MapTile right, final MapTile up, final MapTile down) {
     linkTileInDirection(LEFT, left);
@@ -177,8 +170,7 @@ class MapTile {
   /**
    * Set this MapTile's type.
    * 
-   * @param type
-   *               The type to set this Tile to
+   * @param type The type to set this Tile to
    */
   public void setType(final MapTileType type) {
     this.tileType = type;
