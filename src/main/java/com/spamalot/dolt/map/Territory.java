@@ -4,8 +4,6 @@ import static com.spamalot.dolt.map.Direction.DOWN;
 import static com.spamalot.dolt.map.Direction.LEFT;
 import static com.spamalot.dolt.map.Direction.RIGHT;
 import static com.spamalot.dolt.map.Direction.UP;
-import static com.spamalot.dolt.map.MapTile.MapTileType.LAND;
-import static com.spamalot.dolt.map.MapTile.MapTileType.WATER;
 
 import com.google.common.collect.Range;
 
@@ -168,7 +166,7 @@ final class Territory {
      */
     private static void clearTerritoryTiles(final Territory t) {
       for (MapTile tile : t.territoryTiles) {
-        tile.setType(WATER);
+        tile.setType(MapTileType.WATER);
         tile.setTerritory(null);
         tile.setOffLimits(true);
       }
@@ -222,7 +220,7 @@ final class Territory {
     }
 
     private static void markAsLandAndAddTileToTerritory(final MapTile tile, final Territory t) {
-      tile.setType(LAND);
+      tile.setType(MapTileType.LAND);
       tile.setTerritory(t);
       t.territoryTiles.add(tile);
     }
@@ -239,7 +237,7 @@ final class Territory {
      * @return a Territory.
      */
     private Territory buildArea(final int minSize, final int maxSize) {
-      if (this.startTile.getType() != WATER) {
+      if (this.startTile.getType() != MapTileType.WATER) {
         throw new IllegalArgumentException("Start tile must be water.");
       }
 

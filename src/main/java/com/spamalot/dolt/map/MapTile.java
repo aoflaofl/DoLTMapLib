@@ -1,12 +1,5 @@
 package com.spamalot.dolt.map;
 
-import static com.spamalot.dolt.map.Direction.DOWN;
-import static com.spamalot.dolt.map.Direction.LEFT;
-import static com.spamalot.dolt.map.Direction.RIGHT;
-import static com.spamalot.dolt.map.Direction.UP;
-import static com.spamalot.dolt.map.MapTile.MapTileType.LAND;
-import static com.spamalot.dolt.map.MapTile.MapTileType.WATER;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -21,41 +14,18 @@ import java.util.Random;
  */
 class MapTile {
 
-  /**
-   * Type of this MapTile.
-   * 
-   */
-  enum MapTileType {
-    /**
-     * This Tile is Land.
-     */
-    LAND,
-    /**
-     * This Tile is Water.
-     */
-    WATER
-  }
-
-  /**
-   * Hold a static Random Number Generator so it won't be regenerated many times.
-   */
+  /** Hold a static Random Number Generator for efficiency. */
   private static final Random RNG = new Random();
 
-  /**
-   * The MapTiles that link to this one. Only orthogonal MapTiles apply.
-   */
+  /** The MapTiles that link to this one. Only orthogonal MapTiles apply. */
   private final Map<Direction, MapTile> linkedTiles = new EnumMap<>(Direction.class);
 
   private boolean offLimits;
 
-  /**
-   * The Territory this Map Tile is in.
-   */
+  /** The Territory this Map Tile is in. */
   private Territory territory;
 
-  /**
-   * The MapTileType of this MapTile.
-   */
+  /** The MapTileType of this MapTile. */
   private MapTileType tileType;
 
   /**
@@ -77,22 +47,6 @@ class MapTile {
     this.linkedTiles.put(dir, tile);
   }
 
-  /**
-   * Add the surrounding MapTiles to the linked list of this one.
-   * 
-   * @param left  The MapTile to the left
-   * @param right The MapTile to the right
-   * @param up    The MapTile above
-   * @param down  The MapTile below
-   */
-  private void add(final MapTile left, final MapTile right, final MapTile up, final MapTile down) {
-    linkTileInDirection(LEFT, left);
-    linkTileInDirection(RIGHT, right);
-    linkTileInDirection(UP, up);
-    linkTileInDirection(DOWN, down);
-
-  }
-
   public MapTile get(final Direction y) {
     return this.linkedTiles.get(y);
   }
@@ -105,15 +59,11 @@ class MapTile {
   public List<MapTile> getAdjacentWaterTiles() {
     final List<MapTile> waterList = new ArrayList<>();
     for (final MapTile linkedTile : this.linkedTiles.values()) {
-      if (linkedTile != null && linkedTile.getType() == WATER && !linkedTile.isOffLimits()) {
+      if (linkedTile != null && linkedTile.getType() == MapTileType.WATER && !linkedTile.isOffLimits()) {
         waterList.add(linkedTile);
       }
     }
     return waterList;
-  }
-
-  public MapTile getDown() {
-    return this.linkedTiles.get(DOWN);
   }
 
   /**
@@ -130,10 +80,6 @@ class MapTile {
       ret = waterList.get(index);
     }
     return ret;
-  }
-
-  public MapTile getRight() {
-    return this.linkedTiles.get(RIGHT);
   }
 
   public Territory getTerritory() {
@@ -179,7 +125,7 @@ class MapTile {
   @Override
   public String toString() {
     String str;
-    if (this.tileType == LAND) {
+    if (this.tileType == MapTileType.LAND) {
       str = "#";
     } else {
       if (isOffLimits()) {

@@ -4,8 +4,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.Range;
 
-import com.spamalot.dolt.map.MapTile.MapTileType;
-
 /**
  * Hold the map.
  *
@@ -147,7 +145,7 @@ class DoltMap {
       sb.append('|');
       for (int x = 0; x < this.mapWidth; x++) {
         sb.append(this.mapTiles[x][y]);
-        if (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].getRight())) {
+        if (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].get(Direction.RIGHT))) {
           sb.append('#');
         } else {
           sb.append('|');
@@ -155,7 +153,7 @@ class DoltMap {
       }
       sb.append("\n+");
       for (int x = 0; x < this.mapWidth; x++) {
-        if (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].getDown())) {
+        if (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].get(Direction.DOWN))) {
           sb.append("#+");
         } else {
           sb.append("-+");
