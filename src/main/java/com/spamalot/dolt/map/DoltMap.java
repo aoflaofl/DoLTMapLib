@@ -28,10 +28,8 @@ class DoltMap {
   /**
    * Construct a Map Object.
    *
-   * @param width
-   *                 Width of the Map
-   * @param height
-   *                 Height of the Map
+   * @param width  Width of the Map
+   * @param height Height of the Map
    */
   DoltMap(final int width, final int height) {
     this.mapWidth = width;
@@ -49,10 +47,8 @@ class DoltMap {
   /**
    * Get the map tile.
    *
-   * @param i
-   *            Horizontal coordinate
-   * @param j
-   *            Vertical coordinate
+   * @param i Horizontal coordinate
+   * @param j Vertical coordinate
    * @return The map tile at those coordinates
    */
   MapTile getMapTile(final int i, final int j) {
@@ -65,12 +61,9 @@ class DoltMap {
   /**
    * Get a map tile in a direction.
    *
-   * @param i
-   *              Horizontal coordinate
-   * @param j
-   *              Vertical coordinate
-   * @param dir
-   *              Direction to get map tile
+   * @param i   Horizontal coordinate
+   * @param j   Vertical coordinate
+   * @param dir Direction to get map tile
    * @return The map tile in that direction
    */
   private MapTile getMapTileInDirection(final int i, final int j, final Direction dir) {
@@ -82,12 +75,9 @@ class DoltMap {
   /**
    * Create the map, with all the tiles being of type.
    *
-   * @param width
-   *                 Width of the map
-   * @param height
-   *                 Height of the map
-   * @param type
-   *                 Type of tile
+   * @param width  Width of the map
+   * @param height Height of the map
+   * @param type   Type of tile
    */
   private void initMapTiles(final int width, final int height, final MapTileType type) {
     this.mapTiles = new MapTile[width][height];
@@ -101,10 +91,8 @@ class DoltMap {
   /**
    * Check if coordinate is on map.
    *
-   * @param x
-   *            The X ordinate
-   * @param y
-   *            The Y ordinate
+   * @param x The X ordinate
+   * @param y The Y ordinate
    * @return true if this Coordinate is on the Map
    */
   private boolean isOnMap(final int x, final int y) {
@@ -114,7 +102,7 @@ class DoltMap {
   /**
    * Link the tiles together.
    */
-  private void linkTiles() {
+  private final void linkTiles() {
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
         MapTile left = getMapTileInDirection(i, j, Direction.LEFT);

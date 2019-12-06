@@ -100,7 +100,7 @@ class MapTile {
     return this.territory != null && this.territory.containsTile(down);
   }
 
-  public boolean isOffLimits() {
+  private boolean isOffLimits() {
     return this.offLimits;
   }
 
