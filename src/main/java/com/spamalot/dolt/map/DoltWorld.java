@@ -46,12 +46,12 @@ public class DoltWorld {
   /**
    * Default minimum size of a Territory.
    */
-  private static final int DEFAULT_MIN_TERRITORY_SIZE = 50;
+  private static final int DEFAULT_MIN_TERRITORY_SIZE = 10;
 
   /**
    * Default maximum size of a territory.
    */
-  private static final int DEFAULT_MAX_TERRITORY_SIZE = 60;
+  private static final int DEFAULT_MAX_TERRITORY_SIZE = 30;
 
   /**
    * The territories in this Map.
