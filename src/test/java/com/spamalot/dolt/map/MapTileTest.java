@@ -1,9 +1,6 @@
-/**
- * 
- */
 package com.spamalot.dolt.map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -14,7 +11,8 @@ import org.junit.Test;
 public class MapTileTest {
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#MapTile(com.spamalot.dolt.map.MapTile.MapTileType)}.
+   * Test method for
+   * {@link com.spamalot.dolt.map.MapTile#MapTile(com.spamalot.dolt.map.MapTile.MapTileType)}.
    */
   @Test
   public void testMapTile() {
@@ -22,7 +20,8 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#linkTileInDirection(com.spamalot.dolt.map.Direction, com.spamalot.dolt.map.MapTile)}.
+   * Test method for
+   * {@link com.spamalot.dolt.map.MapTile#linkTileInDirection(com.spamalot.dolt.map.Direction, com.spamalot.dolt.map.MapTile)}.
    */
   @Test
   public void testLinkTileInDirection() {
@@ -30,7 +29,8 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#get(com.spamalot.dolt.map.Direction)}.
+   * Test method for
+   * {@link com.spamalot.dolt.map.MapTile#get(com.spamalot.dolt.map.Direction)}.
    */
   @Test
   public void testGet() {
@@ -38,7 +38,8 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#getAdjacentWaterTiles()}.
+   * Test method for
+   * {@link com.spamalot.dolt.map.MapTile#getAdjacentWaterTiles()}.
    */
   @Test
   public void testGetAdjacentWaterTiles() {
@@ -54,7 +55,8 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#getRandomAdjacentWaterTile()}.
+   * Test method for
+   * {@link com.spamalot.dolt.map.MapTile#getRandomAdjacentWaterTile()}.
    */
   @Test
   public void testGetRandomAdjacentWaterTile() {
@@ -86,7 +88,8 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#isInSameTerritory(com.spamalot.dolt.map.MapTile)}.
+   * Test method for
+   * {@link com.spamalot.dolt.map.MapTile#isInSameTerritory(com.spamalot.dolt.map.MapTile)}.
    */
   @Test
   public void testIsInSameTerritory() {
@@ -110,7 +113,8 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#setTerritory(com.spamalot.dolt.map.Territory)}.
+   * Test method for
+   * {@link com.spamalot.dolt.map.MapTile#setTerritory(com.spamalot.dolt.map.Territory)}.
    */
   @Test
   public void testSetTerritory() {
@@ -118,7 +122,8 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#setType(com.spamalot.dolt.map.MapTile.MapTileType)}.
+   * Test method for
+   * {@link com.spamalot.dolt.map.MapTile#setType(com.spamalot.dolt.map.MapTile.MapTileType)}.
    */
   @Test
   public void testSetType() {

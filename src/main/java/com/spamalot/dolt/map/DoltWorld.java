@@ -126,6 +126,8 @@ public class DoltWorld {
       generateTerritory(tile, minTerritorySize, max);
       count++;
       rndTerritory = getRandomTerritoryNotLandLocked();
+
+      LOGGER.info("Intermediate result: {}", this);
     }
   }
 

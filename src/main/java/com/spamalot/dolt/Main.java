@@ -31,8 +31,7 @@ public final class Main {
   /**
    * Start here.
    * 
-   * @param args
-   *               Command line arguments.
+   * @param args Command line arguments.
    */
   public static void main(final String... args) {
     LOGGER.info("Something will happen here!");
