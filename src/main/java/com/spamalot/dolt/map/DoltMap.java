@@ -66,7 +66,7 @@ class DoltMap {
    * @param dir Direction to get map tile
    * @return The map tile in that direction
    */
-  private final MapTile getMapTileInDirection(final int i, final int j, final Direction dir) {
+  private MapTile getMapTileInDirection(final int i, final int j, final Direction dir) {
     checkNotNull(dir);
 
     return getMapTile(i + dir.gethDiff(), j + dir.getvDiff());
@@ -95,14 +95,14 @@ class DoltMap {
    * @param y The Y ordinate
    * @return true if this Coordinate is on the Map
    */
-  private final boolean isOnMap(final int x, final int y) {
+  private boolean isOnMap(final int x, final int y) {
     return this.widthRange.contains(x) && this.heightRange.contains(y);
   }
 
   /**
    * Link the tiles together.
    */
-  private final void linkTiles() {
+  private void linkTiles() {
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
         MapTile left = getMapTileInDirection(i, j, Direction.LEFT);

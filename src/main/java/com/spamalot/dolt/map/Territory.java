@@ -6,7 +6,6 @@ import static com.spamalot.dolt.map.Direction.RIGHT;
 import static com.spamalot.dolt.map.Direction.UP;
 
 import com.google.common.collect.Range;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
-
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

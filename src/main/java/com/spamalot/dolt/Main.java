@@ -1,7 +1,6 @@
 package com.spamalot.dolt;
 
 import com.spamalot.dolt.map.DoltWorld;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
