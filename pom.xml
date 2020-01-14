@@ -10,6 +10,7 @@
   <description>DoLT Map Library Parent</description>
   <modules>
     <module>dolt-map-lib</module>
+    <module>dolt-map-cli</module>
   </modules>
   <properties>
     <!-- https://maven.apache.org/general.html#encoding-warning -->
