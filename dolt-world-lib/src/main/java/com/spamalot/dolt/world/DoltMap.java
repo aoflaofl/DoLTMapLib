@@ -3,8 +3,6 @@ package com.spamalot.dolt.world;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.Range;
-import com.spamalot.dolt.world.MapTile;
-import com.spamalot.dolt.world.MapTileType;
 
 /**
  * Hold the map.
@@ -33,7 +31,7 @@ public class DoltMap {
    * @param width  Width of the Map
    * @param height Height of the Map
    */
-  DoltMap(final int width, final int height) {
+  public DoltMap(final int width, final int height) {
     this.mapWidth = width;
     this.mapHeight = height;
 
@@ -53,7 +51,7 @@ public class DoltMap {
    * @param j Vertical coordinate
    * @return The map tile at those coordinates
    */
-  final MapTile getMapTile(final int i, final int j) {
+  public final MapTile getMapTile(final int i, final int j) {
     if (isOnMap(i, j)) {
       return this.mapTiles[i][j];
     }
@@ -135,19 +133,23 @@ public class DoltMap {
       sb.append('|');
       for (int x = 0; x < this.mapWidth; x++) {
         sb.append(this.mapTiles[x][y]);
-        if (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].get(Direction.RIGHT))) {
-          sb.append('#');
-        } else {
-          sb.append('|');
-        }
+        // if
+        // (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].get(Direction.RIGHT)))
+        // {
+        // sb.append('#');
+        // } else {
+        sb.append('|');
+        // }
       }
       sb.append("\n+");
       for (int x = 0; x < this.mapWidth; x++) {
-        if (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].get(Direction.DOWN))) {
-          sb.append("#+");
-        } else {
-          sb.append("-+");
-        }
+        // if
+        // (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].get(Direction.DOWN)))
+        // {
+        // sb.append("#+");
+        // } else {
+        sb.append("-+");
+        // }
       }
       sb.append('\n');
     }

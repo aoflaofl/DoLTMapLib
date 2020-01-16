@@ -24,7 +24,7 @@ public class MapTile {
 
   private boolean offLimits;
 
-  /** The Territory this Map Tile is in. */
+//  /** The Territory this Map Tile is in. */
 //  private Territory territory;
 
   /** The MapTileType of this MapTile. */
@@ -49,7 +49,7 @@ public class MapTile {
     this.linkedTiles.put(dir, tile);
   }
 
-  public MapTile get(final Direction y) {
+  public final MapTile get(final Direction y) {
     return this.linkedTiles.get(y);
   }
 
@@ -106,7 +106,7 @@ public class MapTile {
     return this.offLimits;
   }
 
-  public void setOffLimits(final boolean flag) {
+  public final void setOffLimits(final boolean flag) {
     this.offLimits = flag;
   }
 
@@ -125,7 +125,7 @@ public class MapTile {
   }
 
   @Override
-  public String toString() {
+  public final String toString() {
     String str;
     if (this.tileType == MapTileType.LAND) {
       str = "#";
