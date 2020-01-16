@@ -1,10 +1,10 @@
-package com.spamalot.dolt.map;
+package com.spamalot.dolt.world;
 
 /**
  * Type of this MapTile.
  * 
  */
-enum MapTileType {
+public enum MapTileType {
   /**
    * This Tile is Land.
    */

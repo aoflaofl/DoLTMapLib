@@ -1,8 +1,10 @@
-package com.spamalot.dolt.map;
+package com.spamalot.dolt.world;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.Range;
+import com.spamalot.dolt.world.MapTile;
+import com.spamalot.dolt.world.MapTileType;
 
 /**
  * Hold the map.
@@ -10,7 +12,7 @@ import com.google.common.collect.Range;
  * @author gej
  *
  */
-class DoltMap {
+public class DoltMap {
 
   /** A range check object for the height of the map. */
   private Range<Integer> heightRange;

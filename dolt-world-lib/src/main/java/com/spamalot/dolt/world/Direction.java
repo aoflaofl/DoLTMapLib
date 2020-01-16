@@ -1,4 +1,4 @@
-package com.spamalot.dolt.map;
+package com.spamalot.dolt.world;
 
 /**
  * Ye Olde Directions Enum.
@@ -6,7 +6,7 @@ package com.spamalot.dolt.map;
  * @author gej
  *
  */
-enum Direction {
+public enum Direction {
   /**
    * Down.
    */

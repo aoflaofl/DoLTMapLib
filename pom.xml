@@ -9,6 +9,7 @@
   <modules>
     <module>dolt-map-lib</module>
     <module>dolt-map-cli</module>
+    <module>dolt-world-lib</module>
   </modules>
   <properties>
     <!-- https://maven.apache.org/general.html#encoding-warning -->

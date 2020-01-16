@@ -1,5 +1,8 @@
 package com.spamalot.dolt.map;
 
+import com.spamalot.dolt.world.DoltMap;
+import com.spamalot.dolt.world.MapTile;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

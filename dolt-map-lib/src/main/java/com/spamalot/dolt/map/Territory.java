@@ -1,11 +1,15 @@
 package com.spamalot.dolt.map;
 
-import static com.spamalot.dolt.map.Direction.DOWN;
-import static com.spamalot.dolt.map.Direction.LEFT;
-import static com.spamalot.dolt.map.Direction.RIGHT;
-import static com.spamalot.dolt.map.Direction.UP;
+import static com.spamalot.dolt.world.Direction.DOWN;
+import static com.spamalot.dolt.world.Direction.LEFT;
+import static com.spamalot.dolt.world.Direction.RIGHT;
+import static com.spamalot.dolt.world.Direction.UP;
 
 import com.google.common.collect.Range;
+import com.spamalot.dolt.world.Direction;
+import com.spamalot.dolt.world.MapTile;
+import com.spamalot.dolt.world.MapTileType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;

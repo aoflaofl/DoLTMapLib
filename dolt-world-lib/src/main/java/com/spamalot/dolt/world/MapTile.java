@@ -1,4 +1,6 @@
-package com.spamalot.dolt.map;
+package com.spamalot.dolt.world;
+
+//import com.spamalot.dolt.map.Territory;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -12,7 +14,7 @@ import java.util.Random;
  * @author gej
  *
  */
-class MapTile {
+public class MapTile {
 
   /** Hold a static Random Number Generator for efficiency. */
   private static final Random RNG = new Random();
@@ -23,7 +25,7 @@ class MapTile {
   private boolean offLimits;
 
   /** The Territory this Map Tile is in. */
-  private Territory territory;
+//  private Territory territory;
 
   /** The MapTileType of this MapTile. */
   private MapTileType tileType;
@@ -82,9 +84,9 @@ class MapTile {
     return ret;
   }
 
-  public Territory getTerritory() {
-    return this.territory;
-  }
+//  public Territory getTerritory() {
+//    return this.territory;
+//  }
 
   /**
    * Get this MapTile's Type.
@@ -95,10 +97,10 @@ class MapTile {
     return this.tileType;
   }
 
-  public boolean isInSameTerritory(final MapTile down) {
-
-    return this.territory != null && this.territory.containsTile(down);
-  }
+//  public boolean isInSameTerritory(final MapTile down) {
+//
+//    return this.territory != null && this.territory.containsTile(down);
+//  }
 
   private boolean isOffLimits() {
     return this.offLimits;
@@ -108,10 +110,10 @@ class MapTile {
     this.offLimits = flag;
   }
 
-  public void setTerritory(final Territory ter) {
-    this.territory = ter;
-
-  }
+//  public void setTerritory(final Territory ter) {
+//    this.territory = ter;
+//
+//  }
 
   /**
    * Set this MapTile's type.

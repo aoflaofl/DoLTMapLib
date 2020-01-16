@@ -2,6 +2,8 @@ package com.spamalot.dolt.map;
 
 import static org.junit.Assert.fail;
 
+import com.spamalot.dolt.world.MapTile;
+
 import org.junit.Test;
 
 /**
@@ -12,7 +14,7 @@ public class MapTileTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.map.MapTile#MapTile(com.spamalot.dolt.map.MapTile.MapTileType)}.
+   * {@link com.spamalot.dolt.world.MapTile#MapTile(com.spamalot.dolt.map.MapTile.MapTileType)}.
    */
   @Test
   public void testMapTile() {
@@ -21,7 +23,7 @@ public class MapTileTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.map.MapTile#linkTileInDirection(com.spamalot.dolt.map.Direction, com.spamalot.dolt.map.MapTile)}.
+   * {@link com.spamalot.dolt.world.MapTile#linkTileInDirection(com.spamalot.dolt.map.Direction, com.spamalot.dolt.world.MapTile)}.
    */
   @Test
   public void testLinkTileInDirection() {
@@ -30,7 +32,7 @@ public class MapTileTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.map.MapTile#get(com.spamalot.dolt.map.Direction)}.
+   * {@link com.spamalot.dolt.world.MapTile#get(com.spamalot.dolt.map.Direction)}.
    */
   @Test
   public void testGet() {
@@ -39,7 +41,7 @@ public class MapTileTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.map.MapTile#getAdjacentWaterTiles()}.
+   * {@link com.spamalot.dolt.world.MapTile#getAdjacentWaterTiles()}.
    */
   @Test
   public void testGetAdjacentWaterTiles() {
@@ -47,7 +49,7 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#getDown()}.
+   * Test method for {@link com.spamalot.dolt.world.MapTile#getDown()}.
    */
   @Test
   public void testGetDown() {
@@ -56,7 +58,7 @@ public class MapTileTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.map.MapTile#getRandomAdjacentWaterTile()}.
+   * {@link com.spamalot.dolt.world.MapTile#getRandomAdjacentWaterTile()}.
    */
   @Test
   public void testGetRandomAdjacentWaterTile() {
@@ -64,7 +66,7 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#getRight()}.
+   * Test method for {@link com.spamalot.dolt.world.MapTile#getRight()}.
    */
   @Test
   public void testGetRight() {
@@ -72,7 +74,7 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#getTerritory()}.
+   * Test method for {@link com.spamalot.dolt.world.MapTile#getTerritory()}.
    */
   @Test
   public void testGetTerritory() {
@@ -80,7 +82,7 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#getType()}.
+   * Test method for {@link com.spamalot.dolt.world.MapTile#getType()}.
    */
   @Test
   public void testGetType() {
@@ -89,7 +91,7 @@ public class MapTileTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.map.MapTile#isInSameTerritory(com.spamalot.dolt.map.MapTile)}.
+   * {@link com.spamalot.dolt.world.MapTile#isInSameTerritory(com.spamalot.dolt.world.MapTile)}.
    */
   @Test
   public void testIsInSameTerritory() {
@@ -97,7 +99,7 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#isOffLimits()}.
+   * Test method for {@link com.spamalot.dolt.world.MapTile#isOffLimits()}.
    */
   @Test
   public void testIsOffLimits() {
@@ -105,7 +107,7 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#setOffLimits(boolean)}.
+   * Test method for {@link com.spamalot.dolt.world.MapTile#setOffLimits(boolean)}.
    */
   @Test
   public void testSetOffLimits() {
@@ -114,7 +116,7 @@ public class MapTileTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.map.MapTile#setTerritory(com.spamalot.dolt.map.Territory)}.
+   * {@link com.spamalot.dolt.world.MapTile#setTerritory(com.spamalot.dolt.map.Territory)}.
    */
   @Test
   public void testSetTerritory() {
@@ -123,7 +125,7 @@ public class MapTileTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.map.MapTile#setType(com.spamalot.dolt.map.MapTile.MapTileType)}.
+   * {@link com.spamalot.dolt.world.MapTile#setType(com.spamalot.dolt.map.MapTile.MapTileType)}.
    */
   @Test
   public void testSetType() {
@@ -131,7 +133,7 @@ public class MapTileTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.map.MapTile#toString()}.
+   * Test method for {@link com.spamalot.dolt.world.MapTile#toString()}.
    */
   @Test
   public void testToString() {
