@@ -1,9 +1,6 @@
 package com.spamalot.dolt.map;
 
 import static org.junit.Assert.fail;
-
-import com.spamalot.dolt.world.WorldTile;
-
 import org.junit.Test;
 
 /**

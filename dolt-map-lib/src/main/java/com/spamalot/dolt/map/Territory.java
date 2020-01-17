@@ -44,19 +44,19 @@ final class Territory {
    * some point we will need to pick a random WorldTile. This is a List that can't
    * contain duplicates.
    */
-  private final SetUniqueList<WorldTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<WorldTile>());
+  private final SetUniqueList<WorldTile<MapFeatures>> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<WorldTile<MapFeatures>>());
 
-  static Set<WorldTile> countWaterTilesAvailableWithMax(final WorldTile startTile, final int max) {
+  static Set<WorldTile<MapFeatures>> countWaterTilesAvailableWithMax(final WorldTile<MapFeatures> startTile, final int max) {
 
-    Queue<WorldTile> tileQueue = new LinkedList<>();
+    Queue<WorldTile<MapFeatures>> tileQueue = new LinkedList<>();
     tileQueue.add(startTile);
 
-    Set<WorldTile> seenTiles = new HashSet<>();
+    Set<WorldTile<MapFeatures>> seenTiles = new HashSet<>();
     seenTiles.add(startTile);
     int count = 0;
     while (!tileQueue.isEmpty()) {
       WorldTile<MapFeatures> waterTile = tileQueue.remove();
-      for (WorldTile adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
+      for (WorldTile<MapFeatures> adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
         if (!seenTiles.contains(adjacentWaterTile)) {
           count++;
 
@@ -80,15 +80,15 @@ final class Territory {
    * @return a random water tile or null if there is no water tile adjacent to
    *         this Territory
    */
-  static WorldTile getRandomAdjacentWaterTile(final Territory territory) {
+  static WorldTile<MapFeatures> getRandomAdjacentWaterTile(final Territory territory) {
 
-    SetUniqueList<WorldTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<WorldTile>());
+    SetUniqueList<WorldTile<MapFeatures>> waterTiles = SetUniqueList.setUniqueList(new ArrayList<WorldTile<MapFeatures>>());
 
-    for (WorldTile landTile : territory.territoryTiles) {
+    for (WorldTile<MapFeatures> landTile : territory.territoryTiles) {
       waterTiles.addAll(landTile.getAdjacentWaterTiles());
     }
 
-    WorldTile result = null;
+    WorldTile<MapFeatures> result = null;
     if (waterTiles.isEmpty()) {
       territory.setLandLocked();
     } else {
@@ -99,7 +99,7 @@ final class Territory {
     return result;
   }
 
-  public boolean containsTile(final WorldTile tile) {
+  public boolean containsTile(final WorldTile<MapFeatures> tile) {
     return this.territoryTiles.contains(tile);
   }
 
@@ -150,9 +150,9 @@ final class Territory {
 
     private final Range<Integer> sizeRange;
 
-    private final WorldTile startTile;
+    private final WorldTile<MapFeatures> startTile;
 
-    Builder(final WorldTile initTile, final int minSize, final int maxSize) {
+    Builder(final WorldTile<MapFeatures> initTile, final int minSize, final int maxSize) {
       this.startTile = initTile;
       this.minimumSize = minSize;
       this.maximumSize = maxSize;
@@ -173,11 +173,11 @@ final class Territory {
       }
     }
 
-    private static void generateRandomArea(final WorldTile startTile, final int targetSize, final Territory t) {
+    private static void generateRandomArea(final WorldTile<MapFeatures> startTile, final int targetSize, final Territory t) {
 
       markAsLandAndAddTileToTerritory(startTile, t);
 
-      WorldTile tile = startTile;
+      WorldTile<MapFeatures> tile = startTile;
       int size = 1;
       for (; size < targetSize; size++) {
         tile = getNextTile(tile, t);
@@ -190,8 +190,8 @@ final class Territory {
       }
     }
 
-    private static WorldTile getNextTile(final WorldTile tile, final Territory t) {
-      WorldTile result = tile.getRandomAdjacentWaterTile();
+    private static WorldTile<MapFeatures> getNextTile(final WorldTile<MapFeatures> tile, final Territory t) {
+      WorldTile<MapFeatures> result = tile.getRandomAdjacentWaterTile();
       if (result == null) {
         result = getRandomAdjacentWaterTile(t);
       }

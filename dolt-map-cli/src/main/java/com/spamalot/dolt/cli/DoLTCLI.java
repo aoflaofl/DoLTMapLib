@@ -7,7 +7,10 @@ import com.spamalot.dolt.world.WorldTileType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DoLTCLI {
+public final class DoLTCLI {
+  private DoLTCLI() {
+  }
+
   /** Loggit. */
   private static final Logger LOGGER = LoggerFactory.getLogger(DoLTCLI.class);
   /** Number of Territories in a default Map. */
@@ -19,7 +22,7 @@ public class DoLTCLI {
   /** Width of a default Map. */
   private static final int DEFAULT_MAP_WIDTH = 40;
 
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     final DoltWorld world = new DoltWorld(10, 10);
     WorldTile t = world.getMapTile(5, 5);
     t.setType(WorldTileType.LAND);

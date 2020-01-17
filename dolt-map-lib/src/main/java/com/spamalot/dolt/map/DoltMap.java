@@ -113,7 +113,7 @@ public class DoltMap {
         continue;
       }
       int rndSize = getRandomTargetSize(minTerritorySize, maxTerritorySize);
-      Set<WorldTile> cnt = Territory.countWaterTilesAvailableWithMax(tile, rndSize);
+      Set<WorldTile<MapFeatures>> cnt = Territory.countWaterTilesAvailableWithMax(tile, rndSize);
 
       if (cnt.size() < minTerritorySize) {
         for (WorldTile<MapFeatures> gjkdf : cnt) {

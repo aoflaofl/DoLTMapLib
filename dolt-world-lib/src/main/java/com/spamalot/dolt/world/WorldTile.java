@@ -24,20 +24,8 @@ public class WorldTile<T extends MapTileFeatures> {
 
   private boolean offLimits;
 
-//  /** The Territory this Map Tile is in. */
-//  private Territory territory;
-
   /** The MapTileType of this MapTile. */
   private WorldTileType tileType;
-
-  /**
-   * Construct a MapTile Object.
-   * 
-   * @param type What type of Tile this is.
-   */
-  public WorldTile(final WorldTileType type) {
-    this.tileType = type;
-  }
 
   /**
    * Add a MapTile to this one's linked list.
@@ -58,8 +46,8 @@ public class WorldTile<T extends MapTileFeatures> {
    * 
    * @return List of adjacent MapTiles that are water
    */
-  public List<WorldTile> getAdjacentWaterTiles() {
-    final List<WorldTile> waterList = new ArrayList<>();
+  public List<WorldTile<T>> getAdjacentWaterTiles() {
+    final List<WorldTile<T>> waterList = new ArrayList<>();
     for (final WorldTile<T> linkedTile : this.linkedTiles.values()) {
       if (linkedTile != null && linkedTile.getType() == WorldTileType.WATER && !linkedTile.isOffLimits()) {
         waterList.add(linkedTile);
@@ -75,7 +63,7 @@ public class WorldTile<T extends MapTileFeatures> {
    */
   public WorldTile<T> getRandomAdjacentWaterTile() {
     WorldTile<T> ret = null;
-    final List<WorldTile> waterList = getAdjacentWaterTiles();
+    final List<WorldTile<T>> waterList = getAdjacentWaterTiles();
     if (!waterList.isEmpty()) {
 
       final int index = RNG.nextInt(waterList.size());
@@ -83,10 +71,6 @@ public class WorldTile<T extends MapTileFeatures> {
     }
     return ret;
   }
-
-//  public Territory getTerritory() {
-//    return this.territory;
-//  }
 
   /**
    * Get this MapTile's Type.
@@ -97,11 +81,6 @@ public class WorldTile<T extends MapTileFeatures> {
     return this.tileType;
   }
 
-//  public boolean isInSameTerritory(final MapTile down) {
-//
-//    return this.territory != null && this.territory.containsTile(down);
-//  }
-
   private boolean isOffLimits() {
     return this.offLimits;
   }
@@ -109,11 +88,6 @@ public class WorldTile<T extends MapTileFeatures> {
   public final void setOffLimits(final boolean flag) {
     this.offLimits = flag;
   }
-
-//  public void setTerritory(final Territory ter) {
-//    this.territory = ter;
-//
-//  }
 
   /**
    * Set this MapTile's type.
