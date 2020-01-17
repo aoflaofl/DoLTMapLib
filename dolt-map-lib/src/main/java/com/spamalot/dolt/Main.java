@@ -1,6 +1,6 @@
 package com.spamalot.dolt;
 
-import com.spamalot.dolt.map.DoltWorld;
+import com.spamalot.dolt.map.DoltMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +34,7 @@ public final class Main {
    */
   public static void main(final String... args) {
     LOGGER.info("Something will happen here!");
-    final DoltWorld world = new DoltWorld(DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, DEFAULT_NUM_TERRITORIES);
+    final DoltMap world = new DoltMap(DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, DEFAULT_NUM_TERRITORIES);
 
     LOGGER.info("World: {}", world);
   }

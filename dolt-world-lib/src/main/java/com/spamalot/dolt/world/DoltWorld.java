@@ -5,25 +5,26 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.collect.Range;
 
 /**
- * Hold the map.
+ * Hold the map. Idea is a World is just the terrain, not the political
+ * boundaries.
  *
  * @author gej
  *
  */
-public class DoltMap {
+public class DoltWorld {
 
   /** A range check object for the height of the map. */
   private Range<Integer> heightRange;
-  /** A range check object for the width of the map. */
-  private Range<Integer> widthRange;
-
   /** Actual height of the Map. */
   private final int mapHeight;
+
+  /** The MapTiles that make up this Map. */
+  private WorldTile[][] mapTiles;
   /** Actual width of the Map. */
   private final int mapWidth;
 
-  /** The MapTiles that make up this Map. */
-  private MapTile[][] mapTiles;
+  /** A range check object for the width of the map. */
+  private Range<Integer> widthRange;
 
   /**
    * Construct a Map Object.
@@ -31,15 +32,17 @@ public class DoltMap {
    * @param width  Width of the Map
    * @param height Height of the Map
    */
-  public DoltMap(final int width, final int height) {
+  public DoltWorld(final int width, final int height) {
     this.mapWidth = width;
     this.mapHeight = height;
 
     this.widthRange = Range.closedOpen(0, this.mapWidth);
     this.heightRange = Range.closedOpen(0, this.mapHeight);
 
+    this.mapTiles = new WorldTile[width][height];
+
     // Initialize all the tiles to be water tiles.
-    initMapTiles(width, height, MapTileType.WATER);
+    initMapTiles(width, height, WorldTileType.WATER);
     // Link the tiles orthogonally to their neighbors
     linkTiles();
   }
@@ -51,7 +54,7 @@ public class DoltMap {
    * @param j Vertical coordinate
    * @return The map tile at those coordinates
    */
-  public final MapTile getMapTile(final int i, final int j) {
+  public final WorldTile getMapTile(final int i, final int j) {
     if (isOnMap(i, j)) {
       return this.mapTiles[i][j];
     }
@@ -66,7 +69,7 @@ public class DoltMap {
    * @param dir Direction to get map tile
    * @return The map tile in that direction
    */
-  private MapTile getMapTileInDirection(final int i, final int j, final Direction dir) {
+  private WorldTile getMapTileInDirection(final int i, final int j, final Direction dir) {
     checkNotNull(dir);
 
     return getMapTile(i + dir.gethDiff(), j + dir.getvDiff());
@@ -79,11 +82,10 @@ public class DoltMap {
    * @param height Height of the map
    * @param type   Type of tile
    */
-  private void initMapTiles(final int width, final int height, final MapTileType type) {
-    this.mapTiles = new MapTile[width][height];
+  private void initMapTiles(final int width, final int height, final WorldTileType type) {
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        this.mapTiles[i][j] = new MapTile(type);
+        this.mapTiles[i][j] = new WorldTile(type);
       }
     }
   }
@@ -105,12 +107,12 @@ public class DoltMap {
   private void linkTiles() {
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
-        MapTile left = getMapTileInDirection(i, j, Direction.LEFT);
-        MapTile right = getMapTileInDirection(i, j, Direction.RIGHT);
-        MapTile up = getMapTileInDirection(i, j, Direction.UP);
-        MapTile down = getMapTileInDirection(i, j, Direction.DOWN);
+        WorldTile left = getMapTileInDirection(i, j, Direction.LEFT);
+        WorldTile right = getMapTileInDirection(i, j, Direction.RIGHT);
+        WorldTile up = getMapTileInDirection(i, j, Direction.UP);
+        WorldTile down = getMapTileInDirection(i, j, Direction.DOWN);
 
-        MapTile cur = getMapTile(i, j);
+        WorldTile cur = getMapTile(i, j);
 
         cur.linkTileInDirection(Direction.LEFT, left);
         cur.linkTileInDirection(Direction.RIGHT, right);

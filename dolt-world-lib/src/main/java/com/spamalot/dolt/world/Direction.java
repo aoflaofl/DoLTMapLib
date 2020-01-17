@@ -37,10 +37,8 @@ public enum Direction {
   /**
    * Construct Direction ENUM.
    * 
-   * @param horizontalDiff
-   *          horizontal difference
-   * @param verticalDiff
-   *          vertical difference
+   * @param horizontalDiff horizontal difference
+   * @param verticalDiff   vertical difference
    */
   Direction(final int horizontalDiff, final int verticalDiff) {
     sethDiff(horizontalDiff);
@@ -52,7 +50,7 @@ public enum Direction {
    * 
    * @return the horizontal Differential.
    */
-  public int gethDiff() {
+  int gethDiff() {
     return this.horizDiff;
   }
 
@@ -61,15 +59,14 @@ public enum Direction {
    * 
    * @return the Vertical Differential.
    */
-  public int getvDiff() {
+  int getvDiff() {
     return this.verticalDifferential;
   }
 
   /**
    * Set horizontal difference.
    * 
-   * @param horizontalDiff
-   *          horizontal difference
+   * @param horizontalDiff horizontal difference
    */
   private void sethDiff(final int horizontalDiff) {
     this.horizDiff = horizontalDiff;
@@ -78,8 +75,7 @@ public enum Direction {
   /**
    * Set vertical difference.
    * 
-   * @param verticalDiff
-   *          vertical difference
+   * @param verticalDiff vertical difference
    */
   private void setvDiff(final int verticalDiff) {
     this.verticalDifferential = verticalDiff;

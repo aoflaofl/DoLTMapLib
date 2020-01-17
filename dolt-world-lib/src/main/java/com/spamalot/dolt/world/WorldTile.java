@@ -14,13 +14,13 @@ import java.util.Random;
  * @author gej
  *
  */
-public class MapTile {
+public class WorldTile {
 
   /** Hold a static Random Number Generator for efficiency. */
   private static final Random RNG = new Random();
 
   /** The MapTiles that link to this one. Only orthogonal MapTiles apply. */
-  private final Map<Direction, MapTile> linkedTiles = new EnumMap<>(Direction.class);
+  private final Map<Direction, WorldTile> linkedTiles = new EnumMap<>(Direction.class);
 
   private boolean offLimits;
 
@@ -28,14 +28,14 @@ public class MapTile {
 //  private Territory territory;
 
   /** The MapTileType of this MapTile. */
-  private MapTileType tileType;
+  private WorldTileType tileType;
 
   /**
    * Construct a MapTile Object.
    * 
    * @param type What type of Tile this is.
    */
-  MapTile(final MapTileType type) {
+  public WorldTile(final WorldTileType type) {
     this.tileType = type;
   }
 
@@ -45,11 +45,11 @@ public class MapTile {
    * @param dir  The direction
    * @param tile The tile
    */
-  void linkTileInDirection(final Direction dir, final MapTile tile) {
+  void linkTileInDirection(final Direction dir, final WorldTile tile) {
     this.linkedTiles.put(dir, tile);
   }
 
-  public final MapTile get(final Direction y) {
+  public final WorldTile get(final Direction y) {
     return this.linkedTiles.get(y);
   }
 
@@ -58,10 +58,10 @@ public class MapTile {
    * 
    * @return List of adjacent MapTiles that are water
    */
-  public List<MapTile> getAdjacentWaterTiles() {
-    final List<MapTile> waterList = new ArrayList<>();
-    for (final MapTile linkedTile : this.linkedTiles.values()) {
-      if (linkedTile != null && linkedTile.getType() == MapTileType.WATER && !linkedTile.isOffLimits()) {
+  public List<WorldTile> getAdjacentWaterTiles() {
+    final List<WorldTile> waterList = new ArrayList<>();
+    for (final WorldTile linkedTile : this.linkedTiles.values()) {
+      if (linkedTile != null && linkedTile.getType() == WorldTileType.WATER && !linkedTile.isOffLimits()) {
         waterList.add(linkedTile);
       }
     }
@@ -73,9 +73,9 @@ public class MapTile {
    * 
    * @return a MapTile with water, or null if there is none
    */
-  public MapTile getRandomAdjacentWaterTile() {
-    MapTile ret = null;
-    final List<MapTile> waterList = getAdjacentWaterTiles();
+  public WorldTile getRandomAdjacentWaterTile() {
+    WorldTile ret = null;
+    final List<WorldTile> waterList = getAdjacentWaterTiles();
     if (!waterList.isEmpty()) {
 
       final int index = RNG.nextInt(waterList.size());
@@ -93,7 +93,7 @@ public class MapTile {
    * 
    * @return The MapTileType
    */
-  public MapTileType getType() {
+  public WorldTileType getType() {
     return this.tileType;
   }
 
@@ -120,14 +120,14 @@ public class MapTile {
    * 
    * @param type The type to set this Tile to
    */
-  public void setType(final MapTileType type) {
+  public void setType(final WorldTileType type) {
     this.tileType = type;
   }
 
   @Override
   public final String toString() {
     String str;
-    if (this.tileType == MapTileType.LAND) {
+    if (this.tileType == WorldTileType.LAND) {
       str = "#";
     } else {
       if (isOffLimits()) {

@@ -4,12 +4,9 @@ import static com.spamalot.dolt.world.Direction.DOWN;
 import static com.spamalot.dolt.world.Direction.LEFT;
 import static com.spamalot.dolt.world.Direction.RIGHT;
 import static com.spamalot.dolt.world.Direction.UP;
-
 import com.google.common.collect.Range;
 import com.spamalot.dolt.world.Direction;
-import com.spamalot.dolt.world.MapTile;
-import com.spamalot.dolt.world.MapTileType;
-
+import com.spamalot.dolt.world.WorldTileType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -116,7 +113,7 @@ final class Territory {
         MapTile nd = p.get(y);
         if (isNeighbor(nd)) {
 
-          this.neighbors.add(p.getTerritory());
+          this.neighbors.add(p.getFeatures().getTerritory());
 
         }
 
@@ -129,7 +126,7 @@ final class Territory {
   }
 
   private boolean isNeighbor(final MapTile nd) {
-    return nd != null && !this.equals(nd.getTerritory());
+    return nd != null && !this.equals(nd.getFeatures().getTerritory());
   }
 
   public boolean isOffLimits() {
@@ -168,8 +165,9 @@ final class Territory {
      */
     private static void clearTerritoryTiles(final Territory t) {
       for (MapTile tile : t.territoryTiles) {
-        tile.setType(MapTileType.WATER);
-        tile.setTerritory(null);
+        tile.setType(WorldTileType.WATER);
+        //tile.setTerritory(null);
+        tile.getFeatures().setTerritory(null);
         tile.setOffLimits(true);
       }
     }
@@ -222,8 +220,8 @@ final class Territory {
     }
 
     private static void markAsLandAndAddTileToTerritory(final MapTile tile, final Territory t) {
-      tile.setType(MapTileType.LAND);
-      tile.setTerritory(t);
+      tile.setType(WorldTileType.LAND);
+      tile.getFeatures().setTerritory(t);
       t.territoryTiles.add(tile);
     }
 
@@ -239,7 +237,7 @@ final class Territory {
      * @return a Territory.
      */
     private Territory buildArea(final int minSize, final int maxSize) {
-      if (this.startTile.getType() != MapTileType.WATER) {
+      if (this.startTile.getType() != WorldTileType.WATER) {
         throw new IllegalArgumentException("Start tile must be water.");
       }
 
