@@ -11,7 +11,7 @@ import com.google.common.collect.Range;
  * @author gej
  *
  */
-public class DoltWorld {
+public class DoltWorld<T extends MapTileFeatures> {
 
   /** A range check object for the height of the map. */
   private Range<Integer> heightRange;
@@ -85,7 +85,7 @@ public class DoltWorld {
   private void initMapTiles(final int width, final int height, final WorldTileType type) {
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        this.mapTiles[i][j] = new WorldTile(type);
+        this.mapTiles[i][j] = new WorldTile<T>(type);
       }
     }
   }

@@ -6,6 +6,7 @@ import static com.spamalot.dolt.world.Direction.RIGHT;
 import static com.spamalot.dolt.world.Direction.UP;
 import com.google.common.collect.Range;
 import com.spamalot.dolt.world.Direction;
+import com.spamalot.dolt.world.WorldTile;
 import com.spamalot.dolt.world.WorldTileType;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,23 +40,23 @@ final class Territory {
   private boolean offLimits;
 
   /**
-   * The MapTiles that make up this Territory. Make it a SetUniqueList because at
-   * some point we will need to pick a random MapTile. This is a List that can't
+   * The WorldTiles that make up this Territory. Make it a SetUniqueList because at
+   * some point we will need to pick a random WorldTile. This is a List that can't
    * contain duplicates.
    */
-  private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
+  private final SetUniqueList<WorldTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<WorldTile>());
 
-  static Set<MapTile> countWaterTilesAvailableWithMax(final MapTile startTile, final int max) {
+  static Set<WorldTile> countWaterTilesAvailableWithMax(final WorldTile startTile, final int max) {
 
-    Queue<MapTile> tileQueue = new LinkedList<>();
+    Queue<WorldTile> tileQueue = new LinkedList<>();
     tileQueue.add(startTile);
 
-    Set<MapTile> seenTiles = new HashSet<>();
+    Set<WorldTile> seenTiles = new HashSet<>();
     seenTiles.add(startTile);
     int count = 0;
     while (!tileQueue.isEmpty()) {
-      MapTile waterTile = tileQueue.remove();
-      for (MapTile adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
+      WorldTile<MapFeatures> waterTile = tileQueue.remove();
+      for (WorldTile adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
         if (!seenTiles.contains(adjacentWaterTile)) {
           count++;
 
@@ -79,15 +80,15 @@ final class Territory {
    * @return a random water tile or null if there is no water tile adjacent to
    *         this Territory
    */
-  static MapTile getRandomAdjacentWaterTile(final Territory territory) {
+  static WorldTile getRandomAdjacentWaterTile(final Territory territory) {
 
-    SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
+    SetUniqueList<WorldTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<WorldTile>());
 
-    for (MapTile landTile : territory.territoryTiles) {
+    for (WorldTile landTile : territory.territoryTiles) {
       waterTiles.addAll(landTile.getAdjacentWaterTiles());
     }
 
-    MapTile result = null;
+    WorldTile result = null;
     if (waterTiles.isEmpty()) {
       territory.setLandLocked();
     } else {
@@ -98,7 +99,7 @@ final class Territory {
     return result;
   }
 
-  public boolean containsTile(final MapTile tile) {
+  public boolean containsTile(final WorldTile tile) {
     return this.territoryTiles.contains(tile);
   }
 
@@ -106,11 +107,11 @@ final class Territory {
 
     List<Direction> directions = Arrays.asList(DOWN, UP, RIGHT, LEFT);
 
-    for (MapTile p : this.territoryTiles) {
+    for (WorldTile<MapFeatures> p : this.territoryTiles) {
 
       for (final Direction y : directions) {
 
-        MapTile nd = p.get(y);
+        WorldTile<MapFeatures> nd = p.get(y);
         if (isNeighbor(nd)) {
 
           this.neighbors.add(p.getFeatures().getTerritory());
@@ -125,7 +126,7 @@ final class Territory {
     return this.landlocked;
   }
 
-  private boolean isNeighbor(final MapTile nd) {
+  private boolean isNeighbor(final WorldTile<MapFeatures> nd) {
     return nd != null && !this.equals(nd.getFeatures().getTerritory());
   }
 
@@ -149,9 +150,9 @@ final class Territory {
 
     private final Range<Integer> sizeRange;
 
-    private final MapTile startTile;
+    private final WorldTile startTile;
 
-    Builder(final MapTile initTile, final int minSize, final int maxSize) {
+    Builder(final WorldTile initTile, final int minSize, final int maxSize) {
       this.startTile = initTile;
       this.minimumSize = minSize;
       this.maximumSize = maxSize;
@@ -159,12 +160,12 @@ final class Territory {
     }
 
     /**
-     * Mark the MapTiles assigned to this Territory as water, but since there failed
+     * Mark the WorldTiles assigned to this Territory as water, but since there failed
      * to be enough of them in a cluster to make a Territory also mark them as off
      * limits so they won't be used in the future.
      */
     private static void clearTerritoryTiles(final Territory t) {
-      for (MapTile tile : t.territoryTiles) {
+      for (WorldTile<MapFeatures> tile : t.territoryTiles) {
         tile.setType(WorldTileType.WATER);
         //tile.setTerritory(null);
         tile.getFeatures().setTerritory(null);
@@ -172,11 +173,11 @@ final class Territory {
       }
     }
 
-    private static void generateRandomArea(final MapTile startTile, final int targetSize, final Territory t) {
+    private static void generateRandomArea(final WorldTile startTile, final int targetSize, final Territory t) {
 
       markAsLandAndAddTileToTerritory(startTile, t);
 
-      MapTile tile = startTile;
+      WorldTile tile = startTile;
       int size = 1;
       for (; size < targetSize; size++) {
         tile = getNextTile(tile, t);
@@ -189,8 +190,8 @@ final class Territory {
       }
     }
 
-    private static MapTile getNextTile(final MapTile tile, final Territory t) {
-      MapTile result = tile.getRandomAdjacentWaterTile();
+    private static WorldTile getNextTile(final WorldTile tile, final Territory t) {
+      WorldTile result = tile.getRandomAdjacentWaterTile();
       if (result == null) {
         result = getRandomAdjacentWaterTile(t);
       }
@@ -219,7 +220,7 @@ final class Territory {
       return targetSize;
     }
 
-    private static void markAsLandAndAddTileToTerritory(final MapTile tile, final Territory t) {
+    private static void markAsLandAndAddTileToTerritory(final WorldTile<MapFeatures> tile, final Territory t) {
       tile.setType(WorldTileType.LAND);
       tile.getFeatures().setTerritory(t);
       t.territoryTiles.add(tile);
@@ -230,7 +231,7 @@ final class Territory {
     }
 
     /**
-     * Allocate MapTiles to a Territory.
+     * Allocate WorldTiles to a Territory.
      *
      * @param minSize Minimum size of the Territory
      * @param maxSize Maximum size of the Territory.

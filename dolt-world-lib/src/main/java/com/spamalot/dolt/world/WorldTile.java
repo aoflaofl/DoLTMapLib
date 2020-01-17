@@ -14,13 +14,13 @@ import java.util.Random;
  * @author gej
  *
  */
-public class WorldTile {
+public class WorldTile<T extends MapTileFeatures> {
 
   /** Hold a static Random Number Generator for efficiency. */
   private static final Random RNG = new Random();
 
   /** The MapTiles that link to this one. Only orthogonal MapTiles apply. */
-  private final Map<Direction, WorldTile> linkedTiles = new EnumMap<>(Direction.class);
+  private final Map<Direction, WorldTile<T>> linkedTiles = new EnumMap<>(Direction.class);
 
   private boolean offLimits;
 
@@ -45,11 +45,11 @@ public class WorldTile {
    * @param dir  The direction
    * @param tile The tile
    */
-  void linkTileInDirection(final Direction dir, final WorldTile tile) {
+  void linkTileInDirection(final Direction dir, final WorldTile<T> tile) {
     this.linkedTiles.put(dir, tile);
   }
 
-  public final WorldTile get(final Direction y) {
+  public final WorldTile<T> get(final Direction y) {
     return this.linkedTiles.get(y);
   }
 
@@ -60,7 +60,7 @@ public class WorldTile {
    */
   public List<WorldTile> getAdjacentWaterTiles() {
     final List<WorldTile> waterList = new ArrayList<>();
-    for (final WorldTile linkedTile : this.linkedTiles.values()) {
+    for (final WorldTile<T> linkedTile : this.linkedTiles.values()) {
       if (linkedTile != null && linkedTile.getType() == WorldTileType.WATER && !linkedTile.isOffLimits()) {
         waterList.add(linkedTile);
       }
@@ -73,8 +73,8 @@ public class WorldTile {
    * 
    * @return a MapTile with water, or null if there is none
    */
-  public WorldTile getRandomAdjacentWaterTile() {
-    WorldTile ret = null;
+  public WorldTile<T> getRandomAdjacentWaterTile() {
+    WorldTile<T> ret = null;
     final List<WorldTile> waterList = getAdjacentWaterTiles();
     if (!waterList.isEmpty()) {
 
@@ -137,6 +137,11 @@ public class WorldTile {
       }
     }
     return str;
+  }
+
+  public T getFeatures() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }
