@@ -4,10 +4,12 @@ import static com.spamalot.dolt.world.Direction.DOWN;
 import static com.spamalot.dolt.world.Direction.LEFT;
 import static com.spamalot.dolt.world.Direction.RIGHT;
 import static com.spamalot.dolt.world.Direction.UP;
+
 import com.google.common.collect.Range;
 import com.spamalot.dolt.world.Direction;
 import com.spamalot.dolt.world.WorldTile;
 import com.spamalot.dolt.world.WorldTileType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
+
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
