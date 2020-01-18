@@ -94,7 +94,7 @@ public class WorldTile<T extends MapTileFeatures> {
    * 
    * @param type The type to set this Tile to
    */
-  public void setType(final WorldTileType type) {
+  private void setType(final WorldTileType type) {
     this.tileType = type;
   }
 
@@ -113,9 +113,14 @@ public class WorldTile<T extends MapTileFeatures> {
     return str;
   }
 
+  private T features;
+
+  public void setFeatures(T f) {
+    this.features = f;
+  }
+
   public T getFeatures() {
-    // TODO Auto-generated method stub
-    return null;
+    return this.features;
   }
 
 }
