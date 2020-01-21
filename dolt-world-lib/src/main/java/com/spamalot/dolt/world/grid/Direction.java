@@ -1,4 +1,4 @@
-package com.spamalot.dolt.world;
+package com.spamalot.dolt.world.grid;
 
 /**
  * Ye Olde Directions Enum.
@@ -50,7 +50,7 @@ public enum Direction {
    * 
    * @return the horizontal Differential.
    */
-  int gethDiff() {
+  public int gethDiff() {
     return this.horizDiff;
   }
 
@@ -59,7 +59,7 @@ public enum Direction {
    * 
    * @return the Vertical Differential.
    */
-  int getvDiff() {
+  public int getvDiff() {
     return this.verticalDifferential;
   }
 

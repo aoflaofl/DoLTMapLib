@@ -1,5 +1,7 @@
 package com.spamalot.dolt.world;
 
+import com.spamalot.dolt.world.grid.Direction;
+
 //import com.spamalot.dolt.map.Territory;
 
 import java.util.ArrayList;

@@ -3,6 +3,7 @@ package com.spamalot.dolt.world;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.Range;
+import com.spamalot.dolt.world.grid.Direction;
 
 /**
  * Hold the map. Idea is a World is just the terrain, not the political

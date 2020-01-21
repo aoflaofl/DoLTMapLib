@@ -1,15 +1,9 @@
 package com.spamalot.dolt.map;
 
-import static com.spamalot.dolt.world.Direction.DOWN;
-import static com.spamalot.dolt.world.Direction.LEFT;
-import static com.spamalot.dolt.world.Direction.RIGHT;
-import static com.spamalot.dolt.world.Direction.UP;
-
 import com.google.common.collect.Range;
-import com.spamalot.dolt.world.Direction;
 import com.spamalot.dolt.world.WorldTile;
 import com.spamalot.dolt.world.WorldTileType;
-
+import com.spamalot.dolt.world.grid.Direction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,7 +12,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
-
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,13 +36,15 @@ final class Territory {
   private boolean offLimits;
 
   /**
-   * The WorldTiles that make up this Territory. Make it a SetUniqueList because at
-   * some point we will need to pick a random WorldTile. This is a List that can't
-   * contain duplicates.
+   * The WorldTiles that make up this Territory. Make it a SetUniqueList because
+   * at some point we will need to pick a random WorldTile. This is a List that
+   * can't contain duplicates.
    */
-  private final SetUniqueList<WorldTile<MapFeatures>> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<WorldTile<MapFeatures>>());
+  private final SetUniqueList<WorldTile<MapFeatures>> territoryTiles = SetUniqueList
+      .setUniqueList(new ArrayList<WorldTile<MapFeatures>>());
 
-  static Set<WorldTile<MapFeatures>> countWaterTilesAvailableWithMax(final WorldTile<MapFeatures> startTile, final int max) {
+  static Set<WorldTile<MapFeatures>> countWaterTilesAvailableWithMax(final WorldTile<MapFeatures> startTile,
+      final int max) {
 
     Queue<WorldTile<MapFeatures>> tileQueue = new LinkedList<>();
     tileQueue.add(startTile);
@@ -85,7 +80,8 @@ final class Territory {
    */
   static WorldTile<MapFeatures> getRandomAdjacentWaterTile(final Territory territory) {
 
-    SetUniqueList<WorldTile<MapFeatures>> waterTiles = SetUniqueList.setUniqueList(new ArrayList<WorldTile<MapFeatures>>());
+    SetUniqueList<WorldTile<MapFeatures>> waterTiles = SetUniqueList
+        .setUniqueList(new ArrayList<WorldTile<MapFeatures>>());
 
     for (WorldTile<MapFeatures> landTile : territory.territoryTiles) {
       waterTiles.addAll(landTile.getAdjacentWaterTiles());
@@ -108,7 +104,7 @@ final class Territory {
 
   public void findNeighbors() {
 
-    List<Direction> directions = Arrays.asList(DOWN, UP, RIGHT, LEFT);
+    List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.RIGHT, Direction.LEFT);
 
     for (WorldTile<MapFeatures> p : this.territoryTiles) {
 
@@ -163,20 +159,21 @@ final class Territory {
     }
 
     /**
-     * Mark the WorldTiles assigned to this Territory as water, but since there failed
-     * to be enough of them in a cluster to make a Territory also mark them as off
-     * limits so they won't be used in the future.
+     * Mark the WorldTiles assigned to this Territory as water, but since there
+     * failed to be enough of them in a cluster to make a Territory also mark them
+     * as off limits so they won't be used in the future.
      */
     private static void clearTerritoryTiles(final Territory t) {
       for (WorldTile<MapFeatures> tile : t.territoryTiles) {
         tile.setType(WorldTileType.WATER);
-        //tile.setTerritory(null);
+        // tile.setTerritory(null);
         tile.getFeatures().setTerritory(null);
         tile.setOffLimits(true);
       }
     }
 
-    private static void generateRandomArea(final WorldTile<MapFeatures> startTile, final int targetSize, final Territory t) {
+    private static void generateRandomArea(final WorldTile<MapFeatures> startTile, final int targetSize,
+        final Territory t) {
 
       markAsLandAndAddTileToTerritory(startTile, t);
 
