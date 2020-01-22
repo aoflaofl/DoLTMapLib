@@ -8,28 +8,26 @@ import com.google.common.collect.Sets;
 import java.util.HashSet;
 
 /**
- * @author gejohann
+ * Orthogonally linked cells.
+ * 
+ * @author gej
  *
+ * @param <T> Cell class
  */
-public class QuadGridCell extends GridCell {
+public class QuadGridCell<T extends GridCell<? super T>> extends GridCell<T> {
   /** Set of allowed directions. */
-  private HashSet<Direction> allowedDirs;
+  private HashSet<Direction> allowedDirections;
 
   /**
    * Handle a cell that links Orthogonally.
    */
   public QuadGridCell() {
     super();
-    allowedDirs = Sets.newHashSet(Direction.values());
+    allowedDirections = Sets.newHashSet(Direction.values());
   }
 
   @Override
   final boolean isGoodDir(final Direction dir) {
-
-    if (allowedDirs.contains(dir)) {
-      return true;
-    }
-
-    return false;
+    return allowedDirections.contains(dir);
   }
 }

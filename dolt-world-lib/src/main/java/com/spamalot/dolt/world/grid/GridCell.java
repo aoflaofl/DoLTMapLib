@@ -8,12 +8,15 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * @author gejohann
+ * Link logic for cells.
+ * 
+ * @author gej
  *
+ * @param <T> Cell class
  */
-public abstract class GridCell {
+public abstract class GridCell<T> {
   /** The MapTiles that link to this one. Only orthogonal MapTiles apply. */
-  private final Map<Direction, GridCell> linkedTiles = new EnumMap<>(Direction.class);
+  private final Map<Direction, T> linkedTiles = new EnumMap<>(Direction.class);
 
   /**
    * Add a MapTile to this one's linked list.
@@ -21,7 +24,7 @@ public abstract class GridCell {
    * @param dir  The direction
    * @param tile The tile
    */
-  void linkTileInDirection(final Direction dir, final GridCell tile) {
+  void linkTileInDirection(final Direction dir, final T tile) {
     if (isGoodDir(dir)) {
       this.linkedTiles.put(dir, tile);
     }
@@ -33,11 +36,11 @@ public abstract class GridCell {
    * @param y a Direction
    * @return Cell in that Direction.
    */
-  public final GridCell get(final Direction y) {
+  public final T get(final Direction y) {
     return this.linkedTiles.get(y);
   }
 
-  protected final Collection<GridCell> getNeighborGridCells() {
+  protected final Collection<T> getNeighborGridCells() {
     return this.linkedTiles.values();
   }
 

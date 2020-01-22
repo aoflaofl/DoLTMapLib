@@ -1,15 +1,18 @@
 package com.spamalot.dolt.world;
 
-import com.spamalot.dolt.world.grid.GridCell;
 import com.spamalot.dolt.world.grid.QuadGridCell;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class NewWorldTileImpl extends QuadGridCell {
+public class NewWorldTileImpl extends QuadGridCell<NewWorldTileImpl> {
 
   /** The MapTileType of this MapTile. */
   private WorldTileType tileType;
+
+  /** Hold a static Random Number Generator for efficiency. */
+  private static final Random RNG = new Random();
 
   /**
    * List of Adjacent MapTiles that are water.
@@ -18,9 +21,9 @@ public class NewWorldTileImpl extends QuadGridCell {
    */
   public List<NewWorldTileImpl> getAdjacentWaterTiles() {
     List<NewWorldTileImpl> p = new ArrayList<>();
-    for (GridCell x : this.getNeighborGridCells()) {
-      if (((NewWorldTileImpl) x).getType() == WorldTileType.WATER) {
-        p.add((NewWorldTileImpl) x);
+    for (NewWorldTileImpl x : this.getNeighborGridCells()) {
+      if (x.getType() == WorldTileType.WATER) {
+        p.add(x);
       }
     }
 
@@ -33,8 +36,14 @@ public class NewWorldTileImpl extends QuadGridCell {
    * @return a MapTile with water, or null if there is none
    */
   public NewWorldTileImpl getRandomAdjacentWaterTile() {
-    // TODO Auto-generated method stub
-    return null;
+    NewWorldTileImpl ret = null;
+    List<NewWorldTileImpl> waterList = getAdjacentWaterTiles();
+    if (!waterList.isEmpty()) {
+
+      final int index = RNG.nextInt(waterList.size());
+      ret = waterList.get(index);
+    }
+    return ret;
   }
 
   /**
