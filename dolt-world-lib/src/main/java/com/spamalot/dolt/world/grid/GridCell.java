@@ -27,11 +27,17 @@ public abstract class GridCell {
     }
   }
 
+  /**
+   * Get a Cell in a Direction.
+   * 
+   * @param y a Direction
+   * @return Cell in that Direction.
+   */
   public final GridCell get(final Direction y) {
     return this.linkedTiles.get(y);
   }
 
-  Collection<GridCell> getNeighborGridCells() {
+  protected final Collection<GridCell> getNeighborGridCells() {
     return this.linkedTiles.values();
   }
 
