@@ -4,18 +4,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.google.common.collect.Range;
 import com.spamalot.dolt.world.grid.Direction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Hold the map. Idea is a World is just the terrain, not the political
  * boundaries.
  *
  * @author gej
+ * 
+ * @param <T> A tile type
  *
  */
 public class DoltWorld<T extends NewWorldTileImpl> {
+  /** Loggit. */
+  private static final Logger LOGGER = LoggerFactory.getLogger(DoltWorld.class);
 
   /** A range check object for the height of the map. */
-  private Range<Integer> heightRange;
+  private final Range<Integer> heightRange;
   /** Actual height of the Map. */
   private final int mapHeight;
 
@@ -25,26 +31,26 @@ public class DoltWorld<T extends NewWorldTileImpl> {
   private final int mapWidth;
 
   /** A range check object for the width of the map. */
-  private Range<Integer> widthRange;
+  private final Range<Integer> widthRange;
 
   /**
    * Construct a Map Object.
    *
    * @param width  Width of the Map
    * @param height Height of the Map
+   * @param clazz  Class of the tile
    */
   @SuppressWarnings("unchecked")
-  public DoltWorld(final int width, final int height) {
+  public DoltWorld(final int width, final int height, final Class<T> clazz) {
     this.mapWidth = width;
     this.mapHeight = height;
 
     this.widthRange = Range.closedOpen(0, this.mapWidth);
     this.heightRange = Range.closedOpen(0, this.mapHeight);
 
-    // this.mapTiles = new T[width][height];
     this.mapTiles = (T[][]) new NewWorldTileImpl[width][height];
     // Initialize all the tiles to be water tiles.
-    initMapTiles(width, height, WorldTileType.WATER);
+    initMapTiles(width, height, WorldTileType.WATER, clazz);
     // Link the tiles orthogonally to their neighbors
     linkTiles();
   }
@@ -56,11 +62,12 @@ public class DoltWorld<T extends NewWorldTileImpl> {
    * @param j Vertical coordinate
    * @return The map tile at those coordinates
    */
-  public final NewWorldTileImpl getMapTile(final int i, final int j) {
+  public final T getMapTile(final int i, final int j) {
+    T ret = null;
     if (isOnMap(i, j)) {
-      return this.mapTiles[i][j];
+      ret = this.mapTiles[i][j];
     }
-    return null;
+    return ret;
   }
 
   /**
@@ -71,7 +78,7 @@ public class DoltWorld<T extends NewWorldTileImpl> {
    * @param dir Direction to get map tile
    * @return The map tile in that direction
    */
-  private NewWorldTileImpl getMapTileInDirection(final int i, final int j, final Direction dir) {
+  private T getMapTileInDirection(final int i, final int j, final Direction dir) {
     checkNotNull(dir);
 
     return getMapTile(i + dir.gethDiff(), j + dir.getvDiff());
@@ -83,14 +90,16 @@ public class DoltWorld<T extends NewWorldTileImpl> {
    * @param width  Width of the map
    * @param height Height of the map
    * @param type   Type of tile
+   * @param clazz  Class of tile
    */
-  @SuppressWarnings("unchecked")
-  private void initMapTiles(final int width, final int height, final WorldTileType type) {
+  private void initMapTiles(final int width, final int height, final WorldTileType type, final Class<T> clazz) {
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        // TODO: Replace this with getting an actual instance of T.  
-        // https://stackoverflow.com/questions/2434041/instantiating-generics-type-in-java
-        this.mapTiles[i][j] = (T) new NewWorldTileImpl();
+        try {
+          this.mapTiles[i][j] = clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+          LOGGER.info("Creating an object failed.", e);
+        }
         this.mapTiles[i][j].setType(type);
       }
     }
@@ -113,17 +122,13 @@ public class DoltWorld<T extends NewWorldTileImpl> {
   private void linkTiles() {
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
-        NewWorldTileImpl left = getMapTileInDirection(i, j, Direction.LEFT);
-        NewWorldTileImpl right = getMapTileInDirection(i, j, Direction.RIGHT);
-        NewWorldTileImpl up = getMapTileInDirection(i, j, Direction.UP);
-        NewWorldTileImpl down = getMapTileInDirection(i, j, Direction.DOWN);
-
         NewWorldTileImpl cur = getMapTile(i, j);
-
-        cur.linkTileInDirection(Direction.LEFT, left);
-        cur.linkTileInDirection(Direction.RIGHT, right);
-        cur.linkTileInDirection(Direction.UP, up);
-        cur.linkTileInDirection(Direction.DOWN, down);
+        if (cur != null) {
+          cur.linkTileInDirection(Direction.LEFT, getMapTileInDirection(i, j, Direction.LEFT));
+          cur.linkTileInDirection(Direction.RIGHT, getMapTileInDirection(i, j, Direction.RIGHT));
+          cur.linkTileInDirection(Direction.UP, getMapTileInDirection(i, j, Direction.UP));
+          cur.linkTileInDirection(Direction.DOWN, getMapTileInDirection(i, j, Direction.DOWN));
+        }
       }
     }
   }
@@ -141,23 +146,11 @@ public class DoltWorld<T extends NewWorldTileImpl> {
       sb.append('|');
       for (int x = 0; x < this.mapWidth; x++) {
         sb.append(this.mapTiles[x][y]);
-        // if
-        // (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].get(Direction.RIGHT)))
-        // {
-        // sb.append('#');
-        // } else {
         sb.append('|');
-        // }
       }
       sb.append("\n+");
       for (int x = 0; x < this.mapWidth; x++) {
-        // if
-        // (this.mapTiles[x][y].isInSameTerritory(this.mapTiles[x][y].get(Direction.DOWN)))
-        // {
-        // sb.append("#+");
-        // } else {
         sb.append("-+");
-        // }
       }
       sb.append('\n');
     }

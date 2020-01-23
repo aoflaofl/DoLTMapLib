@@ -25,11 +25,11 @@ public final class DoLTCLI {
   private static final int DEFAULT_MAP_WIDTH = 40;
 
   public static void main(final String[] args) {
-    final DoltWorld<MapTile> world = new DoltWorld<>(10, 10);
+    final DoltWorld<MapTile> world = new DoltWorld<>(10, 10, MapTile.class);
     NewWorldTileImpl t = world.getMapTile(5, 5);
     t.setType(WorldTileType.LAND);
 
-    System.out.println(world.toString());
+    LOGGER.info("This is the world {}", world);
 
     LOGGER.info("Something will happen here!");
     final DoltMap world1 = new DoltMap(DEFAULT_MAP_WIDTH, DEFAULT_MAP_HEIGHT, DEFAULT_NUM_TERRITORIES);
