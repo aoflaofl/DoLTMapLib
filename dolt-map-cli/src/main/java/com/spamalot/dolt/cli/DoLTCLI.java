@@ -1,6 +1,7 @@
 package com.spamalot.dolt.cli;
 
 import com.spamalot.dolt.map.DoltMap;
+import com.spamalot.dolt.map.MapTile;
 import com.spamalot.dolt.world.DoltWorld;
 import com.spamalot.dolt.world.NewWorldTileImpl;
 import com.spamalot.dolt.world.WorldTileType;
@@ -24,7 +25,7 @@ public final class DoLTCLI {
   private static final int DEFAULT_MAP_WIDTH = 40;
 
   public static void main(final String[] args) {
-    final DoltWorld world = new DoltWorld(10, 10);
+    final DoltWorld<MapTile> world = new DoltWorld<>(10, 10);
     NewWorldTileImpl t = world.getMapTile(5, 5);
     t.setType(WorldTileType.LAND);
 

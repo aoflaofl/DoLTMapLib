@@ -12,7 +12,7 @@ import com.spamalot.dolt.world.grid.Direction;
  * @author gej
  *
  */
-public class DoltWorld {
+public class DoltWorld<T extends NewWorldTileImpl> {
 
   /** A range check object for the height of the map. */
   private Range<Integer> heightRange;
@@ -20,7 +20,7 @@ public class DoltWorld {
   private final int mapHeight;
 
   /** The MapTiles that make up this Map. */
-  private NewWorldTileImpl[][] mapTiles;
+  private T[][] mapTiles;
   /** Actual width of the Map. */
   private final int mapWidth;
 
@@ -33,6 +33,7 @@ public class DoltWorld {
    * @param width  Width of the Map
    * @param height Height of the Map
    */
+  @SuppressWarnings("unchecked")
   public DoltWorld(final int width, final int height) {
     this.mapWidth = width;
     this.mapHeight = height;
@@ -40,8 +41,8 @@ public class DoltWorld {
     this.widthRange = Range.closedOpen(0, this.mapWidth);
     this.heightRange = Range.closedOpen(0, this.mapHeight);
 
-    this.mapTiles = new NewWorldTileImpl[width][height];
-
+    // this.mapTiles = new T[width][height];
+    this.mapTiles = (T[][]) new NewWorldTileImpl[width][height];
     // Initialize all the tiles to be water tiles.
     initMapTiles(width, height, WorldTileType.WATER);
     // Link the tiles orthogonally to their neighbors
@@ -83,10 +84,13 @@ public class DoltWorld {
    * @param height Height of the map
    * @param type   Type of tile
    */
+  @SuppressWarnings("unchecked")
   private void initMapTiles(final int width, final int height, final WorldTileType type) {
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        this.mapTiles[i][j] = new NewWorldTileImpl();
+        // TODO: Replace this with getting an actual instance of T.  
+        // https://stackoverflow.com/questions/2434041/instantiating-generics-type-in-java
+        this.mapTiles[i][j] = (T) new NewWorldTileImpl();
         this.mapTiles[i][j].setType(type);
       }
     }

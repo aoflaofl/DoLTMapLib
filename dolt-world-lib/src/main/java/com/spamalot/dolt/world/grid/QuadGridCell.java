@@ -1,7 +1,6 @@
 package com.spamalot.dolt.world.grid;
 
 import com.google.common.collect.Sets;
-
 import java.util.HashSet;
 
 /**

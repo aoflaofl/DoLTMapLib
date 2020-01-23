@@ -66,7 +66,7 @@ public class DoltMap {
   /**
    * The Game Map for this World.
    */
-  private final DoltWorld gameMap;
+  private final DoltWorld<MapTile> gameMap;
 
   /**
    * A Random Number Generator.
@@ -81,7 +81,7 @@ public class DoltMap {
    * @param numTerritories the number of territories to put in the map
    */
   public DoltMap(final int mapWidth, final int mapHeight, final int numTerritories) {
-    this.gameMap = new DoltWorld(mapWidth, mapHeight);
+    this.gameMap = new DoltWorld<>(mapWidth, mapHeight);
 
     addTerritories(numTerritories, DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
 
