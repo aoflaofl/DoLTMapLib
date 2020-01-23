@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.spamalot.dolt.world;
 
 import static org.junit.Assert.*;

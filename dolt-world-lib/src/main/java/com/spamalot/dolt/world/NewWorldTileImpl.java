@@ -63,4 +63,9 @@ public class NewWorldTileImpl extends QuadGridCell<NewWorldTileImpl> {
   public void setType(final WorldTileType type) {
     tileType = type;
   }
+
+  @Override
+  public String toString() {
+    return tileType.toString();
+  }
 }

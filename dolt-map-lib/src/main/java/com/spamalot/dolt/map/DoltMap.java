@@ -1,7 +1,7 @@
 package com.spamalot.dolt.map;
 
 import com.spamalot.dolt.world.DoltWorld;
-import com.spamalot.dolt.world.WorldTile;
+//import com.spamalot.dolt.world.NewWorldTileImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class DoltMap {
+  /** Loggit. */
   private static final Logger LOGGER = LoggerFactory.getLogger(DoltMap.class);
   /**
    * When creating a Territory it can fail if there are not enough water tiles for
@@ -65,7 +66,7 @@ public class DoltMap {
   /**
    * The Game Map for this World.
    */
-  private final DoltWorld<MapFeatures> gameMap;
+  private final DoltWorld gameMap;
 
   /**
    * A Random Number Generator.
@@ -80,7 +81,7 @@ public class DoltMap {
    * @param numTerritories the number of territories to put in the map
    */
   public DoltMap(final int mapWidth, final int mapHeight, final int numTerritories) {
-    this.gameMap = new DoltWorld<>(mapWidth, mapHeight);
+    this.gameMap = new DoltWorld(mapWidth, mapHeight);
 
     addTerritories(numTerritories, DEFAULT_MIN_TERRITORY_SIZE, DEFAULT_MAX_TERRITORY_SIZE);
 
@@ -98,7 +99,7 @@ public class DoltMap {
    */
   private void addTerritories(final int numTerritories, final int minTerritorySize, final int maxTerritorySize) {
     // Make the first territory. TODO: be more random in initial placement.
-    final Territory territory = new Territory.Builder(this.gameMap.getMapTile(0, 0), minTerritorySize, maxTerritorySize)
+    final Territory territory = new Territory.Builder((MapTile) this.gameMap.getMapTile(0, 0), minTerritorySize, maxTerritorySize)
         .build();
     this.territories.add(territory);
 
@@ -106,17 +107,17 @@ public class DoltMap {
     Territory rndTerritory = getRandomTerritoryNotLandLocked();
     while (rndTerritory != null && count < numTerritories) {
 
-      WorldTile<MapFeatures> tile = Territory.getRandomAdjacentWaterTile(rndTerritory);
+      MapTile tile = Territory.getRandomAdjacentWaterTile(rndTerritory);
       if (tile == null) {
         rndTerritory.setLandLocked();
         rndTerritory = getRandomTerritoryNotLandLocked();
         continue;
       }
       int rndSize = getRandomTargetSize(minTerritorySize, maxTerritorySize);
-      Set<WorldTile<MapFeatures>> cnt = Territory.countWaterTilesAvailableWithMax(tile, rndSize);
+      Set<MapTile> cnt = Territory.countWaterTilesAvailableWithMax(tile, rndSize);
 
       if (cnt.size() < minTerritorySize) {
-        for (WorldTile<MapFeatures> gjkdf : cnt) {
+        for (MapTile gjkdf : cnt) {
           gjkdf.setOffLimits(true);
         }
         rndTerritory = getRandomTerritoryNotLandLocked();
@@ -165,13 +166,13 @@ public class DoltMap {
    * @param minTerritorySize Minimum size to make this territory
    * @param maxTerritorySize Maximum size to make this territory
    */
-  private void generateTerritory(final WorldTile<MapFeatures> tile, final int minTerritorySize, final int maxTerritorySize) {
+  private void generateTerritory(final MapTile tile, final int minTerritorySize, final int maxTerritorySize) {
     // TODO: Move space checking into here.
     // TODO: Maybe determine size outside of this method.
     Territory newTerritory = null;
     int attempts = TERRITORY_BUILD_ATTEMPTS;
     while (newTerritory == null && attempts-- > 0) {
-      WorldTile<MapFeatures> startTile = tile;
+      MapTile startTile = tile;
       newTerritory = new Territory.Builder(startTile, minTerritorySize, maxTerritorySize).build();
     }
 

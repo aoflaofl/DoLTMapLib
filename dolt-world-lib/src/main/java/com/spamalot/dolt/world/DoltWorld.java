@@ -12,7 +12,7 @@ import com.spamalot.dolt.world.grid.Direction;
  * @author gej
  *
  */
-public class DoltWorld<T extends MapTileFeatures> {
+public class DoltWorld {
 
   /** A range check object for the height of the map. */
   private Range<Integer> heightRange;
@@ -20,7 +20,7 @@ public class DoltWorld<T extends MapTileFeatures> {
   private final int mapHeight;
 
   /** The MapTiles that make up this Map. */
-  private WorldTile<T>[][] mapTiles;
+  private NewWorldTileImpl[][] mapTiles;
   /** Actual width of the Map. */
   private final int mapWidth;
 
@@ -40,7 +40,7 @@ public class DoltWorld<T extends MapTileFeatures> {
     this.widthRange = Range.closedOpen(0, this.mapWidth);
     this.heightRange = Range.closedOpen(0, this.mapHeight);
 
-    this.mapTiles = new WorldTile[width][height];
+    this.mapTiles = new NewWorldTileImpl[width][height];
 
     // Initialize all the tiles to be water tiles.
     initMapTiles(width, height, WorldTileType.WATER);
@@ -55,7 +55,7 @@ public class DoltWorld<T extends MapTileFeatures> {
    * @param j Vertical coordinate
    * @return The map tile at those coordinates
    */
-  public final WorldTile<T> getMapTile(final int i, final int j) {
+  public final NewWorldTileImpl getMapTile(final int i, final int j) {
     if (isOnMap(i, j)) {
       return this.mapTiles[i][j];
     }
@@ -70,7 +70,7 @@ public class DoltWorld<T extends MapTileFeatures> {
    * @param dir Direction to get map tile
    * @return The map tile in that direction
    */
-  private WorldTile<T> getMapTileInDirection(final int i, final int j, final Direction dir) {
+  private NewWorldTileImpl getMapTileInDirection(final int i, final int j, final Direction dir) {
     checkNotNull(dir);
 
     return getMapTile(i + dir.gethDiff(), j + dir.getvDiff());
@@ -86,7 +86,7 @@ public class DoltWorld<T extends MapTileFeatures> {
   private void initMapTiles(final int width, final int height, final WorldTileType type) {
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
-        this.mapTiles[i][j] = new WorldTile<>();
+        this.mapTiles[i][j] = new NewWorldTileImpl();
         this.mapTiles[i][j].setType(type);
       }
     }
@@ -109,12 +109,12 @@ public class DoltWorld<T extends MapTileFeatures> {
   private void linkTiles() {
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
-        WorldTile<T> left = getMapTileInDirection(i, j, Direction.LEFT);
-        WorldTile<T> right = getMapTileInDirection(i, j, Direction.RIGHT);
-        WorldTile<T> up = getMapTileInDirection(i, j, Direction.UP);
-        WorldTile<T> down = getMapTileInDirection(i, j, Direction.DOWN);
+        NewWorldTileImpl left = getMapTileInDirection(i, j, Direction.LEFT);
+        NewWorldTileImpl right = getMapTileInDirection(i, j, Direction.RIGHT);
+        NewWorldTileImpl up = getMapTileInDirection(i, j, Direction.UP);
+        NewWorldTileImpl down = getMapTileInDirection(i, j, Direction.DOWN);
 
-        WorldTile<T> cur = getMapTile(i, j);
+        NewWorldTileImpl cur = getMapTile(i, j);
 
         cur.linkTileInDirection(Direction.LEFT, left);
         cur.linkTileInDirection(Direction.RIGHT, right);

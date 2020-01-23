@@ -2,8 +2,9 @@ package com.spamalot.dolt.cli;
 
 import com.spamalot.dolt.map.DoltMap;
 import com.spamalot.dolt.world.DoltWorld;
-import com.spamalot.dolt.world.WorldTile;
+import com.spamalot.dolt.world.NewWorldTileImpl;
 import com.spamalot.dolt.world.WorldTileType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,7 @@ public final class DoLTCLI {
 
   public static void main(final String[] args) {
     final DoltWorld world = new DoltWorld(10, 10);
-    WorldTile t = world.getMapTile(5, 5);
+    NewWorldTileImpl t = world.getMapTile(5, 5);
     t.setType(WorldTileType.LAND);
 
     System.out.println(world.toString());

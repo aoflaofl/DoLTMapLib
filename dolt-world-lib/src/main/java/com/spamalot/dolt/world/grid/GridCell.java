@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.spamalot.dolt.world.grid;
 
 import java.util.Collection;
@@ -24,7 +21,7 @@ public abstract class GridCell<T> {
    * @param dir  The direction
    * @param tile The tile
    */
-  void linkTileInDirection(final Direction dir, final T tile) {
+  public void linkTileInDirection(final Direction dir, final T tile) {
     if (isGoodDir(dir)) {
       this.linkedTiles.put(dir, tile);
     }
