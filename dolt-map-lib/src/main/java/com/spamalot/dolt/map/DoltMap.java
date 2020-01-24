@@ -74,7 +74,7 @@ public class DoltMap {
   private static final Random RNG = new Random();
 
   /**
-   * The DoltWorld is a DoltMap and the list of Territories in it.
+   * The DoltMap is a DoltWorld and the list of Territories in it.
    * 
    * @param mapWidth       the map's width
    * @param mapHeight      the map's height
@@ -99,7 +99,7 @@ public class DoltMap {
    */
   private void addTerritories(final int numTerritories, final int minTerritorySize, final int maxTerritorySize) {
     // Make the first territory. TODO: be more random in initial placement.
-    final Territory territory = new Territory.Builder((MapTile) this.gameMap.getMapTile(0, 0), minTerritorySize, maxTerritorySize)
+    final Territory territory = new Territory.Builder(this.gameMap.getMapTile(0, 0), minTerritorySize, maxTerritorySize)
         .build();
     this.territories.add(territory);
 

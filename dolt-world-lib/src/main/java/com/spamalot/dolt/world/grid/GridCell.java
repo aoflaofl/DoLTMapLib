@@ -22,7 +22,7 @@ public abstract class GridCell<T> {
    * @param cell The cell to link
    */
   public void linkTileInDirection(final Direction dir, final T cell) {
-    if (isValidDir(dir)) {
+    if (isValidDir(dir) && cell != null) {
       this.linkedTiles.put(dir, cell);
     }
   }

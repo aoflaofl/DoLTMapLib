@@ -6,7 +6,18 @@ package com.spamalot.dolt.world;
  */
 public enum WorldTileType {
   /** This Tile is Land. */
-  LAND,
+  LAND("#"),
   /** This Tile is Water. */
-  WATER
+  WATER(".");
+
+  private String stringValue;
+
+  WorldTileType(String value) {
+    stringValue = value;
+  }
+
+  @Override
+  public String toString() {
+    return stringValue;
+  }
 }

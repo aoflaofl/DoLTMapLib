@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Hold the map. Idea is a World is just the terrain, not the political
+ * The World class. A World is just the terrain, not the political
  * boundaries.
  *
  * @author gej
@@ -16,17 +16,19 @@ import org.slf4j.LoggerFactory;
  * @param <T> A tile type
  *
  */
-public class DoltWorld<T extends NewWorldTileImpl> {
+public class DoltWorld<T extends WorldTile> {
   /** Loggit. */
   private static final Logger LOGGER = LoggerFactory.getLogger(DoltWorld.class);
 
   /** A range check object for the height of the map. */
   private final Range<Integer> heightRange;
+
   /** Actual height of the Map. */
   private final int mapHeight;
 
   /** The MapTiles that make up this Map. */
   private T[][] mapTiles;
+
   /** Actual width of the Map. */
   private final int mapWidth;
 
@@ -48,7 +50,7 @@ public class DoltWorld<T extends NewWorldTileImpl> {
     this.widthRange = Range.closedOpen(0, this.mapWidth);
     this.heightRange = Range.closedOpen(0, this.mapHeight);
 
-    this.mapTiles = (T[][]) new NewWorldTileImpl[width][height];
+    this.mapTiles = (T[][]) new WorldTile[width][height];
     // Initialize all the tiles to be water tiles.
     initMapTiles(width, height, WorldTileType.WATER, clazz);
     // Link the tiles orthogonally to their neighbors
@@ -122,7 +124,7 @@ public class DoltWorld<T extends NewWorldTileImpl> {
   private void linkTiles() {
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
-        NewWorldTileImpl cur = getMapTile(i, j);
+        WorldTile cur = getMapTile(i, j);
         if (cur != null) {
           cur.linkTileInDirection(Direction.LEFT, getMapTileInDirection(i, j, Direction.LEFT));
           cur.linkTileInDirection(Direction.RIGHT, getMapTileInDirection(i, j, Direction.RIGHT));

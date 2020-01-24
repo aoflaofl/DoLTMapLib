@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class NewWorldTileImpl extends QuadGridCell<NewWorldTileImpl> {
+public class WorldTile extends QuadGridCell<WorldTile> {
 
   /** The MapTileType of this MapTile. */
   private WorldTileType tileType;
@@ -18,9 +18,9 @@ public class NewWorldTileImpl extends QuadGridCell<NewWorldTileImpl> {
    * 
    * @return List of adjacent MapTiles that are water
    */
-  public List<NewWorldTileImpl> getAdjacentWaterTiles() {
-    List<NewWorldTileImpl> p = new ArrayList<>();
-    for (NewWorldTileImpl x : this.getNeighborGridCells()) {
+  public List<WorldTile> getAdjacentWaterTiles() {
+    List<WorldTile> p = new ArrayList<>();
+    for (WorldTile x : this.getNeighborGridCells()) {
       if (x.getType() == WorldTileType.WATER) {
         p.add(x);
       }
@@ -34,9 +34,9 @@ public class NewWorldTileImpl extends QuadGridCell<NewWorldTileImpl> {
    * 
    * @return a MapTile with water, or null if there is none
    */
-  public NewWorldTileImpl getRandomAdjacentWaterTile() {
-    NewWorldTileImpl ret = null;
-    List<NewWorldTileImpl> waterList = getAdjacentWaterTiles();
+  public WorldTile getRandomAdjacentWaterTile() {
+    WorldTile ret = null;
+    List<WorldTile> waterList = getAdjacentWaterTiles();
     if (!waterList.isEmpty()) {
 
       final int index = RNG.nextInt(waterList.size());

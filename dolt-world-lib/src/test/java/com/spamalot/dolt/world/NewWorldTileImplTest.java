@@ -13,7 +13,7 @@ import org.junit.Test;
  *
  */
 public class NewWorldTileImplTest {
-  NewWorldTileImpl testTile;
+  WorldTile testTile;
 
   /**
    * @throws java.lang.Exception
@@ -34,7 +34,7 @@ public class NewWorldTileImplTest {
    */
   @Before
   public void setUp() throws Exception {
-    testTile = new NewWorldTileImpl();
+    testTile = new WorldTile();
   }
 
   /**
@@ -46,7 +46,7 @@ public class NewWorldTileImplTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.world.NewWorldTileImpl#getAdjacentWaterTiles()}.
+   * {@link com.spamalot.dolt.world.WorldTile#getAdjacentWaterTiles()}.
    */
   @Test
   public void testGetAdjacentWaterTiles() {
@@ -55,7 +55,7 @@ public class NewWorldTileImplTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.world.NewWorldTileImpl#getRandomAdjacentWaterTile()}.
+   * {@link com.spamalot.dolt.world.WorldTile#getRandomAdjacentWaterTile()}.
    */
   @Test
   public void testGetRandomAdjacentWaterTile() {
@@ -63,7 +63,7 @@ public class NewWorldTileImplTest {
   }
 
   /**
-   * Test method for {@link com.spamalot.dolt.world.NewWorldTileImpl#getType()}.
+   * Test method for {@link com.spamalot.dolt.world.WorldTile#getType()}.
    */
   @Test
   public void testGetType() {
@@ -72,7 +72,7 @@ public class NewWorldTileImplTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.world.NewWorldTileImpl#setType(com.spamalot.dolt.world.WorldTileType)}.
+   * {@link com.spamalot.dolt.world.WorldTile#setType(com.spamalot.dolt.world.WorldTileType)}.
    */
   @Test
   public void testSetType() {
