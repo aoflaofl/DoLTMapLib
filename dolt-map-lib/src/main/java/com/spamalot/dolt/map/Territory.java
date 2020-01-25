@@ -2,7 +2,6 @@ package com.spamalot.dolt.map;
 
 import com.google.common.collect.Range;
 import com.spamalot.dolt.world.WorldTile;
-//import com.spamalot.dolt.world.MapTile;
 import com.spamalot.dolt.world.WorldTileType;
 import com.spamalot.dolt.world.grid.Direction;
 
@@ -56,7 +55,7 @@ final class Territory {
     while (!tileQueue.isEmpty()) {
       MapTile waterTile = tileQueue.remove();
       for (WorldTile adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
-        if (!seenTiles.contains((MapTile) adjacentWaterTile)) {
+        if (!seenTiles.contains(adjacentWaterTile)) {
           count++;
 
           tileQueue.add((MapTile) adjacentWaterTile);
@@ -168,7 +167,6 @@ final class Territory {
     private static void clearTerritoryTiles(final Territory t) {
       for (MapTile tile : t.territoryTiles) {
         tile.setType(WorldTileType.WATER);
-        // tile.setTerritory(null);
         tile.setTerritory(null);
         tile.setOffLimits(true);
       }

@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @param <T> Cell class
  */
-public abstract class GridCell<T> {
+public abstract class AbstractGridCell<T> {
   /** Cells that link to this one. */
   private final Map<Direction, T> linkedTiles = new EnumMap<>(Direction.class);
 

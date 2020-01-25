@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Base Tile.
+ * 
+ * @author gejohann
+ *
+ */
 public class WorldTile extends QuadGridCell<WorldTile> {
 
   /** The MapTileType of this MapTile. */
@@ -63,6 +69,9 @@ public class WorldTile extends QuadGridCell<WorldTile> {
     tileType = type;
   }
 
+  /**
+   * Need to override this if you extend this class.
+   */
   @Override
   public String toString() {
     return tileType.toString();

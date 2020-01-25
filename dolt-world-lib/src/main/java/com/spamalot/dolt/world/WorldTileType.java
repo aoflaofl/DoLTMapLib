@@ -10,9 +10,10 @@ public enum WorldTileType {
   /** This Tile is Water. */
   WATER(".");
 
+  /** Visible representation. */
   private String stringValue;
 
-  WorldTileType(String value) {
+  WorldTileType(final String value) {
     stringValue = value;
   }
 

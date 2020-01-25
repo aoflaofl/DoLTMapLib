@@ -10,7 +10,7 @@ import java.util.HashSet;
  *
  * @param <T> Cell class
  */
-public class QuadGridCell<T extends GridCell<? super T>> extends GridCell<T> {
+public class QuadGridCell<T extends AbstractGridCell<? super T>> extends AbstractGridCell<T> {
   /** Set of allowed directions. */
   private HashSet<Direction> allowedDirections;
 

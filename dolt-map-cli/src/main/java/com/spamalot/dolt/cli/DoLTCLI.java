@@ -5,13 +5,10 @@ import com.spamalot.dolt.map.MapTile;
 import com.spamalot.dolt.world.DoltWorld;
 import com.spamalot.dolt.world.WorldTile;
 import com.spamalot.dolt.world.WorldTileType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class DoLTCLI {
-  private DoLTCLI() {
-  }
 
   /** Loggit. */
   private static final Logger LOGGER = LoggerFactory.getLogger(DoLTCLI.class);
@@ -25,6 +22,15 @@ public final class DoLTCLI {
   /** Width of a default Map. */
   private static final int DEFAULT_MAP_WIDTH = 40;
 
+  /** Instantiate nothing. */
+  private DoLTCLI() {
+  }
+
+  /**
+   * Do something.
+   * 
+   * @param args Do something with these
+   */
   public static void main(final String[] args) {
     final DoltWorld<MapTile> world = new DoltWorld<>(10, 10, MapTile.class);
     WorldTile t = world.getMapTile(5, 5);

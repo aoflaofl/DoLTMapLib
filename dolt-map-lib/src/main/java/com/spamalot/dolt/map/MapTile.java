@@ -2,12 +2,20 @@ package com.spamalot.dolt.map;
 
 import com.spamalot.dolt.world.WorldTile;
 
+/**
+ * @author gejohann
+ *
+ */
 public class MapTile extends WorldTile {
   private Territory territory;
+  private boolean offLimits;
 
   public void setOffLimits(boolean b) {
-    // TODO Auto-generated method stub
+    offLimits = b;
+  }
 
+  public boolean isOffLimits() {
+    return offLimits;
   }
 
   public void setTerritory(Territory object) {
@@ -17,5 +25,4 @@ public class MapTile extends WorldTile {
   public Territory getTerritory() {
     return territory;
   }
-
 }
