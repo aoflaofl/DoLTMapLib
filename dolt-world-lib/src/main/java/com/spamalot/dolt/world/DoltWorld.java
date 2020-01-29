@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * @param <T> A tile type
  *
  */
-public class DoltWorld<T extends WorldTile> {
+public class DoltWorld<T extends WorldTile<T>> {
   /** Loggit. */
   private static final Logger LOGGER = LoggerFactory.getLogger(DoltWorld.class);
 
@@ -124,7 +124,7 @@ public class DoltWorld<T extends WorldTile> {
   private void linkTiles() {
     for (int i = 0; i < this.mapWidth; i++) {
       for (int j = 0; j < this.mapHeight; j++) {
-        WorldTile cur = getMapTile(i, j);
+        T cur = getMapTile(i, j);
         if (cur != null) {
           cur.linkTileInDirection(Direction.LEFT, getMapTileInDirection(i, j, Direction.LEFT));
           cur.linkTileInDirection(Direction.RIGHT, getMapTileInDirection(i, j, Direction.RIGHT));

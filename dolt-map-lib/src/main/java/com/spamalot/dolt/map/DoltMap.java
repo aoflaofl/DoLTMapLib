@@ -42,6 +42,12 @@ import org.slf4j.LoggerFactory;
 public class DoltMap {
   /** Loggit. */
   private static final Logger LOGGER = LoggerFactory.getLogger(DoltMap.class);
+
+  /**
+   * A Random Number Generator.
+   */
+  private static final Random RNG = new Random();
+
   /**
    * When creating a Territory it can fail if there are not enough water tiles for
    * the given size. This is the number of times to attempt to build.
@@ -67,11 +73,6 @@ public class DoltMap {
    * The Game Map for this World.
    */
   private final DoltWorld<MapTile> gameMap;
-
-  /**
-   * A Random Number Generator.
-   */
-  private static final Random RNG = new Random();
 
   /**
    * The DoltMap is a DoltWorld and the list of Territories in it.

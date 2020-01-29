@@ -1,9 +1,9 @@
 package com.spamalot.dolt.map;
 
 import com.google.common.collect.Range;
-import com.spamalot.dolt.world.WorldTile;
 import com.spamalot.dolt.world.WorldTileType;
 import com.spamalot.dolt.world.grid.Direction;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
+
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,12 +53,12 @@ final class Territory {
     int count = 0;
     while (!tileQueue.isEmpty()) {
       MapTile waterTile = tileQueue.remove();
-      for (WorldTile adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
+      for (MapTile adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
         if (!seenTiles.contains(adjacentWaterTile)) {
           count++;
 
-          tileQueue.add((MapTile) adjacentWaterTile);
-          seenTiles.add((MapTile) adjacentWaterTile);
+          tileQueue.add(adjacentWaterTile);
+          seenTiles.add(adjacentWaterTile);
 
           if (count == max) {
             return seenTiles;
@@ -81,8 +82,8 @@ final class Territory {
     SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
     for (MapTile landTile : territory.territoryTiles) {
-      for (WorldTile water : landTile.getAdjacentWaterTiles()) {
-        waterTiles.add((MapTile) water);
+      for (MapTile water : landTile.getAdjacentWaterTiles()) {
+        waterTiles.add(water);
       }
     }
 
@@ -109,7 +110,7 @@ final class Territory {
 
       for (final Direction y : directions) {
 
-        MapTile nd = (MapTile) p.get(y);
+        MapTile nd = p.get(y);
         if (isNeighbor(nd)) {
 
           this.neighbors.add(p.getTerritory());
@@ -188,7 +189,7 @@ final class Territory {
     }
 
     private static MapTile getNextTile(final MapTile tile, final Territory t) {
-      MapTile result = (MapTile) tile.getRandomAdjacentWaterTile();
+      MapTile result = tile.getRandomAdjacentWaterTile();
       if (result == null) {
         result = getRandomAdjacentWaterTile(t);
       }

@@ -3,8 +3,8 @@ package com.spamalot.dolt.cli;
 import com.spamalot.dolt.map.DoltMap;
 import com.spamalot.dolt.map.MapTile;
 import com.spamalot.dolt.world.DoltWorld;
-import com.spamalot.dolt.world.WorldTile;
 import com.spamalot.dolt.world.WorldTileType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public final class DoLTCLI {
    */
   public static void main(final String[] args) {
     final DoltWorld<MapTile> world = new DoltWorld<>(10, 10, MapTile.class);
-    WorldTile t = world.getMapTile(5, 5);
+    MapTile t = world.getMapTile(5, 5);
     t.setType(WorldTileType.LAND);
 
     LOGGER.info("This is the world {}", world);

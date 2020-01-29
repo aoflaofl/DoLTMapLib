@@ -6,7 +6,7 @@ import com.spamalot.dolt.world.WorldTile;
  * @author gejohann
  *
  */
-public class MapTile extends WorldTile {
+public class MapTile extends WorldTile<MapTile> {
   private Territory territory;
   private boolean offLimits;
 
