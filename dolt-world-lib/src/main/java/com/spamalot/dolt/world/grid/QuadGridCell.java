@@ -10,7 +10,7 @@ import java.util.HashSet;
  *
  * @param <T> Cell class
  */
-public class QuadGridCell<T extends AbstractGridCell<? super T>> extends AbstractGridCell<T> {
+public class QuadGridCell<T extends QuadGridCell<T>> extends AbstractGridCell<T> {
   /** Set of allowed directions. */
   private HashSet<Direction> allowedDirections;
 
@@ -21,7 +21,7 @@ public class QuadGridCell<T extends AbstractGridCell<? super T>> extends Abstrac
   }
 
   @Override
-  final boolean isValidDir(final Direction dir) {
+  final boolean isValidDirection(final Direction dir) {
     return allowedDirections.contains(dir);
   }
 }

@@ -4,7 +4,6 @@ import com.google.common.collect.Range;
 import com.spamalot.dolt.world.WorldTile;
 import com.spamalot.dolt.world.WorldTileType;
 import com.spamalot.dolt.world.grid.Direction;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
-
 import org.apache.commons.collections4.list.SetUniqueList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +24,10 @@ import org.slf4j.LoggerFactory;
  */
 final class Territory {
   /** Logger. */
-  private static final Logger LOGGER = LoggerFactory.getLogger(Territory.class);
+  static final Logger LOGGER = LoggerFactory.getLogger(Territory.class);
 
   /** Random Number Generator. */
-  private static final Random RNG = new Random();
+  static final Random RNG = new Random();
 
   private boolean landlocked;
 
@@ -42,7 +40,7 @@ final class Territory {
    * some point we will need to pick a random MapTile. This is a List that can't
    * contain duplicates.
    */
-  private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
+  final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
   static Set<MapTile> countWaterTilesAvailableWithMax(final MapTile startTile, final int max) {
 
