@@ -12,12 +12,15 @@ import java.util.HashSet;
  */
 public class QuadGridCell<T> extends AbstractGridCell<T> {
   /** Set of allowed directions. */
-  private HashSet<Direction> allowedDirections;
+  private static HashSet<Direction> allowedDirections;
 
   /** Handle a cell that links Orthogonally. */
   public QuadGridCell() {
     super();
-    allowedDirections = Sets.newHashSet(Direction.values());
+
+    if (allowedDirections == null) {
+      allowedDirections = Sets.newHashSet(Direction.values());
+    }
   }
 
   @Override
