@@ -21,7 +21,7 @@ public class MapTileTest {
 
   /**
    * Test method for
-   * {@link com.spamalot.dolt.world.WorldTile#linkTileInDirection(com.spamalot.dolt.map.Direction, com.spamalot.dolt.world.WorldTile)}.
+   * {@link com.spamalot.dolt.world.WorldTile#linkCellInDirection(com.spamalot.dolt.map.Direction, com.spamalot.dolt.world.WorldTile)}.
    */
   @Test
   public void testLinkTileInDirection() {

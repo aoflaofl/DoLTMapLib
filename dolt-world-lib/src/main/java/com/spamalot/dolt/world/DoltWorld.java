@@ -126,10 +126,10 @@ public class DoltWorld<T extends WorldTile<T>> {
       for (int j = 0; j < this.mapHeight; j++) {
         T cur = getMapTile(i, j);
         if (cur != null) {
-          cur.linkTileInDirection(Direction.LEFT, getMapTileInDirection(i, j, Direction.LEFT));
-          cur.linkTileInDirection(Direction.RIGHT, getMapTileInDirection(i, j, Direction.RIGHT));
-          cur.linkTileInDirection(Direction.UP, getMapTileInDirection(i, j, Direction.UP));
-          cur.linkTileInDirection(Direction.DOWN, getMapTileInDirection(i, j, Direction.DOWN));
+          cur.linkCellInDirection(Direction.LEFT, getMapTileInDirection(i, j, Direction.LEFT));
+          cur.linkCellInDirection(Direction.RIGHT, getMapTileInDirection(i, j, Direction.RIGHT));
+          cur.linkCellInDirection(Direction.UP, getMapTileInDirection(i, j, Direction.UP));
+          cur.linkCellInDirection(Direction.DOWN, getMapTileInDirection(i, j, Direction.DOWN));
         }
       }
     }

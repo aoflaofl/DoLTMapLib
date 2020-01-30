@@ -25,7 +25,7 @@ public class WorldTile<T extends WorldTile<T>> extends QuadGridCell<T> {
    */
   public List<T> getAdjacentWaterTiles() {
     List<T> p = new ArrayList<>();
-    for (T x : this.getNeighborGridCells()) {
+    for (T x : this.getAllNeighborCells()) {
       if (x.getType() == WorldTileType.WATER) {
         p.add(x);
       }
@@ -34,7 +34,7 @@ public class WorldTile<T extends WorldTile<T>> extends QuadGridCell<T> {
     return p;
   }
 
-  public WorldTile(WorldTileType tileType) {
+  private WorldTile(WorldTileType tileType) {
     super();
     this.tileType = tileType;
   }

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 abstract class AbstractGridCell<T> {
   /** Cells that link to this one. */
-  private final Map<Direction, T> linkedTiles = new EnumMap<>(Direction.class);
+  private final Map<Direction, T> neighborCells = new EnumMap<>(Direction.class);
 
   /**
    * Link a Cell to this one.
@@ -21,9 +21,9 @@ abstract class AbstractGridCell<T> {
    * @param dir  The direction
    * @param cell The cell to link
    */
-  public void linkTileInDirection(final Direction dir, final T cell) {
+  public void linkCellInDirection(final Direction dir, final T cell) {
     if (cell != null && isValidDirection(dir)) {
-      this.linkedTiles.put(dir, cell);
+      this.neighborCells.put(dir, cell);
     }
   }
 
@@ -34,11 +34,11 @@ abstract class AbstractGridCell<T> {
    * @return Cell in that Direction.
    */
   public final T get(final Direction dir) {
-    return this.linkedTiles.get(dir);
+    return this.neighborCells.get(dir);
   }
 
-  protected final Collection<T> getNeighborGridCells() {
-    return this.linkedTiles.values();
+  protected final Collection<T> getAllNeighborCells() {
+    return this.neighborCells.values();
   }
 
   abstract boolean isValidDirection(Direction dir);

@@ -25,10 +25,10 @@ import org.slf4j.LoggerFactory;
  */
 final class Territory {
   /** Logger. */
-  static final Logger LOGGER = LoggerFactory.getLogger(Territory.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(Territory.class);
 
   /** Random Number Generator. */
-  static final Random RNG = new Random();
+  private static final Random RNG = new Random();
 
   private boolean landlocked;
 
@@ -41,7 +41,7 @@ final class Territory {
    * some point we will need to pick a random MapTile. This is a List that can't
    * contain duplicates.
    */
-  final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
+  private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
   static Set<MapTile> countWaterTilesAvailableWithMax(final MapTile startTile, final int max) {
 
