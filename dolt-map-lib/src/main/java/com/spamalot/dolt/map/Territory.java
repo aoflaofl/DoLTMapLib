@@ -24,7 +24,35 @@ import org.slf4j.LoggerFactory;
  *
  */
 final class Territory {
+  private boolean landlocked;
+
+  private final Set<Territory> neighbors = new HashSet<>();
+
+  private boolean offLimits;
+  /**
+   * The MapTiles that make up this Territory. Make it a SetUniqueList because at
+   * some point we will need to pick a random MapTile. This is a List that can't
+   * contain duplicates.
+   *
+   * TODO: Make this a Set?
+   */
+  private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
+
   public static class Builder {
+    private final int maximumSize;
+
+    private final int minimumSize;
+
+    private Range<Integer> sizeRange;
+
+    private final MapTile startTile;
+
+    Builder(final MapTile initTile, final int minSize, final int maxSize) {
+      this.startTile = initTile;
+      this.minimumSize = minSize;
+      this.maximumSize = maxSize;
+    }
+
     /**
      * Mark the MapTiles assigned to this Territory as water, but since there failed
      * to be enough of them in a cluster to make a Territory also mark them as off
@@ -91,20 +119,6 @@ final class Territory {
       tile.setType(WorldTileType.LAND);
       tile.setTerritory(t);
       t.getTerritoryTiles().add(tile);
-    }
-
-    private final int maximumSize;
-
-    private final int minimumSize;
-
-    private Range<Integer> sizeRange;
-
-    private final MapTile startTile;
-
-    Builder(final MapTile initTile, final int minSize, final int maxSize) {
-      this.startTile = initTile;
-      this.minimumSize = minSize;
-      this.maximumSize = maxSize;
     }
 
     public Territory build() {
@@ -182,7 +196,7 @@ final class Territory {
     return seenTiles;
   }
 
-  public static Logger getLogger() {
+  static Logger getLogger() {
     return LOGGER;
   }
 
@@ -199,7 +213,8 @@ final class Territory {
 
     for (MapTile landTile : territory.territoryTiles) {
       for (MapTile water : landTile.getAdjacentWaterTiles()) {
-        if (!water.isOffLimits()) {  // Ignore water tiles marked as not to be used.
+        // Ignore water tiles marked as not to be used.
+        if (!water.isOffLimits()) {
           waterTiles.add(water);
         }
       }
@@ -216,24 +231,9 @@ final class Territory {
     return result;
   }
 
-  public static Random getRng() {
+  static Random getRng() {
     return RNG;
   }
-
-  private boolean landlocked;
-
-  private final Set<Territory> neighbors = new HashSet<>();
-
-  private boolean offLimits;
-
-  /**
-   * The MapTiles that make up this Territory. Make it a SetUniqueList because at
-   * some point we will need to pick a random MapTile. This is a List that can't
-   * contain duplicates.
-   *
-   * TODO: Make this a Set?
-   */
-  private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
 
   public boolean containsTile(final MapTile tile) {
     return this.territoryTiles.contains(tile);
