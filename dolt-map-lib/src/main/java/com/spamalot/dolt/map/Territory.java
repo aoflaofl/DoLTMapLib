@@ -18,39 +18,175 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A Territory goes into a map.
+ * A Territory is a collection of land cells in a map.
  *
  * @author gej
  *
  */
 final class Territory {
+  /** Whether this territory has access to water. */
   private boolean landlocked;
 
-  private final Set<Territory> neighbors = new HashSet<>();
+  /** Territories bordering this one. */
+  private final Set<Territory> neighborTerritories = new HashSet<>();
 
   private boolean offLimits;
+
+  /** The MapTiles that make up this Territory. */
+  private final Set<MapTile> territoryTiles = new HashSet<>(new ArrayList<MapTile>());
+
+  /** Logger. */
+  private static final Logger LOGGER = LoggerFactory.getLogger(Territory.class);
+
+  /** Random Number Generator. */
+  private static final Random RNG = new Random();
+
+  static Set<MapTile> countWaterTilesAvailableWithMax(final MapTile startTile, final int max) {
+
+    Queue<MapTile> tileQueue = new LinkedList<>();
+    tileQueue.add(startTile);
+
+    Set<MapTile> seenTiles = new HashSet<>();
+    seenTiles.add(startTile);
+    int count = 0;
+    while (!tileQueue.isEmpty()) {
+      MapTile waterTile = tileQueue.remove();
+      for (MapTile adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
+        if (!seenTiles.contains(adjacentWaterTile)) {
+          count++;
+
+          tileQueue.add(adjacentWaterTile);
+          seenTiles.add(adjacentWaterTile);
+
+          if (count == max) {
+            return seenTiles;
+          }
+        }
+      }
+    }
+
+    return seenTiles;
+  }
+
+  static Logger getLogger() {
+    return LOGGER;
+  }
+
   /**
-   * The MapTiles that make up this Territory. Make it a SetUniqueList because at
-   * some point we will need to pick a random MapTile. This is a List that can't
-   * contain duplicates.
+   * Find a random water tile adjacent to this Territory.
    *
-   * TODO: Make this a Set?
+   * @param territory The territory to check for adjacent water.
+   * @return a random water tile or null if there is no water tile adjacent to
+   *         this Territory
    */
-  private final SetUniqueList<MapTile> territoryTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
+  static MapTile getRandomAdjacentWaterTile(final Territory territory) {
 
+    SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
+
+    for (MapTile landTile : territory.territoryTiles) {
+      for (MapTile water : landTile.getAdjacentWaterTiles()) {
+        // Ignore water tiles marked as not to be used.
+        if (!water.isOffLimits()) {
+          waterTiles.add(water);
+        }
+      }
+    }
+
+    MapTile result = null;
+    if (waterTiles.isEmpty()) {
+      territory.setLandLocked();
+    } else {
+      final int index = RNG.nextInt(waterTiles.size());
+      result = waterTiles.get(index);
+    }
+
+    return result;
+  }
+
+  static Random getRng() {
+    return RNG;
+  }
+
+  public boolean containsTile(final MapTile tile) {
+    return this.territoryTiles.contains(tile);
+  }
+
+  public void findNeighbors() {
+
+    List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.RIGHT, Direction.LEFT);
+
+    for (MapTile p : this.territoryTiles) {
+
+      for (final Direction y : directions) {
+
+        MapTile nd = p.get(y);
+        if (isNeighbor(nd)) {
+
+          this.neighborTerritories.add(p.getTerritory());
+
+        }
+
+      }
+    }
+  }
+
+  public Set<MapTile> getTerritoryTiles() {
+    return territoryTiles;
+  }
+
+  public boolean isLandLocked() {
+    return this.landlocked;
+  }
+
+  private boolean isNeighbor(final MapTile nd) {
+    return nd != null && !this.equals(nd.getTerritory());
+  }
+
+  public boolean isOffLimits() {
+    return this.offLimits;
+  }
+
+  void setLandLocked() {
+    this.landlocked = true;
+
+  }
+
+  public void setOffLimits(final boolean flag) {
+    this.offLimits = flag;
+  }
+
+  /**
+   * Build a territory in the map.
+   * 
+   * @author gej
+   *
+   */
   public static class Builder {
-    private final int maximumSize;
+    private int maximumSize;
 
-    private final int minimumSize;
+    private int minimumSize;
 
     private Range<Integer> sizeRange;
 
-    private final MapTile startTile;
+    private MapTile startTile;
 
-    Builder(final MapTile initTile, final int minSize, final int maxSize) {
+    Builder() {
+
+    }
+
+    Builder setStartTile(final MapTile initTile) {
       this.startTile = initTile;
+      return this;
+    }
+
+    Builder setMinSize(final int minSize) {
       this.minimumSize = minSize;
+      return this;
+    }
+
+    Builder setMaxSize(final int maxSize) {
       this.maximumSize = maxSize;
+      return this;
     }
 
     /**
@@ -163,123 +299,4 @@ final class Territory {
     }
   }
 
-  /** Logger. */
-  private static final Logger LOGGER = LoggerFactory.getLogger(Territory.class);
-
-  /** Random Number Generator. */
-  private static final Random RNG = new Random();
-
-  static Set<MapTile> countWaterTilesAvailableWithMax(final MapTile startTile, final int max) {
-
-    Queue<MapTile> tileQueue = new LinkedList<>();
-    tileQueue.add(startTile);
-
-    Set<MapTile> seenTiles = new HashSet<>();
-    seenTiles.add(startTile);
-    int count = 0;
-    while (!tileQueue.isEmpty()) {
-      MapTile waterTile = tileQueue.remove();
-      for (MapTile adjacentWaterTile : waterTile.getAdjacentWaterTiles()) {
-        if (!seenTiles.contains(adjacentWaterTile)) {
-          count++;
-
-          tileQueue.add(adjacentWaterTile);
-          seenTiles.add(adjacentWaterTile);
-
-          if (count == max) {
-            return seenTiles;
-          }
-        }
-      }
-    }
-
-    return seenTiles;
-  }
-
-  static Logger getLogger() {
-    return LOGGER;
-  }
-
-  /**
-   * Find a random water tile adjacent to this Territory.
-   *
-   * @param territory The territory to check for adjacent water.
-   * @return a random water tile or null if there is no water tile adjacent to
-   *         this Territory
-   */
-  static MapTile getRandomAdjacentWaterTile(final Territory territory) {
-
-    SetUniqueList<MapTile> waterTiles = SetUniqueList.setUniqueList(new ArrayList<MapTile>());
-
-    for (MapTile landTile : territory.territoryTiles) {
-      for (MapTile water : landTile.getAdjacentWaterTiles()) {
-        // Ignore water tiles marked as not to be used.
-        if (!water.isOffLimits()) {
-          waterTiles.add(water);
-        }
-      }
-    }
-
-    MapTile result = null;
-    if (waterTiles.isEmpty()) {
-      territory.setLandLocked();
-    } else {
-      final int index = RNG.nextInt(waterTiles.size());
-      result = waterTiles.get(index);
-    }
-
-    return result;
-  }
-
-  static Random getRng() {
-    return RNG;
-  }
-
-  public boolean containsTile(final MapTile tile) {
-    return this.territoryTiles.contains(tile);
-  }
-
-  public void findNeighbors() {
-
-    List<Direction> directions = Arrays.asList(Direction.DOWN, Direction.UP, Direction.RIGHT, Direction.LEFT);
-
-    for (MapTile p : this.territoryTiles) {
-
-      for (final Direction y : directions) {
-
-        MapTile nd = p.get(y);
-        if (isNeighbor(nd)) {
-
-          this.neighbors.add(p.getTerritory());
-
-        }
-
-      }
-    }
-  }
-
-  public SetUniqueList<MapTile> getTerritoryTiles() {
-    return territoryTiles;
-  }
-
-  public boolean isLandLocked() {
-    return this.landlocked;
-  }
-
-  private boolean isNeighbor(final MapTile nd) {
-    return nd != null && !this.equals(nd.getTerritory());
-  }
-
-  public boolean isOffLimits() {
-    return this.offLimits;
-  }
-
-  void setLandLocked() {
-    this.landlocked = true;
-
-  }
-
-  public void setOffLimits(final boolean flag) {
-    this.offLimits = flag;
-  }
 }

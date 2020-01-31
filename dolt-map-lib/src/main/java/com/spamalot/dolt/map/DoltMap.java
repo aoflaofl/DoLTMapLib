@@ -100,8 +100,8 @@ public class DoltMap {
    */
   private void addTerritories(final int numTerritories, final int minTerritorySize, final int maxTerritorySize) {
     // Make the first territory. TODO: be more random in initial placement.
-    final Territory territory = new Territory.Builder(this.gameMap.getMapTile(0, 0), minTerritorySize, maxTerritorySize)
-        .build();
+    final Territory territory = new Territory.Builder().setMinSize(minTerritorySize).setMaxSize(maxTerritorySize)
+        .setStartTile(this.gameMap.getMapTile(0, 0)).build();
     this.territories.add(territory);
 
     int count = 1;
@@ -174,7 +174,8 @@ public class DoltMap {
     int attempts = TERRITORY_BUILD_ATTEMPTS;
     while (newTerritory == null && attempts-- > 0) {
       MapTile startTile = tile;
-      newTerritory = new Territory.Builder(startTile, minTerritorySize, maxTerritorySize).build();
+      newTerritory = new Territory.Builder().setStartTile(startTile).setMaxSize(maxTerritorySize)
+          .setMinSize(minTerritorySize).build();
     }
 
     if (newTerritory != null) {
