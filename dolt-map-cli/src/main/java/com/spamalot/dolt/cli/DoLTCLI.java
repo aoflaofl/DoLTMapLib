@@ -4,7 +4,6 @@ import com.spamalot.dolt.map.DoltMap;
 import com.spamalot.dolt.map.MapTile;
 import com.spamalot.dolt.world.DoltWorld;
 import com.spamalot.dolt.world.WorldTileType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

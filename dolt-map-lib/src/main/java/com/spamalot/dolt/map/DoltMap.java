@@ -1,13 +1,10 @@
 package com.spamalot.dolt.map;
 
 import com.spamalot.dolt.world.DoltWorld;
-//import com.spamalot.dolt.world.NewWorldTileImpl;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
